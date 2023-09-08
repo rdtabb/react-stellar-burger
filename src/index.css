@@ -1,3 +1,30 @@
-body {
+:root {
+  --padding-400: 40px;
+
+  --bg-400: #131316;
+  --bg-500: #1c1c21;
+
+  --clr-primary: #f2f2f3;
+  --clr-secondary: #8585ad;
+  --clr-accent: #4c4cff;
+
+  --fs-400: 16px;
+  --fs-500: 28px;
+  --fs-600: 36px;
+  --fs-700: 48px;
+
+  --fw-400: 400;
+  --fw-700: 700;
+
+  --ff-primary: "JetBrains Mono", monospace;
+  --ff-secondary: "Iceland", monospace;
+
+  --line-height-400: 24px;
+  --line-height-500: 36px;
+  --line-height-600: 40px;
+}
+
+body,
+p {
   margin: 0;
 }

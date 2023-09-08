@@ -1,0 +1,17 @@
+.constructor {
+  padding: 100px 16px 40px;
+}
+
+.elementsGrid {
+  display: grid;
+  place-items: end;
+  gap: 16px;
+  height: fit-content;
+  padding-bottom: var(--padding-400);
+}
+
+.totalPrice {
+  font-size: var(--fs-700);
+  line-height: var(--line-height-600);
+  font-family: var(--ff-secondary);
+}

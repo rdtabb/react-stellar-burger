@@ -10,6 +10,7 @@ import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import { BurgerIngredients } from "../BurgerIngredients/BurgerIngredients";
 
+import { IngredientsProvider } from "../../context/IngredientsContext";
 import { ConstructorProvider } from "../../context/ConstructorContext";
 
 const initialState: InitialReducerState = {
@@ -58,7 +59,12 @@ const App = () => {
             signal,
           },
         );
-        if (!response.ok) throw new Error("Error while fetching");
+        if (!response.ok) {
+          dispatch({ type: REDUCER_ACTION_TYPE.FETCHINGREDIENTS_FAIL });
+          throw new Error(
+            `Fetch failed with response status: ${response.status}`,
+          );
+        }
         const data: Response = await response.json();
 
         dispatch({
@@ -67,7 +73,7 @@ const App = () => {
         });
       } catch (err) {
         dispatch({ type: REDUCER_ACTION_TYPE.FETCHINGREDIENTS_FAIL });
-        console.error("Error while fetching ingridients: ", err);
+        console.error("Fetch failed with the error: ", err);
       }
     })();
 
@@ -78,15 +84,17 @@ const App = () => {
   }, []);
 
   return (
-    <main className={styles.app}>
+    <div className={styles.app}>
       <AppHeader />
-      <section className={styles.container}>
-        <BurgerIngredients ingredients={state.ingredients} />
+      <main className={styles.container}>
+        <IngredientsProvider>
+          <BurgerIngredients ingredients={state.ingredients} />
+        </IngredientsProvider>
         <ConstructorProvider>
           <BurgerConstructor />
         </ConstructorProvider>
-      </section>
-    </main>
+      </main>
+    </div>
   );
 };
 

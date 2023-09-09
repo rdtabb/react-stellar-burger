@@ -1,49 +1,17 @@
-import React, { useMemo, useReducer, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import styles from "./burgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Ingredient } from "../../utils/types";
 import CardsSection from "./CardsSection";
+import useIngredientsContext from "../../hooks/useIngredientsContext";
+import { REDUCER_ACTION_TYPE } from "../../context/IngredientsContext";
 
 type BurgerIngredientsProps = {
   ingredients: Ingredient[] | undefined;
 };
 
-const enum REDUCER_ACTION_TYPE {
-  SET_BUNS,
-  SET_SAUCES,
-  SET_MAINS,
-}
-
-type ReducerActionType = {
-  type: REDUCER_ACTION_TYPE;
-};
-
-type InitialState = {
-  currentTab: "buns" | "mains" | "sauces";
-};
-
-const initialState: InitialState = {
-  currentTab: "buns",
-};
-
-const reducer = (
-  state: InitialState,
-  action: ReducerActionType,
-): InitialState => {
-  switch (action.type) {
-    case REDUCER_ACTION_TYPE.SET_BUNS:
-      return { ...state, currentTab: "buns" };
-    case REDUCER_ACTION_TYPE.SET_SAUCES:
-      return { ...state, currentTab: "sauces" };
-    case REDUCER_ACTION_TYPE.SET_MAINS:
-      return { ...state, currentTab: "mains" };
-    default:
-      throw new Error();
-  }
-};
-
 export const BurgerIngredients = ({ ingredients }: BurgerIngredientsProps) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { state, dispatch } = useIngredientsContext();
   const bunRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);
@@ -75,7 +43,7 @@ export const BurgerIngredients = ({ ingredients }: BurgerIngredientsProps) => {
   };
 
   return (
-    <section style={{ overflow: "hidden" }} className={styles.constructor}>
+    <section className={styles.constructor}>
       <h2 className={styles.header}>Соберите бургер</h2>
       <div className={styles.tabs}>
         <Tab

@@ -1,5 +1,5 @@
-import React, { createContext, ReactNode, useMemo, useReducer } from "react";
-import { Ingredient } from "../utils/types";
+import React, { createContext, useMemo, useReducer } from "react";
+import { Ingredient, Children } from "../utils/types";
 
 interface InitialState {
   dispatch: React.Dispatch<ReducerActionType>;
@@ -14,10 +14,6 @@ const initialState: InitialState = {
 };
 
 export const ConstructorContext = createContext<InitialState>(initialState);
-
-interface ConstructorContextProviderProps {
-  children: ReactNode | ReactNode[];
-}
 
 const enum REDUCER_ACTION_TYPE {
   SET_INITIAL_ELEMENTS,
@@ -51,6 +47,34 @@ const initialReducerState: InitialReducerState = {
       __v: 0,
     },
     {
+      _id: "643d69a5c3f7b9001cfa094a",
+      name: "Сыр с астероидной плесенью",
+      type: "main",
+      proteins: 84,
+      fat: 48,
+      carbohydrates: 420,
+      calories: 3377,
+      price: 4142,
+      image: "https://code.s3.yandex.net/react/code/cheese.png",
+      image_mobile: "https://code.s3.yandex.net/react/code/cheese-mobile.png",
+      image_large: "https://code.s3.yandex.net/react/code/cheese-large.png",
+      __v: 0,
+    },
+    {
+      _id: "643d69a5c3f7b9001cfa0941",
+      name: "Биокотлета из марсианской Магнолии",
+      type: "main",
+      proteins: 420,
+      fat: 142,
+      carbohydrates: 242,
+      calories: 4242,
+      price: 424,
+      image: "https://code.s3.yandex.net/react/code/meat-01.png",
+      image_mobile: "https://code.s3.yandex.net/react/code/meat-01-mobile.png",
+      image_large: "https://code.s3.yandex.net/react/code/meat-01-large.png",
+      __v: 0,
+    },
+    {
       _id: "643d69a5c3f7b9001cfa093d",
       name: "Флюоресцентная булка R2-D3",
       type: "bun",
@@ -62,6 +86,36 @@ const initialReducerState: InitialReducerState = {
       image: "https://code.s3.yandex.net/react/code/bun-01.png",
       image_mobile: "https://code.s3.yandex.net/react/code/bun-01-mobile.png",
       image_large: "https://code.s3.yandex.net/react/code/bun-01-large.png",
+      __v: 0,
+    },
+    {
+      _id: "643d69a5c3f7b9001cfa0946",
+      name: "Хрустящие минеральные кольца",
+      type: "main",
+      proteins: 808,
+      fat: 689,
+      carbohydrates: 609,
+      calories: 986,
+      price: 300,
+      image: "https://code.s3.yandex.net/react/code/mineral_rings.png",
+      image_mobile:
+        "https://code.s3.yandex.net/react/code/mineral_rings-mobile.png",
+      image_large:
+        "https://code.s3.yandex.net/react/code/mineral_rings-large.png",
+      __v: 0,
+    },
+    {
+      _id: "643d69a5c3f7b9001cfa0949",
+      name: "Мини-салат Экзо-Плантаго",
+      type: "main",
+      proteins: 1,
+      fat: 2,
+      carbohydrates: 3,
+      calories: 6,
+      price: 4400,
+      image: "https://code.s3.yandex.net/react/code/salad.png",
+      image_mobile: "https://code.s3.yandex.net/react/code/salad-mobile.png",
+      image_large: "https://code.s3.yandex.net/react/code/salad-large.png",
       __v: 0,
     },
   ],
@@ -89,9 +143,7 @@ const reducer = (
   }
 };
 
-export const ConstructorProvider = ({
-  children,
-}: ConstructorContextProviderProps) => {
+export const ConstructorProvider = ({ children }: Children) => {
   const [state, dispatch] = useReducer(reducer, initialReducerState);
 
   const totalPrice = useMemo(() => {

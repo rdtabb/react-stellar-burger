@@ -10,7 +10,7 @@ type CardsSectionProps = {
 
 const CardsSection = forwardRef((props: CardsSectionProps, ref: any) => {
   return (
-    <div style={{ scrollPadding: "16px" }} ref={ref}>
+    <div ref={ref}>
       <h2 className={styles.card__header}>{props.title}</h2>
       <div className={styles.container}>
         {props.ingredients?.map((item, index) => (

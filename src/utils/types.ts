@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface Ingredient {
   calories: number;
   carbohydrates: number;
@@ -29,6 +31,10 @@ export const enum REDUCER_ACTION_TYPE {
   FETCHINGREDIENTS_SUCCESS,
   FETCHINGREDIENTS_FAIL,
   FETCHINGREDIENTS_CLEAN,
+}
+
+export interface Children {
+  children: ReactNode | ReactNode[];
 }
 
 export interface ReducerAction {

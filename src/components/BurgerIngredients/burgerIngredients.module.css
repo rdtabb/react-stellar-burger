@@ -1,5 +1,6 @@
 .constructor {
   display: grid;
+  overflow: hidden;
 }
 
 .header {

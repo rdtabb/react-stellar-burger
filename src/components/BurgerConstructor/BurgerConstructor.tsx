@@ -18,6 +18,7 @@ const BurgerConstructor = () => {
     state: { constructorIngredients },
     dispatch,
     totalPrice,
+    setIsAcceptedOrderOpen,
   } = useConstructorContext();
   const bun = constructorIngredients.find((item) => item.type === "bun")!;
   const mappable = constructorIngredients.filter((item) => item.type !== "bun");
@@ -61,7 +62,12 @@ const BurgerConstructor = () => {
           <p className={styles.totalPrice}>{totalPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button title="Оформить заказ" type="primary" htmlType="submit">
+        <Button
+          onClick={() => setIsAcceptedOrderOpen(true)}
+          title="Оформить заказ"
+          type="primary"
+          htmlType="submit"
+        >
           Оформить заказ
         </Button>
       </div>

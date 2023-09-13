@@ -8,9 +8,10 @@ import {
 } from "../../utils/types";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import OrderAcceptedModal from "../OrderAcceptedModal/OrderAcceptedModal";
 import { BurgerIngredients } from "../BurgerIngredients/BurgerIngredients";
-
 import { IngredientsProvider } from "../../context/IngredientsContext";
+import useConstructorContext from "../../hooks/useConstructorContext";
 
 const initialState: InitialReducerState = {
   ingredients: undefined,
@@ -44,6 +45,7 @@ const reducer = (
 const App = () => {
   const controllerRef = useRef<AbortController>(new AbortController());
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { isAcceptedOrderOpen } = useConstructorContext();
 
   useEffect(() => {
     const controller = controllerRef.current;
@@ -84,6 +86,7 @@ const App = () => {
 
   return (
     <div className={styles.app}>
+      {isAcceptedOrderOpen && <OrderAcceptedModal />}
       <AppHeader />
       <main className={styles.container}>
         <IngredientsProvider>

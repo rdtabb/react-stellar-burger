@@ -1,4 +1,4 @@
-import React, { createContext, useMemo, useReducer } from "react";
+import React, { createContext, useMemo, useReducer, useState } from "react";
 import { Ingredient, Children } from "../utils/types";
 import { initialIngredients } from "../utils/initialIngredients";
 
@@ -6,12 +6,16 @@ interface InitialState {
   dispatch: React.Dispatch<ReducerActionType>;
   state: InitialReducerState;
   totalPrice: number;
+  isAcceptedOrderOpen: boolean;
+  setIsAcceptedOrderOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const initialState: InitialState = {
   dispatch: () => {},
   state: { constructorIngredients: [] },
   totalPrice: 0,
+  isAcceptedOrderOpen: false,
+  setIsAcceptedOrderOpen: () => {},
 };
 
 export const ConstructorContext = createContext<InitialState>(initialState);
@@ -70,6 +74,8 @@ const reducer = (
 
 export const ConstructorProvider = ({ children }: Children) => {
   const [state, dispatch] = useReducer(reducer, initialReducerState);
+  const [isAcceptedOrderOpen, setIsAcceptedOrderOpen] =
+    useState<boolean>(false);
 
   const totalPrice = useMemo(() => {
     return state.constructorIngredients.reduce(
@@ -84,6 +90,8 @@ export const ConstructorProvider = ({ children }: Children) => {
         state,
         dispatch,
         totalPrice,
+        isAcceptedOrderOpen,
+        setIsAcceptedOrderOpen,
       }}
     >
       {children}

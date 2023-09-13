@@ -2,10 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/app/app";
+import { ConstructorProvider } from "./context/ConstructorContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ConstructorProvider>
+      <App />
+    </ConstructorProvider>
   </React.StrictMode>,
   document.getElementById("root"),
 );

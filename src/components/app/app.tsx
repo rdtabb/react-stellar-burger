@@ -11,7 +11,6 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import { BurgerIngredients } from "../BurgerIngredients/BurgerIngredients";
 
 import { IngredientsProvider } from "../../context/IngredientsContext";
-import { ConstructorProvider } from "../../context/ConstructorContext";
 
 const initialState: InitialReducerState = {
   ingredients: undefined,
@@ -90,9 +89,7 @@ const App = () => {
         <IngredientsProvider>
           <BurgerIngredients ingredients={state.ingredients} />
         </IngredientsProvider>
-        <ConstructorProvider>
-          <BurgerConstructor />
-        </ConstructorProvider>
+        <BurgerConstructor />
       </main>
     </div>
   );

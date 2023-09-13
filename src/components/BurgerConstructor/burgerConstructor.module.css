@@ -1,16 +1,12 @@
-.constructor {
-  overflow-x: scroll;
-}
-
-.elementsGrid::-webkit-scrollbar {
+.draggableElements::-webkit-scrollbar {
   width: 5px;
 }
 
-.elementsGrid::-webkit-scrollbar-track {
+.draggableElements::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.elementsGrid::-webkit-scrollbar-thumb {
+.draggableElements::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background: var(--clr-accent);
 }
@@ -19,10 +15,17 @@
   display: grid;
   place-items: end;
   gap: 16px;
-  height: fit-content;
-  padding: 100px 16px 40px;
+  padding: 100px 16px 20px;
+  height: 656px;
+}
 
-  overflow-x: scroll;
+.draggableElements {
+  display: grid;
+  gap: 16px;
+
+  height: 464px;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
 
 .totalPrice {
@@ -36,7 +39,6 @@
   gap: 40px;
   align-items: center;
   justify-content: end;
-  padding-top: 24px;
 }
 
 .priceContainer {
@@ -49,5 +51,4 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  overflow: scroll;
 }

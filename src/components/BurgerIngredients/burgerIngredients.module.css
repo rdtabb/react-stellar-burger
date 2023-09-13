@@ -26,10 +26,22 @@
 .card {
   display: grid;
   place-items: center;
+  border-radius: 10px;
+  padding-block: 10px;
+  transition: background-color 200ms ease-in;
+}
+
+.card:hover {
+  background-color: hsl(0, 0%, 100%, 0.1);
+  cursor: pointer;
 }
 
 .overflow {
   overflow-y: scroll;
+  scroll-padding-top: 16px;
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
 }
 
 .overflow::-webkit-scrollbar {

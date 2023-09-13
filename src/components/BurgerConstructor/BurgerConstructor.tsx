@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, useEffect, useRef } from "react";
 import styles from "./burgerConstructor.module.css";
 import {
   ConstructorElement,
@@ -8,17 +8,28 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import useConstructorContext from "../../hooks/useConstructorContext";
 import { Ingredient } from "../../utils/types";
+import {
+  ReducerActionType,
+  REDUCER_ACTION_TYPE,
+} from "../../context/ConstructorContext";
 
 const BurgerConstructor = () => {
   const {
     state: { constructorIngredients },
+    dispatch,
     totalPrice,
   } = useConstructorContext();
   const bun = constructorIngredients.find((item) => item.type === "bun")!;
   const mappable = constructorIngredients.filter((item) => item.type !== "bun");
 
+  const scrollRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [mappable]);
+
   return (
-    <section className={styles.constructor}>
+    <section>
       <div className={styles.elementsGrid}>
         <ConstructorElement
           thumbnail={bun.image_mobile}
@@ -27,9 +38,16 @@ const BurgerConstructor = () => {
           isLocked={true}
           type="top"
         />
-        {mappable.map((item: Ingredient) => (
-          <DraggableContsructorElement key={item._id} item={item} />
-        ))}
+        <div className={styles.draggableElements}>
+          {mappable.map((item: Ingredient, index: number) => (
+            <DraggableContsructorElement
+              key={index}
+              item={item}
+              dispatch={dispatch}
+            />
+          ))}
+          <div ref={scrollRef}></div>
+        </div>
         <ConstructorElement
           thumbnail={bun.image}
           price={bun.price}
@@ -37,21 +55,27 @@ const BurgerConstructor = () => {
           isLocked={true}
           type="bottom"
         />
-        <div className={styles.order}>
-          <div className={styles.priceContainer}>
-            <p className={styles.totalPrice}>{totalPrice}</p>
-            <CurrencyIcon type="primary" />
-          </div>
-          <Button title="Оформить заказ" type="primary" htmlType="submit">
-            Оформить заказ
-          </Button>
+      </div>
+      <div className={styles.order}>
+        <div className={styles.priceContainer}>
+          <p className={styles.totalPrice}>{totalPrice}</p>
+          <CurrencyIcon type="primary" />
         </div>
+        <Button title="Оформить заказ" type="primary" htmlType="submit">
+          Оформить заказ
+        </Button>
       </div>
     </section>
   );
 };
 
-const DraggableContsructorElement = ({ item }: { item: Ingredient }) => {
+const DraggableContsructorElement = ({
+  item,
+  dispatch,
+}: {
+  item: Ingredient;
+  dispatch: Dispatch<ReducerActionType>;
+}) => {
   return (
     <article className={styles.draggable}>
       <DragIcon type="primary" />
@@ -60,6 +84,13 @@ const DraggableContsructorElement = ({ item }: { item: Ingredient }) => {
         thumbnail={item.image}
         isLocked={false}
         price={item.price}
+        extraClass={styles.constElement}
+        handleClose={() =>
+          dispatch({
+            type: REDUCER_ACTION_TYPE.DELETE_ELEMENT,
+            payload: item._id,
+          })
+        }
       />
     </article>
   );

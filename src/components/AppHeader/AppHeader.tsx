@@ -20,7 +20,9 @@ const AppHeader = () => {
             <ListIcon type="secondary" /> Лента заказов
           </div>
         </div>
-        <Logo />
+        <div style={{ justifySelf: "center" }}>
+          <Logo />
+        </div>
         <div className={styles.tab}>
           <ProfileIcon type="secondary" />
           Личный кабинет

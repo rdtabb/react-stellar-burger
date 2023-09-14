@@ -37,9 +37,41 @@
   transition: background-color 200ms ease-in;
 }
 
+.cardEmpty {
+  composes: card;
+  height: 240px;
+  background-color: hsl(0, 0%, 100%, 0.2);
+  border-radius: 40px;
+  animation: pulse linear infinite 3000ms;
+}
+
+.cardError {
+  composes: card;
+  height: 240px;
+  background-color: hsl(0, 0%, 100%, 0.2);
+  border-radius: 40px;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
 .card:hover {
   background-color: hsl(0, 0%, 100%, 0.1);
   cursor: pointer;
+}
+
+.cardEmpty:hover {
+  background-color: inherit;
+  cursor: unset;
 }
 
 .overflow {

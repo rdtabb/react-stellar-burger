@@ -12,14 +12,14 @@ type IngredientCardProps = {
 const IgredientCard = ({ item }: IngredientCardProps) => {
   const { dispatch, setIsIngredientInfoOpen } = useIngredientsContext();
 
-  const openInfoPopup = () => {
+  const openInfoPopup = useCallback(() => {
     setIsIngredientInfoOpen(true);
     dispatch({ type: REDUCER_ACTION_TYPE.SELECT_ITEM, payload: item });
-  };
+  }, []);
 
   return (
     <article onClick={openInfoPopup} className={styles.card}>
-      <img src={item.image} alt={item.name} />
+      <img loading="lazy" src={item.image} alt={item.name} />
       <div className={styles.card__price}>
         <CurrencyIcon type="primary" />
         <p>{item.price}</p>

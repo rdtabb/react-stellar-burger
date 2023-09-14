@@ -95,4 +95,6 @@ const DraggableContsructorElement = ({
   );
 };
 
-export default BurgerConstructor;
+const MemoizedBurgerConstructor = React.memo(BurgerConstructor);
+
+export default MemoizedBurgerConstructor;

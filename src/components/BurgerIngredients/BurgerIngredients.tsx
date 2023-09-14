@@ -8,9 +8,15 @@ import { REDUCER_ACTION_TYPE } from "../../context/IngredientsContext";
 
 type BurgerIngredientsProps = {
   ingredients: Ingredient[] | undefined;
+  isLoading: boolean;
+  isError: boolean;
 };
 
-export const BurgerIngredients = ({ ingredients }: BurgerIngredientsProps) => {
+export const BurgerIngredients = ({
+  ingredients,
+  isLoading,
+  isError,
+}: BurgerIngredientsProps) => {
   const { state, dispatch } = useIngredientsContext();
   const bunRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -69,9 +75,27 @@ export const BurgerIngredients = ({ ingredients }: BurgerIngredientsProps) => {
         </Tab>
       </div>
       <section className={styles.overflow}>
-        <CardsSection title="Булки" ingredients={buns} ref={bunRef} />
-        <CardsSection title="Соусы" ingredients={sauces} ref={sauceRef} />
-        <CardsSection title="Начинки" ingredients={main} ref={mainRef} />
+        <CardsSection
+          title="Булки"
+          isLoading={isLoading}
+          isError={isError}
+          ingredients={buns}
+          ref={bunRef}
+        />
+        <CardsSection
+          title="Соусы"
+          isLoading={isLoading}
+          isError={isError}
+          ingredients={sauces}
+          ref={sauceRef}
+        />
+        <CardsSection
+          title="Начинки"
+          isLoading={isLoading}
+          isError={isError}
+          ingredients={main}
+          ref={mainRef}
+        />
       </section>
     </section>
   );

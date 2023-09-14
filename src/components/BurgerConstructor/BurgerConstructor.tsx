@@ -23,12 +23,6 @@ const BurgerConstructor = () => {
   const bun = constructorIngredients.find((item) => item.type === "bun")!;
   const mappable = constructorIngredients.filter((item) => item.type !== "bun");
 
-  const scrollRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [mappable]);
-
   return (
     <section>
       <div className={styles.elementsGrid}>
@@ -47,7 +41,6 @@ const BurgerConstructor = () => {
               dispatch={dispatch}
             />
           ))}
-          <div ref={scrollRef}></div>
         </div>
         <ConstructorElement
           thumbnail={bun.image}

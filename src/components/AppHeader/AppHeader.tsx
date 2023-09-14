@@ -20,7 +20,7 @@ const AppHeader = () => {
             <ListIcon type="secondary" /> Лента заказов
           </div>
         </div>
-        <div style={{ justifySelf: "center" }}>
+        <div className={styles.logo}>
           <Logo />
         </div>
         <div className={styles.tab}>

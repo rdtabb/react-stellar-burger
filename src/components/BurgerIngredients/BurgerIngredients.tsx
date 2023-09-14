@@ -45,7 +45,7 @@ export const BurgerIngredients = ({ ingredients }: BurgerIngredientsProps) => {
   return (
     <section className={styles.constructor}>
       <h2 className={styles.header}>Соберите бургер</h2>
-      <div className={styles.tabs}>
+      <div className={`${styles.tabs} tabs-global`}>
         <Tab
           active={state.currentTab === "buns" ? true : false}
           value="Булки"

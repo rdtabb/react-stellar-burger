@@ -9,6 +9,7 @@ import {
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import OrderAcceptedModal from "../OrderAcceptedModal/OrderAcceptedModal";
+import IngredientInfoModal from "../IngredientInfoModal/IngredientInfoModal";
 import { BurgerIngredients } from "../BurgerIngredients/BurgerIngredients";
 import { IngredientsProvider } from "../../context/IngredientsContext";
 import useConstructorContext from "../../hooks/useConstructorContext";
@@ -86,10 +87,11 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      {isAcceptedOrderOpen && <OrderAcceptedModal />}
+      <OrderAcceptedModal />
       <AppHeader />
       <main className={styles.container}>
         <IngredientsProvider>
+      <IngredientInfoModal />
           <BurgerIngredients ingredients={state.ingredients} />
         </IngredientsProvider>
         <BurgerConstructor />

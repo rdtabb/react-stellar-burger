@@ -1,9 +1,9 @@
-import React, { useCallback } from "react";
-import styles from "./burgerIngredients.module.css";
-import { Ingredient } from "../../utils/types";
+import { useCallback, memo } from "react";
+import styles from "../burgerIngredients.module.css";
+import { Ingredient } from "../../../utils/types";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import useIngredientsContext from "../../hooks/useIngredientsContext";
-import { REDUCER_ACTION_TYPE } from "../../context/IngredientsContext";
+import useIngredientsContext from "../../../hooks/useIngredientsContext";
+import { REDUCER_ACTION_TYPE } from "../../../context/IngredientsContext";
 
 type IngredientCardProps = {
   item: Ingredient;
@@ -29,4 +29,4 @@ const IgredientCard = ({ item }: IngredientCardProps) => {
   );
 };
 
-export default IgredientCard;
+export default memo(IgredientCard);

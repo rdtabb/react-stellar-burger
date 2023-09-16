@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./burgerIngredients.module.css";
+import styles from "../burgerIngredients.module.css";
 
 const LoadingIngredients = () => {
   return (

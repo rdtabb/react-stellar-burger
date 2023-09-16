@@ -10,7 +10,7 @@ import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import OrderAcceptedModal from "../OrderAcceptedModal/OrderAcceptedModal";
 import IngredientInfoModal from "../IngredientInfoModal/IngredientInfoModal";
-import { BurgerIngredients } from "../BurgerIngredients/BurgerIngredients";
+import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import { IngredientsProvider } from "../../context/IngredientsContext";
 
 const initialState: InitialReducerState = {

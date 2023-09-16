@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import styles from "./appHeader.module.css";
 import {
   BurgerIcon,

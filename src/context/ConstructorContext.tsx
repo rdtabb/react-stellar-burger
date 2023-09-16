@@ -8,6 +8,8 @@ interface InitialState {
   totalPrice: number;
   isAcceptedOrderOpen: boolean;
   setIsAcceptedOrderOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const initialState: InitialState = {
@@ -16,6 +18,8 @@ const initialState: InitialState = {
   totalPrice: 0,
   isAcceptedOrderOpen: false,
   setIsAcceptedOrderOpen: () => {},
+  isOpen: false,
+  setIsOpen: () => {},
 };
 
 export const ConstructorContext = createContext<InitialState>(initialState);
@@ -76,6 +80,7 @@ export const ConstructorProvider = ({ children }: Children) => {
   const [state, dispatch] = useReducer(reducer, initialReducerState);
   const [isAcceptedOrderOpen, setIsAcceptedOrderOpen] =
     useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const totalPrice = useMemo(() => {
     return state.constructorIngredients.reduce(
@@ -92,6 +97,8 @@ export const ConstructorProvider = ({ children }: Children) => {
         totalPrice,
         isAcceptedOrderOpen,
         setIsAcceptedOrderOpen,
+        isOpen,
+        setIsOpen,
       }}
     >
       {children}

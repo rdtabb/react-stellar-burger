@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from "react";
 import styles from "./burgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Ingredient } from "../../utils/types";
-import CardsSection from "./CardsSection";
+import CardsSection from "./components/CardsSection";
 import useIngredientsContext from "../../hooks/useIngredientsContext";
 import { REDUCER_ACTION_TYPE } from "../../context/IngredientsContext";
 
@@ -12,7 +12,7 @@ type BurgerIngredientsProps = {
   isError: boolean;
 };
 
-export const BurgerIngredients = ({
+const BurgerIngredients = ({
   ingredients,
   isLoading,
   isError,
@@ -100,3 +100,7 @@ export const BurgerIngredients = ({
     </section>
   );
 };
+
+const MemoizedIngredients = React.memo(BurgerIngredients);
+
+export default MemoizedIngredients;

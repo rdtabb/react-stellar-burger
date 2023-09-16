@@ -1,34 +1,3 @@
-.modal {
-  --modal-border: rgba(76, 76, 255, 0.2);
-  --modal-bg: #1c1c21;
-  --text-clr-accent: #8585ad;
-
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  background-color: hsl(0, 0%, 0%, 0.6);
-  visibility: hidden;
-  opacity: 0;
-  transition:
-    visibility 200ms ease-in,
-    opacity 200ms ease-in;
-  z-index: 1;
-
-  cursor: pointer;
-}
-
-.modalActive {
-  composes: modal;
-  opacity: 1;
-  visibility: visible;
-
-  transition:
-    visibility 0ms,
-    opacity 200ms ease-in;
-}
-
 .modalContent {
   position: relative;
   z-index: 100;
@@ -68,17 +37,4 @@
 .caption {
   padding: 60px 0 2px;
   color: var(--text-clr-accent);
-}
-
-.closeWrapper {
-  position: absolute;
-  top: 60px;
-  right: 40px;
-
-  transition: opacity 200ms ease-in;
-}
-
-.closeWrapper:hover {
-  cursor: pointer;
-  opacity: 0.6;
 }

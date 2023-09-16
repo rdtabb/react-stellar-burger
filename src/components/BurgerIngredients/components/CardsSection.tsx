@@ -1,9 +1,9 @@
-import React, { forwardRef } from "react";
-import styles from "./burgerIngredients.module.css";
-import { Ingredient } from "../../utils/types";
+import { forwardRef, memo } from "react";
+import styles from "../burgerIngredients.module.css";
+import { Ingredient } from "../../../utils/types";
 import IgredientCard from "./IgredientCard";
-import LoadingIngredients from "./LoadingIngredients";
-import ErrorIngredients from "./intrinsics/ErrorIngredients";
+import LoadingIngredients from "../states/LoadingIngredients";
+import ErrorIngredients from "../states/ErrorIngredients";
 
 type CardsSectionProps = {
   title: string;
@@ -33,4 +33,4 @@ const CardsSection = forwardRef((props: CardsSectionProps, ref: any) => {
   );
 });
 
-export default CardsSection;
+export default memo(CardsSection);

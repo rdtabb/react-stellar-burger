@@ -1,4 +1,4 @@
-import React, { Dispatch, useEffect, useRef } from "react";
+import { memo } from "react";
 import styles from "./burgerConstructor.module.css";
 import {
   ConstructorElement,
@@ -8,15 +8,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import useConstructorContext from "../../hooks/useConstructorContext";
 import { Ingredient } from "../../utils/types";
-import {
-  ReducerActionType,
-  REDUCER_ACTION_TYPE,
-} from "../../context/ConstructorContext";
 
 const BurgerConstructor = () => {
   const {
     state: { constructorIngredients },
-    dispatch,
     totalPrice,
     setIsAcceptedOrderOpen,
   } = useConstructorContext();
@@ -35,10 +30,9 @@ const BurgerConstructor = () => {
         />
         <div className={styles.draggableElements}>
           {mappable.map((item: Ingredient, index: number) => (
-            <DraggableContsructorElement
+            <MemoizedDraggableContsructorElement
               key={index}
               item={item}
-              dispatch={dispatch}
             />
           ))}
         </div>
@@ -70,10 +64,8 @@ const BurgerConstructor = () => {
 
 const DraggableContsructorElement = ({
   item,
-  dispatch,
 }: {
   item: Ingredient;
-  dispatch: Dispatch<ReducerActionType>;
 }) => {
   return (
     <article className={styles.draggable}>
@@ -84,17 +76,13 @@ const DraggableContsructorElement = ({
         isLocked={false}
         price={item.price}
         extraClass={styles.constElement}
-        handleClose={() =>
-          dispatch({
-            type: REDUCER_ACTION_TYPE.DELETE_ELEMENT,
-            payload: item._id,
-          })
-        }
       />
     </article>
   );
 };
 
-const MemoizedBurgerConstructor = React.memo(BurgerConstructor);
+const MemoizedDraggableContsructorElement = memo(DraggableContsructorElement)
+
+const MemoizedBurgerConstructor = memo(BurgerConstructor);
 
 export default MemoizedBurgerConstructor;

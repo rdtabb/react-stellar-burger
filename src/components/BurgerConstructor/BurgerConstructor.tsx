@@ -1,4 +1,5 @@
 import { memo } from "react";
+import orderDetailsStyles from "../OrderDetails/modal.module.css";
 import styles from "./burgerConstructor.module.css";
 import {
   ConstructorElement,
@@ -8,13 +9,15 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import useConstructorContext from "../../hooks/useConstructorContext";
 import { Ingredient } from "../../utils/types";
-import OrderAcceptedModal from "../OrderAcceptedModal/OrderAcceptedModal";
+import Modal from "../Modal/Modal";
+import OrderDetails from "../OrderDetails/OrderDetails";
 
 const BurgerConstructor = () => {
   const {
     state: { constructorIngredients },
     totalPrice,
     setIsAcceptedOrderOpen,
+    isAcceptedOrderOpen,
   } = useConstructorContext();
   const bun = constructorIngredients.find((item) => item.type === "bun")!;
   const mappable = constructorIngredients.filter((item) => item.type !== "bun");
@@ -56,7 +59,13 @@ const BurgerConstructor = () => {
           Оформить заказ
         </Button>
       </div>
-      <OrderAcceptedModal />
+      <Modal
+        modalContentClass={orderDetailsStyles.modalContent}
+        isOpen={isAcceptedOrderOpen}
+        setIsOpen={setIsAcceptedOrderOpen}
+      >
+        <OrderDetails />
+      </Modal>
     </section>
   );
 };

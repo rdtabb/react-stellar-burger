@@ -1,9 +1,11 @@
 import React, { useMemo, useRef } from "react";
+import ingredientDetailstyles from "../IngredientDetails/infomodal.module.css";
 import styles from "./burgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Ingredient } from "../../utils/types";
 import CardsSection from "./components/CardsSection";
-import IngredientInfoModal from "../IngredientInfoModal/IngredientInfoModal";
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import useIngredientsContext from "../../hooks/useIngredientsContext";
 import { REDUCER_ACTION_TYPE } from "../../context/IngredientsContext";
 
@@ -18,22 +20,23 @@ const BurgerIngredients = ({
   isLoading,
   isError,
 }: BurgerIngredientsProps) => {
-  const { state, dispatch } = useIngredientsContext();
+  const { state, dispatch, isIngredientInfoOpen, setIsIngredientInfoOpen } =
+    useIngredientsContext();
   const bunRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);
 
   const buns = useMemo(
     () => ingredients?.filter((item) => item.type === "bun"),
-    [ingredients],
+    [ingredients]
   );
   const main = useMemo(
     () => ingredients?.filter((item) => item.type === "main"),
-    [ingredients],
+    [ingredients]
   );
   const sauces = useMemo(
     () => ingredients?.filter((item) => item.type === "sauce"),
-    [ingredients],
+    [ingredients]
   );
 
   const handleTab = (tab: "buns" | "mains" | "sauces"): void => {
@@ -98,7 +101,13 @@ const BurgerIngredients = ({
           ref={mainRef}
         />
       </section>
-      <IngredientInfoModal />
+      <Modal
+        modalContentClass={ingredientDetailstyles.modalContent}
+        isOpen={isIngredientInfoOpen}
+        setIsOpen={setIsIngredientInfoOpen}
+      >
+        <IngredientDetails />
+      </Modal>
     </section>
   );
 };

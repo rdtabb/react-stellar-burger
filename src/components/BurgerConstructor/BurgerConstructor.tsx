@@ -8,6 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import useConstructorContext from "../../hooks/useConstructorContext";
 import { Ingredient } from "../../utils/types";
+import OrderAcceptedModal from "../OrderAcceptedModal/OrderAcceptedModal";
 
 const BurgerConstructor = () => {
   const {
@@ -30,10 +31,7 @@ const BurgerConstructor = () => {
         />
         <div className={styles.draggableElements}>
           {mappable.map((item: Ingredient, index: number) => (
-            <MemoizedDraggableContsructorElement
-              key={index}
-              item={item}
-            />
+            <MemoizedDraggableContsructorElement key={index} item={item} />
           ))}
         </div>
         <ConstructorElement
@@ -58,15 +56,12 @@ const BurgerConstructor = () => {
           Оформить заказ
         </Button>
       </div>
+      <OrderAcceptedModal />
     </section>
   );
 };
 
-const DraggableContsructorElement = ({
-  item,
-}: {
-  item: Ingredient;
-}) => {
+const DraggableContsructorElement = ({ item }: { item: Ingredient }) => {
   return (
     <article className={styles.draggable}>
       <DragIcon type="primary" />
@@ -81,7 +76,7 @@ const DraggableContsructorElement = ({
   );
 };
 
-const MemoizedDraggableContsructorElement = memo(DraggableContsructorElement)
+const MemoizedDraggableContsructorElement = memo(DraggableContsructorElement);
 
 const MemoizedBurgerConstructor = memo(BurgerConstructor);
 

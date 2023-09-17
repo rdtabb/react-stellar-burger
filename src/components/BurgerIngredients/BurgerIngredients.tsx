@@ -3,6 +3,7 @@ import styles from "./burgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Ingredient } from "../../utils/types";
 import CardsSection from "./components/CardsSection";
+import IngredientInfoModal from "../IngredientInfoModal/IngredientInfoModal";
 import useIngredientsContext from "../../hooks/useIngredientsContext";
 import { REDUCER_ACTION_TYPE } from "../../context/IngredientsContext";
 
@@ -97,6 +98,7 @@ const BurgerIngredients = ({
           ref={mainRef}
         />
       </section>
+      <IngredientInfoModal />
     </section>
   );
 };

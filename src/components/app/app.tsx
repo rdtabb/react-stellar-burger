@@ -1,5 +1,5 @@
 import styles from "./app.module.css";
-import React, { useEffect, useRef, useReducer } from "react";
+import { useEffect, useRef, useReducer } from "react";
 import {
   Response,
   InitialReducerState,
@@ -8,8 +8,6 @@ import {
 } from "../../utils/types";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import OrderAcceptedModal from "../OrderAcceptedModal/OrderAcceptedModal";
-import IngredientInfoModal from "../IngredientInfoModal/IngredientInfoModal";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import { IngredientsProvider } from "../../context/IngredientsContext";
 
@@ -85,11 +83,9 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      <OrderAcceptedModal />
       <AppHeader />
       <main className={styles.container}>
         <IngredientsProvider>
-          <IngredientInfoModal />
           <BurgerIngredients
             isLoading={state.isLoading}
             ingredients={state.ingredients}

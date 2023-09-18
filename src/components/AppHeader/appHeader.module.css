@@ -43,3 +43,13 @@
   opacity: 1;
   cursor: pointer;
 }
+
+@media (max-width: 890px) {
+  .tab {
+    display: none;
+  }
+
+  .nav {
+    justify-content: center;
+  }
+}

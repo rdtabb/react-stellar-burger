@@ -1,5 +1,5 @@
 import styles from "./app.module.css";
-import React, { useEffect, useRef, useReducer } from "react";
+import { useEffect, useRef, useReducer } from "react";
 import {
   Response,
   InitialReducerState,
@@ -8,13 +8,12 @@ import {
 } from "../../utils/types";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import { BurgerIngredients } from "../BurgerIngredients/BurgerIngredients";
-
+import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import { IngredientsProvider } from "../../context/IngredientsContext";
 
 const initialState: InitialReducerState = {
   ingredients: undefined,
-  isLoading: false,
+  isLoading: true,
   isError: false,
 };
 
@@ -87,7 +86,11 @@ const App = () => {
       <AppHeader />
       <main className={styles.container}>
         <IngredientsProvider>
-          <BurgerIngredients ingredients={state.ingredients} />
+          <BurgerIngredients
+            isLoading={state.isLoading}
+            ingredients={state.ingredients}
+            isError={state.isError}
+          />
         </IngredientsProvider>
         <BurgerConstructor />
       </main>

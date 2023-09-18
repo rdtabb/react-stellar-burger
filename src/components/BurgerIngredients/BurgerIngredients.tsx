@@ -1,32 +1,42 @@
 import React, { useMemo, useRef } from "react";
+import ingredientDetailstyles from "../IngredientDetails/infomodal.module.css";
 import styles from "./burgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Ingredient } from "../../utils/types";
-import CardsSection from "./CardsSection";
+import CardsSection from "./components/CardsSection";
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import useIngredientsContext from "../../hooks/useIngredientsContext";
 import { REDUCER_ACTION_TYPE } from "../../context/IngredientsContext";
 
 type BurgerIngredientsProps = {
   ingredients: Ingredient[] | undefined;
+  isLoading: boolean;
+  isError: boolean;
 };
 
-export const BurgerIngredients = ({ ingredients }: BurgerIngredientsProps) => {
-  const { state, dispatch } = useIngredientsContext();
+const BurgerIngredients = ({
+  ingredients,
+  isLoading,
+  isError,
+}: BurgerIngredientsProps) => {
+  const { state, dispatch, isIngredientInfoOpen, setIsIngredientInfoOpen } =
+    useIngredientsContext();
   const bunRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   const sauceRef = useRef<HTMLDivElement>(null);
 
   const buns = useMemo(
     () => ingredients?.filter((item) => item.type === "bun"),
-    [ingredients],
+    [ingredients]
   );
   const main = useMemo(
     () => ingredients?.filter((item) => item.type === "main"),
-    [ingredients],
+    [ingredients]
   );
   const sauces = useMemo(
     () => ingredients?.filter((item) => item.type === "sauce"),
-    [ingredients],
+    [ingredients]
   );
 
   const handleTab = (tab: "buns" | "mains" | "sauces"): void => {
@@ -45,7 +55,7 @@ export const BurgerIngredients = ({ ingredients }: BurgerIngredientsProps) => {
   return (
     <section className={styles.constructor}>
       <h2 className={styles.header}>Соберите бургер</h2>
-      <div className={styles.tabs}>
+      <div className={`${styles.tabs} tabs-global`}>
         <Tab
           active={state.currentTab === "buns" ? true : false}
           value="Булки"
@@ -69,10 +79,39 @@ export const BurgerIngredients = ({ ingredients }: BurgerIngredientsProps) => {
         </Tab>
       </div>
       <section className={styles.overflow}>
-        <CardsSection title="Булки" ingredients={buns} ref={bunRef} />
-        <CardsSection title="Соусы" ingredients={sauces} ref={sauceRef} />
-        <CardsSection title="Начинки" ingredients={main} ref={mainRef} />
+        <CardsSection
+          title="Булки"
+          isLoading={isLoading}
+          isError={isError}
+          ingredients={buns}
+          ref={bunRef}
+        />
+        <CardsSection
+          title="Соусы"
+          isLoading={isLoading}
+          isError={isError}
+          ingredients={sauces}
+          ref={sauceRef}
+        />
+        <CardsSection
+          title="Начинки"
+          isLoading={isLoading}
+          isError={isError}
+          ingredients={main}
+          ref={mainRef}
+        />
       </section>
+      <Modal
+        modalContentClass={ingredientDetailstyles.modalContent}
+        isOpen={isIngredientInfoOpen}
+        setIsOpen={setIsIngredientInfoOpen}
+      >
+        <IngredientDetails />
+      </Modal>
     </section>
   );
 };
+
+const MemoizedIngredients = React.memo(BurgerIngredients);
+
+export default MemoizedIngredients;

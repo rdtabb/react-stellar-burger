@@ -1,0 +1,40 @@
+.modalContent {
+  position: relative;
+  z-index: 100;
+  background-color: var(--modal-bg);
+  border: 1px solid var(--modal-border);
+  border-radius: 40px;
+  padding: 120px 100px;
+
+  cursor: auto;
+}
+
+.modalGrid {
+  display: grid;
+  place-items: center;
+}
+
+.title {
+  font-family: var(--ff-secondary);
+  font-size: var(--fs-900);
+  line-height: 120px;
+  margin: 0;
+}
+
+.subtitle {
+  padding: 32px 0 60px;
+  font-size: var(--fs-450);
+  line-height: 30px;
+}
+
+.accepted {
+  width: 107px;
+  aspect-ratio: 1;
+  background-image: url("../../images/orderaccepted.svg");
+  background-size: cover;
+}
+
+.caption {
+  padding: 60px 0 2px;
+  color: var(--text-clr-accent);
+}

@@ -1,4 +1,5 @@
-import React, { Dispatch, useEffect, useRef } from "react";
+import { memo } from "react";
+import orderDetailsStyles from "../OrderDetails/modal.module.css";
 import styles from "./burgerConstructor.module.css";
 import {
   ConstructorElement,
@@ -8,25 +9,18 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import useConstructorContext from "../../hooks/useConstructorContext";
 import { Ingredient } from "../../utils/types";
-import {
-  ReducerActionType,
-  REDUCER_ACTION_TYPE,
-} from "../../context/ConstructorContext";
+import Modal from "../Modal/Modal";
+import OrderDetails from "../OrderDetails/OrderDetails";
 
 const BurgerConstructor = () => {
   const {
     state: { constructorIngredients },
-    dispatch,
     totalPrice,
+    setIsAcceptedOrderOpen,
+    isAcceptedOrderOpen,
   } = useConstructorContext();
   const bun = constructorIngredients.find((item) => item.type === "bun")!;
   const mappable = constructorIngredients.filter((item) => item.type !== "bun");
-
-  const scrollRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [mappable]);
 
   return (
     <section>
@@ -40,13 +34,8 @@ const BurgerConstructor = () => {
         />
         <div className={styles.draggableElements}>
           {mappable.map((item: Ingredient, index: number) => (
-            <DraggableContsructorElement
-              key={index}
-              item={item}
-              dispatch={dispatch}
-            />
+            <MemoizedDraggableContsructorElement key={index} item={item} />
           ))}
-          <div ref={scrollRef}></div>
         </div>
         <ConstructorElement
           thumbnail={bun.image}
@@ -61,21 +50,27 @@ const BurgerConstructor = () => {
           <p className={styles.totalPrice}>{totalPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button title="Оформить заказ" type="primary" htmlType="submit">
+        <Button
+          onClick={() => setIsAcceptedOrderOpen(true)}
+          title="Оформить заказ"
+          type="primary"
+          htmlType="submit"
+        >
           Оформить заказ
         </Button>
       </div>
+      <Modal
+        modalContentClass={orderDetailsStyles.modalContent}
+        isOpen={isAcceptedOrderOpen}
+        setIsOpen={setIsAcceptedOrderOpen}
+      >
+        <OrderDetails />
+      </Modal>
     </section>
   );
 };
 
-const DraggableContsructorElement = ({
-  item,
-  dispatch,
-}: {
-  item: Ingredient;
-  dispatch: Dispatch<ReducerActionType>;
-}) => {
+const DraggableContsructorElement = ({ item }: { item: Ingredient }) => {
   return (
     <article className={styles.draggable}>
       <DragIcon type="primary" />
@@ -85,15 +80,13 @@ const DraggableContsructorElement = ({
         isLocked={false}
         price={item.price}
         extraClass={styles.constElement}
-        handleClose={() =>
-          dispatch({
-            type: REDUCER_ACTION_TYPE.DELETE_ELEMENT,
-            payload: item._id,
-          })
-        }
       />
     </article>
   );
 };
 
-export default BurgerConstructor;
+const MemoizedDraggableContsructorElement = memo(DraggableContsructorElement);
+
+const MemoizedBurgerConstructor = memo(BurgerConstructor);
+
+export default MemoizedBurgerConstructor;

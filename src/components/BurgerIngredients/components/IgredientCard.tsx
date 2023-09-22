@@ -3,18 +3,22 @@ import styles from "../burgerIngredients.module.css";
 import { Ingredient } from "../../../utils/types";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import useIngredientsContext from "../../../hooks/useIngredientsContext";
-import { REDUCER_ACTION_TYPE } from "../../../context/IngredientsContext";
+
+import { useDispatch } from "react-redux";
+import { saveSelectedItem } from "../../../services/ingredientsSlice";
 
 type IngredientCardProps = {
   item: Ingredient;
 };
 
 const IgredientCard = ({ item }: IngredientCardProps) => {
-  const { dispatch, setIsIngredientInfoOpen } = useIngredientsContext();
+  const dispatchR = useDispatch();
+  const { setIsIngredientInfoOpen } = useIngredientsContext();
 
   const openInfoPopup = useCallback(() => {
     setIsIngredientInfoOpen(true);
-    dispatch({ type: REDUCER_ACTION_TYPE.SELECT_ITEM, payload: item });
+
+    dispatchR(saveSelectedItem(item));
   }, []);
 
   return (

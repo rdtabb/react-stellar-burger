@@ -42,4 +42,8 @@ export interface ReducerAction {
   payload?: Ingredient[];
 }
 
+export type FetchStatus = "idle" | "success" | "loading" | "failed";
+
+export type Tab = "buns" | "mains" | "sauces";
+
 export {};

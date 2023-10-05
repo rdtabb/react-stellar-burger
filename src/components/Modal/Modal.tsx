@@ -5,6 +5,7 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Children } from "../../utils/types";
 import ModalOverlay from "./ModalOverlay";
 import { useDispatch } from "react-redux";
+import { setIsAccceptedOrderOpen } from "../../services/modalSlice";
 
 type ModalProps = Children & {
   isOpen: boolean;
@@ -18,8 +19,6 @@ const Modal = ({
   setIsOpen,
   modalContentClass,
 }: ModalProps) => {
-  const dispatch = useDispatch();
-
   const closePopup = useCallback((): void => {
     setIsOpen(false);
   }, []);

@@ -33,6 +33,11 @@ export const enum REDUCER_ACTION_TYPE {
   FETCHINGREDIENTS_CLEAN,
 }
 
+export const DRAGNDROP_TYPES = {
+  ingredients: "INGREDIENTS",
+  constructorElements: "CONSTRUCTOR_ELEMENTS",
+} as const;
+
 export interface Children {
   children: ReactNode | ReactNode[];
 }

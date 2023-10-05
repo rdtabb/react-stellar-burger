@@ -12,20 +12,30 @@
 }
 
 .elementsGrid {
-  display: grid;
-  place-items: end;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
   gap: 16px;
-  padding: 100px 16px 20px;
+  margin: 100px 16px 20px;
   height: 656px;
+  border-radius: 3rem;
+  transition: 300ms box-shadow ease-in;
 }
 
 .draggableElements {
   display: grid;
   gap: 16px;
 
-  height: 464px;
+  flex-grow: 1;
   overflow-y: scroll;
   scrollbar-gutter: stable;
+}
+
+.draggableElementsEmpty {
+  composes: draggableElements;
+  place-items: center;
+  width: 100%;
+  height: auto;
 }
 
 .totalPrice {
@@ -51,4 +61,22 @@
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+.emptyBun {
+  display: grid;
+  place-items: center;
+  background: grey;
+  width: 100%;
+  padding-block: 4rem;
+}
+
+.emptyBunTop {
+  composes: emptyBun;
+  border-radius: 88px 88px 40px 40px;
+}
+
+.emptyBunBottom {
+  composes: emptyBun;
+  border-radius: 40px 40px 88px 88px;
 }

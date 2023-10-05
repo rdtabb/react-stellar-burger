@@ -1,28 +1,47 @@
 import { useCallback, memo } from "react";
 import styles from "../burgerIngredients.module.css";
-import { Ingredient } from "../../../utils/types";
+import { Ingredient, DRAGNDROP_TYPES } from "../../../utils/types";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import useIngredientsContext from "../../../hooks/useIngredientsContext";
 
-import { useDispatch } from "react-redux";
+import { useDrag } from "react-dnd";
+import { useDispatch, useSelector } from "react-redux";
 import { saveSelectedItem } from "../../../services/ingredientsSlice";
+import { RootState } from "../../../store/store";
 
 type IngredientCardProps = {
   item: Ingredient;
 };
 
 const IgredientCard = ({ item }: IngredientCardProps) => {
-  const dispatchR = useDispatch();
+  const selectedItem = useSelector(
+    (state: RootState) => state.ingredients.selectedIngredient,
+  );
+  const dispatch = useDispatch();
+
   const { setIsIngredientInfoOpen } = useIngredientsContext();
+
+  const [{ isDragging }, dragRef] = useDrag(() => ({
+    type: DRAGNDROP_TYPES.ingredients,
+    item: item,
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
 
   const openInfoPopup = useCallback(() => {
     setIsIngredientInfoOpen(true);
 
-    dispatchR(saveSelectedItem(item));
+    selectedItem?._id !== item._id && dispatch(saveSelectedItem(item));
   }, []);
 
   return (
-    <article onClick={openInfoPopup} className={styles.card}>
+    <article
+      style={{ opacity: isDragging ? "0.5" : "1" }}
+      ref={dragRef}
+      onClick={openInfoPopup}
+      className={styles.card}
+    >
       <img loading="lazy" src={item.image} alt={item.name} />
       <div className={styles.card__price}>
         <CurrencyIcon type="primary" />

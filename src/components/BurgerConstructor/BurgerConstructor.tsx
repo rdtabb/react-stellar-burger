@@ -12,31 +12,49 @@ import { Ingredient, DRAGNDROP_TYPES } from "../../utils/types";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { useDrop } from "react-dnd";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   selectConstructorIngredients,
   selectTotalPrice,
   selectBun,
+  addConstructorIngredient,
+  addConstructorBun,
 } from "../../services/constructorSlice";
+import { RootState } from "../../store/store";
 
 const BurgerConstructor = () => {
   const { setIsAcceptedOrderOpen, isAcceptedOrderOpen } =
     useConstructorContext();
 
+  const dispatch = useDispatch();
+  const ingredients = useSelector(
+    (state: RootState) => state.constructor.constructorIngredients,
+  );
   const memoizedIngredients = useMemo(selectConstructorIngredients, []);
-  const memoizedPrice = useMemo(selectTotalPrice, []);
+  const memoizedPrice = useMemo(selectTotalPrice, [ingredients]);
   const memoizedBun = useMemo(selectBun, []);
-
-  const ingredients = useSelector(memoizedIngredients);
   const price = useSelector(memoizedPrice);
-  const bun = useSelector(memoizedBun);
+  const bun = useSelector(
+    (state: RootState) => state.constructor.constructorBun,
+  );
 
   const [{ isOver }, dropRef] = useDrop(() => ({
     accept: DRAGNDROP_TYPES.ingredients,
+    drop(item: Ingredient) {
+      handleDrop(item);
+    },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
   }));
+
+  const handleDrop = (item: Ingredient): void => {
+    if (item.type === "bun") {
+      dispatch(addConstructorBun(item));
+    } else {
+      dispatch(addConstructorIngredient(item));
+    }
+  };
 
   const boxShadow = useMemo(
     () => (isOver ? "0 0 23px 15px var(--clr-accent)" : "none"),

@@ -5,13 +5,11 @@ import { Ingredient } from "../utils/types";
 interface IInitialState {
   constructorIngredients: Ingredient[];
   constructorBun?: Ingredient;
-  totalPrice: number;
 }
 
 const initialState: IInitialState = {
   constructorIngredients: [],
   constructorBun: undefined,
-  totalPrice: 0,
 };
 
 const constructorSlice = createSlice({
@@ -20,12 +18,13 @@ const constructorSlice = createSlice({
   reducers: {
     addConstructorBun(state, { payload }: PayloadAction<Ingredient>) {
       state.constructorBun = payload;
-      state.totalPrice += payload.price;
     },
     addConstructorIngredient(state, { payload }: PayloadAction<Ingredient>) {
-      const newIngredients = [...state.constructorIngredients, payload];
+      const constructorIngredients = state.constructorIngredients
+        ? state.constructorIngredients
+        : [];
+      const newIngredients = [...constructorIngredients, payload];
       state.constructorIngredients = newIngredients;
-      state.totalPrice += payload.price;
     },
     deleteConstructorIngredient(state, { payload }: PayloadAction<string>) {
       const filteredConstructorItems = state.constructorIngredients.filter(
@@ -45,7 +44,11 @@ export const selectBun = () =>
 export const selectTotalPrice = () =>
   createSelector(
     (state: RootState) => state.constructor,
-    (constructor) => constructor.totalPrice,
+    (constructor) =>
+      constructor.constructorIngredients?.reduce(
+        (acc, curr) => acc + curr.price,
+        0,
+      ),
   );
 
 export const selectConstructorIngredients = () =>
@@ -54,7 +57,10 @@ export const selectConstructorIngredients = () =>
     (constructor) => constructor.constructorIngredients,
   );
 
-export const { addConstructorIngredient, deleteConstructorIngredient } =
-  constructorSlice.actions;
+export const {
+  addConstructorIngredient,
+  deleteConstructorIngredient,
+  addConstructorBun,
+} = constructorSlice.actions;
 
 export default constructorSlice.reducer;

@@ -35,6 +35,10 @@ p {
   padding: clamp(4px, 3vw, 16px) clamp(10px, 5vw, 40px);
 }
 
+.constructor-element {
+  flex-grow: 0 !important;
+}
+
 /* Box sizing rules */
 /* *, */
 *::before,

@@ -14,9 +14,7 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import { useDrop } from "react-dnd";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  selectConstructorIngredients,
   selectTotalPrice,
-  selectBun,
   addConstructorIngredient,
   addConstructorBun,
 } from "../../services/constructorSlice";
@@ -30,9 +28,8 @@ const BurgerConstructor = () => {
   const ingredients = useSelector(
     (state: RootState) => state.constructor.constructorIngredients,
   );
-  const memoizedIngredients = useMemo(selectConstructorIngredients, []);
+
   const memoizedPrice = useMemo(selectTotalPrice, [ingredients]);
-  const memoizedBun = useMemo(selectBun, []);
   const price = useSelector(memoizedPrice);
   const bun = useSelector(
     (state: RootState) => state.constructor.constructorBun,
@@ -71,6 +68,7 @@ const BurgerConstructor = () => {
             text={`${bun?.name} (верх)`}
             isLocked={true}
             type="top"
+            extraClass={styles.constructorElementHover}
           />
         ) : (
           <section className={styles.emptyBunTop}>
@@ -95,6 +93,7 @@ const BurgerConstructor = () => {
             text={`${bun?.name} (низ)`}
             isLocked={true}
             type="bottom"
+            extraClass={styles.constructorElementHover}
           />
         ) : (
           <section className={styles.emptyBunBottom}>
@@ -136,7 +135,7 @@ const DraggableContsructorElement = ({ item }: { item: Ingredient }) => {
         thumbnail={item.image}
         isLocked={false}
         price={item.price}
-        extraClass={styles.constElement}
+        extraClass={styles.constructorElementHover}
       />
     </article>
   );

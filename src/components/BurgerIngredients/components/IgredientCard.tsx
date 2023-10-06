@@ -42,7 +42,7 @@ const IgredientCard = ({ item }: IngredientCardProps) => {
       onClick={openInfoPopup}
       className={styles.card}
     >
-      <img loading="lazy" src={item.image} alt={item.name} />
+      <img src={item.image} alt={item.name} />
       <div className={styles.card__price}>
         <CurrencyIcon type="primary" />
         <p>{item.price}</p>

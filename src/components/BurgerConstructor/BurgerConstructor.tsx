@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import orderDetailsStyles from "../OrderDetails/modal.module.css";
 import styles from "./burgerConstructor.module.css";
 import {
@@ -11,13 +11,16 @@ import useConstructorContext from "../../hooks/useConstructorContext";
 import { Ingredient, DRAGNDROP_TYPES } from "../../utils/types";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { useDrop } from "react-dnd";
-import { useSelector, useDispatch } from "react-redux";
+import { useDrop, useDrag } from "react-dnd";
+
 import {
-  selectTotalPrice,
-  addConstructorIngredient,
   addConstructorBun,
-} from "../../services/constructorSlice";
+  addConstructorIngredient,
+  bunSelector,
+  ingredientsSelector,
+  priceSelector,
+} from "../../services/orderSlice";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
 
 const BurgerConstructor = () => {
@@ -25,33 +28,29 @@ const BurgerConstructor = () => {
     useConstructorContext();
 
   const dispatch = useDispatch();
-  const ingredients = useSelector(
-    (state: RootState) => state.constructor.constructorIngredients,
+  const constructorIngredients = useSelector((state: RootState) =>
+    ingredientsSelector(state),
   );
+  const bun = useSelector((state: RootState) => bunSelector(state));
+  const price = useSelector((state: RootState) => priceSelector(state));
 
-  const memoizedPrice = useMemo(selectTotalPrice, [ingredients]);
-  const price = useSelector(memoizedPrice);
-  const bun = useSelector(
-    (state: RootState) => state.constructor.constructorBun,
-  );
+  const handleDrop = useCallback((item: Ingredient) => {
+    if (item.type === "bun") {
+      dispatch(addConstructorBun(item));
+    } else {
+      dispatch(addConstructorIngredient(item));
+    }
+  }, []);
 
   const [{ isOver }, dropRef] = useDrop(() => ({
     accept: DRAGNDROP_TYPES.ingredients,
-    drop(item: Ingredient) {
+    drop: (item: Ingredient, monitor) => {
       handleDrop(item);
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
   }));
-
-  const handleDrop = (item: Ingredient): void => {
-    if (item.type === "bun") {
-      dispatch(addConstructorBun(item));
-    } else {
-      dispatch(addConstructorIngredient(item));
-    }
-  };
 
   const boxShadow = useMemo(
     () => (isOver ? "0 0 23px 15px var(--clr-accent)" : "none"),
@@ -61,7 +60,7 @@ const BurgerConstructor = () => {
   return (
     <section>
       <div style={{ boxShadow }} className={styles.elementsGrid} ref={dropRef}>
-        {bun ? (
+        {!!bun ? (
           <ConstructorElement
             thumbnail={bun.image_mobile}
             price={bun.price}
@@ -75,9 +74,9 @@ const BurgerConstructor = () => {
             <p>Добавьте булку</p>
           </section>
         )}
-        {ingredients?.length ? (
+        {constructorIngredients?.length ? (
           <div className={styles.draggableElements}>
-            {ingredients.map((item: Ingredient, index: number) => (
+            {constructorIngredients.map((item: Ingredient, index: number) => (
               <MemoizedDraggableContsructorElement key={index} item={item} />
             ))}
           </div>
@@ -103,7 +102,7 @@ const BurgerConstructor = () => {
       </div>
       <div className={styles.order}>
         <div className={styles.priceContainer}>
-          <p className={styles.totalPrice}>{price ? price : "0"}</p>
+          <p className={styles.totalPrice}>{price ? price : 0}</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button
@@ -126,9 +125,23 @@ const BurgerConstructor = () => {
   );
 };
 
-const DraggableContsructorElement = ({ item }: { item: Ingredient }) => {
+type DraggableContsructorElementProps = {
+  item: Ingredient;
+};
+
+const DraggableContsructorElement = ({
+  item,
+}: DraggableContsructorElementProps) => {
+  const [{ isDragging }, dragref] = useDrag(() => ({
+    type: DRAGNDROP_TYPES.constructorElements,
+    item,
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging,
+    }),
+  }));
+
   return (
-    <article className={styles.draggable}>
+    <article className={styles.draggable} ref={dragref}>
       <DragIcon type="primary" />
       <ConstructorElement
         text={item.name}

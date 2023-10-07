@@ -1,5 +1,6 @@
 .draggableElements {
   display: grid;
+  justify-content: end;
   gap: 16px;
   grid-auto-rows: min-content;
   width: 100%;
@@ -12,6 +13,7 @@
 .draggableElementsEmpty {
   composes: draggableElements;
   grid-auto-rows: auto;
+  justify-content: center;
   place-items: center;
   width: 100%;
   height: auto;

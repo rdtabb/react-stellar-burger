@@ -1,3 +1,4 @@
+import { memo } from "react";
 import styles from "./modal.module.css";
 
 const OrderAcceptedModal = () => {
@@ -14,4 +15,4 @@ const OrderAcceptedModal = () => {
   );
 };
 
-export default OrderAcceptedModal;
+export default memo(OrderAcceptedModal);

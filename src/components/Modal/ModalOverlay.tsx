@@ -1,24 +1,29 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { Children } from "../../utils/types";
 import styles from "./modal.module.css";
 
 type ModalOverlayProps = Children & {
-  isOpen: boolean;
   closePopupOnOverlay: (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => void;
 };
 
-const ModalOverlay = ({
-  children,
-  isOpen,
-  closePopupOnOverlay,
-}: ModalOverlayProps) => {
+const ModalOverlay = ({ children, closePopupOnOverlay }: ModalOverlayProps) => {
+  const [popupClass, setPopupClass] = useState<string>(styles.modal);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setPopupClass(styles.modalActive);
+    }, 200);
+
+    return () => {
+      setPopupClass(styles.modal);
+      clearTimeout(timeout);
+    };
+  }, []);
+
   return (
-    <div
-      onClick={closePopupOnOverlay}
-      className={isOpen ? styles.modalActive : styles.modal}
-    >
+    <div onClick={closePopupOnOverlay} className={popupClass}>
       {children}
     </div>
   );

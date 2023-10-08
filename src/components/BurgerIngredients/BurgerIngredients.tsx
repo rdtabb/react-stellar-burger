@@ -2,7 +2,6 @@ import { useMemo, useRef, memo } from "react";
 import ingredientDetailstyles from "../IngredientDetails/infomodal.module.css";
 import styles from "./burgerIngredients.module.css";
 
-import useIngredientsContext from "../../hooks/useIngredientsContext";
 import {
   setTab,
   selectSauces,
@@ -10,6 +9,7 @@ import {
   selectBuns,
   selectTab,
 } from "../../services/ingredientsSlice";
+import { openPopupTypeSelector } from "../../services/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -18,10 +18,11 @@ import CardsSection from "./components/CardsSection";
 import Modal from "../Modal/Modal";
 
 const BurgerIngredients = () => {
-  const { isIngredientInfoOpen, setIsIngredientInfoOpen } =
-    useIngredientsContext();
   const selectedTab = useSelector(selectTab);
   const dispatch = useDispatch();
+
+  const memoizedOpenPopupType = useMemo(openPopupTypeSelector, []);
+  const openPopupType = useSelector(memoizedOpenPopupType);
 
   const selectFilteredBuns = useMemo(selectBuns, []);
   const selectFilteredMains = useMemo(selectMains, []);
@@ -78,13 +79,11 @@ const BurgerIngredients = () => {
         <CardsSection title="Соусы" ingredients={sauces} ref={sauceRef} />
         <CardsSection title="Начинки" ingredients={mains} ref={mainRef} />
       </section>
-      <Modal
-        modalContentClass={ingredientDetailstyles.modalContent}
-        isOpen={isIngredientInfoOpen}
-        setIsOpen={setIsIngredientInfoOpen}
-      >
-        <IngredientDetails />
-      </Modal>
+      {openPopupType === "info" && (
+        <Modal modalContentClass={ingredientDetailstyles.modalContent}>
+          <IngredientDetails />
+        </Modal>
+      )}
     </section>
   );
 };

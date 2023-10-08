@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import { IngredientsProvider } from "../../context/IngredientsContext";
 
 import {
   fetchIngredients,
@@ -30,9 +29,7 @@ const App = () => {
     <div className={styles.app}>
       <AppHeader />
       <main className={styles.container}>
-        <IngredientsProvider>
-          <BurgerIngredients />
-        </IngredientsProvider>
+        <BurgerIngredients />
         <BurgerConstructor />
       </main>
     </div>

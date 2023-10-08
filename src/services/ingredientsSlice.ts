@@ -5,7 +5,12 @@ import {
   createSelector,
 } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
-import { Ingredient, Response, FetchStatus, Tab } from "../utils/types";
+import {
+  Ingredient,
+  FetchIngredientsResponse,
+  IngredientsFetchStatus,
+  Tab,
+} from "../utils/types";
 
 const FETCH_INGREDIENTS = "https://norma.nomoreparties.space/api/ingredients";
 
@@ -14,9 +19,11 @@ export const fetchIngredients = createAsyncThunk(
   async (): Promise<Ingredient[]> => {
     const response = await fetch(FETCH_INGREDIENTS);
     if (!response.ok) {
-      throw new Error(`Fetch failed with response status: ${response.status}`);
+      throw new Error(
+        `Ingredient fetch failed with response status: ${response.status}`,
+      );
     }
-    const data: Response = await response.json();
+    const data: FetchIngredientsResponse = await response.json();
     return data.data;
   },
 );
@@ -24,7 +31,7 @@ export const fetchIngredients = createAsyncThunk(
 interface IInitialState {
   ingredients?: Ingredient[];
   selectedIngredient?: Ingredient;
-  ingredientsFetchState: FetchStatus;
+  ingredientsFetchState: IngredientsFetchStatus;
   selectedTab: Tab;
 }
 
@@ -42,7 +49,10 @@ const ingredientsSlice = createSlice({
     saveSelectedItem(state, { payload }: PayloadAction<Ingredient>) {
       state.selectedIngredient = payload;
     },
-    setIngredientsStatus(state, { payload }: PayloadAction<FetchStatus>) {
+    setIngredientsStatus(
+      state,
+      { payload }: PayloadAction<IngredientsFetchStatus>,
+    ) {
       state.ingredientsFetchState = payload;
     },
     setTab(state, { payload }: PayloadAction<Tab>) {

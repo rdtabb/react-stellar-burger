@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+export type ModalType = "order" | "info" | "closed";
+
 export interface Ingredient {
   calories: number;
   carbohydrates: number;
@@ -15,23 +17,20 @@ export interface Ingredient {
   _id: string;
 }
 
-export interface Response {
+export interface FetchIngredientsResponse {
   success: boolean;
   data: Ingredient[];
 }
 
-export interface InitialReducerState {
-  ingredients?: Ingredient[];
-  isLoading: boolean;
-  isError: boolean;
+export interface CreateOrderResponse {
+  name: string;
+  order: {
+    number: number;
+  };
+  success: boolean;
 }
 
-export const enum REDUCER_ACTION_TYPE {
-  FETCHINGREDIENTS_INIT,
-  FETCHINGREDIENTS_SUCCESS,
-  FETCHINGREDIENTS_FAIL,
-  FETCHINGREDIENTS_CLEAN,
-}
+export interface Order extends CreateOrderResponse {}
 
 export const DRAGNDROP_TYPES = {
   ingredients: "INGREDIENTS",
@@ -42,12 +41,8 @@ export interface Children {
   children: ReactNode | ReactNode[];
 }
 
-export interface ReducerAction {
-  type: REDUCER_ACTION_TYPE;
-  payload?: Ingredient[];
-}
-
-export type FetchStatus = "idle" | "success" | "loading" | "failed";
+export type IngredientsFetchStatus = "idle" | "success" | "loading" | "failed";
+export type CreateOrderFetchStatus = "idle" | "success" | "loading" | "failed";
 
 export type Tab = "buns" | "mains" | "sauces";
 

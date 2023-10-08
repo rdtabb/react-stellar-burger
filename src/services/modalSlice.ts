@@ -1,29 +1,31 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import { RootState } from "../store/store";
+import { ModalType } from "../utils/types";
 
 interface IInitialState {
-  isIngredientInfoOpen: boolean;
-  isAcceptedOrderOpen: boolean;
+  openPopupType: ModalType;
 }
 
 const initialState: IInitialState = {
-  isIngredientInfoOpen: false,
-  isAcceptedOrderOpen: false,
+  openPopupType: "closed",
 };
 
 const modalSlice = createSlice({
   name: "services/modalSlice",
   initialState,
   reducers: {
-    setIsIngredientInfoOpen(state, { payload }: PayloadAction<boolean>) {
-      state.isIngredientInfoOpen = payload;
-    },
-    setIsAccceptedOrderOpen(state, { payload }: PayloadAction<boolean>) {
-      state.isAcceptedOrderOpen = payload;
+    setPopupState(state, { payload }: PayloadAction<ModalType>) {
+      state.openPopupType = payload;
     },
   },
 });
 
-export const { setIsIngredientInfoOpen, setIsAccceptedOrderOpen } =
-  modalSlice.actions;
+export const openPopupTypeSelector = () =>
+  createSelector(
+    (state: RootState) => state.modal,
+    (modal) => modal.openPopupType,
+  );
+
+export const { setPopupState } = modalSlice.actions;
 
 export default modalSlice.reducer;

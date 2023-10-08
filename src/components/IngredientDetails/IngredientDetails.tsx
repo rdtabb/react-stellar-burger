@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import styles from "./infomodal.module.css";
 import { useSelector } from "react-redux";
 import {
@@ -46,4 +46,4 @@ const IngredientDetails = () => {
   );
 };
 
-export default IngredientDetails;
+export default memo(IngredientDetails);

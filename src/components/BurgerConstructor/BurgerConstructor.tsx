@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { useCallback, useMemo, memo } from "react";
 import orderDetailsStyles from "../OrderDetails/modal.module.css";
 import styles from "./burgerConstructor.module.css";
 import {
@@ -7,7 +7,6 @@ import {
   Button,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import useConstructorContext from "../../hooks/useConstructorContext";
 import { Ingredient, DRAGNDROP_TYPES } from "../../utils/types";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
@@ -16,23 +15,31 @@ import { useDrop, useDrag } from "react-dnd";
 import {
   addConstructorBun,
   addConstructorIngredient,
+  removeConstructorIngredient,
   bunSelector,
   ingredientsSelector,
   priceSelector,
+  createOrder,
+  idsSelector,
 } from "../../services/orderSlice";
+import {
+  openPopupTypeSelector,
+  setPopupState,
+} from "../../services/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
 
 const BurgerConstructor = () => {
-  const { setIsAcceptedOrderOpen, isAcceptedOrderOpen } =
-    useConstructorContext();
-
   const dispatch = useDispatch();
+  const memoizedOpenPopupTypeSelector = useMemo(openPopupTypeSelector, []);
+  const openPopupType = useSelector(memoizedOpenPopupTypeSelector);
+
   const constructorIngredients = useSelector((state: RootState) =>
     ingredientsSelector(state),
   );
   const bun = useSelector((state: RootState) => bunSelector(state));
   const price = useSelector((state: RootState) => priceSelector(state));
+  const ids = useSelector((state: RootState) => idsSelector(state));
 
   const handleDrop = useCallback((item: Ingredient) => {
     if (item.type === "bun") {
@@ -42,7 +49,7 @@ const BurgerConstructor = () => {
     }
   }, []);
 
-  const [{ isOver }, dropRef] = useDrop(() => ({
+  const [{ isOver }, ingridientDropRef] = useDrop(() => ({
     accept: DRAGNDROP_TYPES.ingredients,
     drop: (item: Ingredient, monitor) => {
       handleDrop(item);
@@ -52,14 +59,18 @@ const BurgerConstructor = () => {
     }),
   }));
 
+  const [, sortRef] = useDrop(() => ({
+    accept: DRAGNDROP_TYPES.constructorElements,
+  }));
+
   const boxShadow = useMemo(
     () => (isOver ? "0 0 23px 15px var(--clr-accent)" : "none"),
     [isOver],
   );
 
   return (
-    <section>
-      <div style={{ boxShadow }} className={styles.elementsGrid} ref={dropRef}>
+    <section ref={ingridientDropRef}>
+      <div style={{ boxShadow }} className={styles.elementsGrid} ref={sortRef}>
         {!!bun ? (
           <ConstructorElement
             thumbnail={bun.image_mobile}
@@ -106,7 +117,10 @@ const BurgerConstructor = () => {
           <CurrencyIcon type="primary" />
         </div>
         <Button
-          onClick={() => setIsAcceptedOrderOpen(true)}
+          onClick={() => {
+            dispatch(setPopupState("order"));
+            dispatch(createOrder(ids));
+          }}
           title="Оформить заказ"
           type="primary"
           htmlType="submit"
@@ -114,13 +128,11 @@ const BurgerConstructor = () => {
           Оформить заказ
         </Button>
       </div>
-      <Modal
-        modalContentClass={orderDetailsStyles.modalContent}
-        isOpen={isAcceptedOrderOpen}
-        setIsOpen={setIsAcceptedOrderOpen}
-      >
-        <OrderDetails />
-      </Modal>
+      {openPopupType === "order" && (
+        <Modal modalContentClass={orderDetailsStyles.modalContent}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
   );
 };
@@ -132,13 +144,11 @@ type DraggableContsructorElementProps = {
 const DraggableContsructorElement = ({
   item,
 }: DraggableContsructorElementProps) => {
-  const [{ isDragging }, dragref] = useDrag(() => ({
+  const [, dragref] = useDrag(() => ({
     type: DRAGNDROP_TYPES.constructorElements,
     item,
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging,
-    }),
   }));
+  const dispatch = useDispatch();
 
   return (
     <article className={styles.draggable} ref={dragref}>
@@ -149,6 +159,7 @@ const DraggableContsructorElement = ({
         isLocked={false}
         price={item.price}
         extraClass={styles.constructorElementHover}
+        handleClose={() => dispatch(removeConstructorIngredient(item._id))}
       />
     </article>
   );

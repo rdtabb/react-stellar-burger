@@ -1,13 +1,18 @@
+import styles from "../components/Modal/modal.module.css";
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import { ModalType } from "../utils/types";
 
+type ModalClass = styles.modal | styles.modalActive;
+
 interface IInitialState {
   openPopupType: ModalType;
+  popupClass: ModalClass;
 }
 
 const initialState: IInitialState = {
   openPopupType: "closed",
+  popupClass: styles.modal,
 };
 
 const modalSlice = createSlice({
@@ -16,6 +21,9 @@ const modalSlice = createSlice({
   reducers: {
     setPopupState(state, { payload }: PayloadAction<ModalType>) {
       state.openPopupType = payload;
+    },
+    setPopupClass(state, { payload }: PayloadAction<ModalClass>) {
+      state.popupClass = payload;
     },
   },
 });
@@ -26,6 +34,12 @@ export const openPopupTypeSelector = () =>
     (modal) => modal.openPopupType,
   );
 
-export const { setPopupState } = modalSlice.actions;
+export const popupClassSelector = () =>
+  createSelector(
+    (state: RootState) => state.modal,
+    (modal) => modal.popupClass,
+  );
+
+export const { setPopupState, setPopupClass } = modalSlice.actions;
 
 export default modalSlice.reducer;

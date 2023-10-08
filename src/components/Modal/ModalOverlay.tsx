@@ -1,6 +1,8 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { Children } from "../../utils/types";
 import styles from "./modal.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import { popupClassSelector, setPopupClass } from "../../services/modalSlice";
 
 type ModalOverlayProps = Children & {
   closePopupOnOverlay: (
@@ -9,15 +11,17 @@ type ModalOverlayProps = Children & {
 };
 
 const ModalOverlay = ({ children, closePopupOnOverlay }: ModalOverlayProps) => {
-  const [popupClass, setPopupClass] = useState<string>(styles.modal);
+  const memoizedPopupClassSelector = useMemo(popupClassSelector, []);
+  const popupClass = useSelector(memoizedPopupClassSelector);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setPopupClass(styles.modalActive);
+      dispatch(setPopupClass(styles.modalActive));
     }, 200);
 
     return () => {
-      setPopupClass(styles.modal);
+      dispatch(setPopupClass(styles.modal));
       clearTimeout(timeout);
     };
   }, []);

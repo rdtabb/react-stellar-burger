@@ -6,6 +6,8 @@
 
 - React
 - Typescript
+- Redux Toolkit
+- React DnD
 - CSS modules
 - Webpack
 - Babel

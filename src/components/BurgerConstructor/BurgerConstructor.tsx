@@ -51,7 +51,7 @@ const BurgerConstructor = () => {
 
   const [{ isOver }, ingridientDropRef] = useDrop(() => ({
     accept: DRAGNDROP_TYPES.ingredients,
-    drop: (item: Ingredient, monitor) => {
+    drop: (item: Ingredient) => {
       handleDrop(item);
     },
     collect: (monitor) => ({

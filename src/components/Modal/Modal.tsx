@@ -5,7 +5,7 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Children } from "../../utils/types";
 import ModalOverlay from "./ModalOverlay";
 import { useDispatch } from "react-redux";
-import { setPopupState } from "../../services/modalSlice";
+import { setPopupClass, setPopupState } from "../../services/modalSlice";
 
 type ModalProps = Children & {
   modalContentClass: string;
@@ -14,7 +14,10 @@ type ModalProps = Children & {
 const Modal = ({ children, modalContentClass }: ModalProps) => {
   const dispatch = useDispatch();
   const closePopup = useCallback((): void => {
-    dispatch(setPopupState("closed"));
+    dispatch(setPopupClass(styles.modal));
+    setTimeout(() => {
+      dispatch(setPopupState("closed"));
+    }, 200);
   }, []);
 
   const closePopupOnOverlay = useCallback(

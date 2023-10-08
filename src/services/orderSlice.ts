@@ -20,10 +20,12 @@ export const createOrder = createAsyncThunk(
     const requestBody = {
       ingredients: ids,
     };
-    console.log(JSON.stringify(requestBody));
     const response = await fetch(POST_ORDER_URL, {
       body: JSON.stringify(requestBody),
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
     if (!response.ok) {
       throw new Error(
@@ -31,7 +33,6 @@ export const createOrder = createAsyncThunk(
       );
     }
     const data: CreateOrderResponse = await response.json();
-    console.log(data);
     return data;
   },
 );
@@ -77,9 +78,13 @@ const orderSlice = createSlice({
       builder.addCase(createOrder.rejected, (state) => {
         state.orderFetchStatus = "failed";
       }),
-      builder.addCase(createOrder.fulfilled, (state) => {
-        state.orderFetchStatus = "success";
-      });
+      builder.addCase(
+        createOrder.fulfilled,
+        (state, { payload }: PayloadAction<Order>) => {
+          state.orderData = payload;
+          state.orderFetchStatus = "success";
+        },
+      );
   },
 });
 

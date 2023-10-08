@@ -83,6 +83,8 @@ const orderSlice = createSlice({
         (state, { payload }: PayloadAction<Order>) => {
           state.orderData = payload;
           state.orderFetchStatus = "success";
+          state.constructorBun = undefined;
+          state.constructorIngredients = [];
         },
       );
   },
@@ -126,6 +128,11 @@ export const idsSelector = createSelector(
       ...orderSliceState.constructorIngredients,
       orderSliceState.constructorBun,
     ].map((item) => item?._id),
+);
+
+export const orderSelector = createSelector(
+  rawSelectOrderSlice,
+  (orderSliceState) => orderSliceState,
 );
 
 export const {

@@ -3,6 +3,7 @@ import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import { ModalType } from "../utils/types";
 
+// @ts-ignore 
 type ModalClass = styles.modal | styles.modalActive;
 
 interface IInitialState {

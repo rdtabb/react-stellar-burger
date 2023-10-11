@@ -2,21 +2,19 @@ import { useCallback, useMemo, memo } from "react";
 import orderDetailsStyles from "../OrderDetails/modal.module.css";
 import styles from "./burgerConstructor.module.css";
 import {
-  ConstructorElement,
   CurrencyIcon,
   Button,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Ingredient, DRAGNDROP_TYPES } from "../../utils/types";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { useDrop, useDrag } from "react-dnd";
+import DraggableConstructorElement from "./components/DraggableConstructorElement";
+import BunConstructorElement from "./components/BunConstructorElement";
+import { nanoid } from "@reduxjs/toolkit";
 
 import {
   addConstructorBun,
   addConstructorIngredient,
-  removeConstructorIngredient,
-  bunSelector,
   ingredientsSelector,
   priceSelector,
   createOrder,
@@ -28,6 +26,7 @@ import {
 } from "../../services/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
+import { useDrop } from "react-dnd";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -37,7 +36,6 @@ const BurgerConstructor = () => {
   const constructorIngredients = useSelector((state: RootState) =>
     ingredientsSelector(state),
   );
-  const bun = useSelector((state: RootState) => bunSelector(state));
   const price = useSelector((state: RootState) => priceSelector(state));
   const ids = useSelector((state: RootState) => idsSelector(state));
 
@@ -71,24 +69,11 @@ const BurgerConstructor = () => {
   return (
     <section ref={ingridientDropRef}>
       <div style={{ boxShadow }} className={styles.elementsGrid} ref={sortRef}>
-        {!!bun ? (
-          <ConstructorElement
-            thumbnail={bun.image_mobile}
-            price={bun.price}
-            text={`${bun?.name} (верх)`}
-            isLocked={true}
-            type="top"
-            extraClass={styles.constructorElementHover}
-          />
-        ) : (
-          <section className={styles.emptyBunTop}>
-            <p>Добавьте булку</p>
-          </section>
-        )}
+        <BunConstructorElement type="top" key={nanoid()} />
         {constructorIngredients?.length ? (
           <div className={styles.draggableElements}>
             {constructorIngredients.map((item: Ingredient, index: number) => (
-              <MemoizedDraggableContsructorElement key={index} item={item} />
+              <DraggableConstructorElement key={index} item={item} />
             ))}
           </div>
         ) : (
@@ -96,20 +81,7 @@ const BurgerConstructor = () => {
             <p>Добавьте ингредиенты</p>
           </div>
         )}
-        {bun ? (
-          <ConstructorElement
-            thumbnail={bun.image}
-            price={bun.price}
-            text={`${bun?.name} (низ)`}
-            isLocked={true}
-            type="bottom"
-            extraClass={styles.constructorElementHover}
-          />
-        ) : (
-          <section className={styles.emptyBunBottom}>
-            <p>Добавьте булку</p>
-          </section>
-        )}
+        <BunConstructorElement type="bottom" key={nanoid()} />
       </div>
       <div className={styles.order}>
         <div className={styles.priceContainer}>
@@ -136,36 +108,6 @@ const BurgerConstructor = () => {
     </section>
   );
 };
-
-type DraggableContsructorElementProps = {
-  item: Ingredient;
-};
-
-const DraggableContsructorElement = ({
-  item,
-}: DraggableContsructorElementProps) => {
-  const [, dragref] = useDrag(() => ({
-    type: DRAGNDROP_TYPES.constructorElements,
-    item,
-  }));
-  const dispatch = useDispatch();
-
-  return (
-    <article className={styles.draggable} ref={dragref}>
-      <DragIcon type="primary" />
-      <ConstructorElement
-        text={item.name}
-        thumbnail={item.image}
-        isLocked={false}
-        price={item.price}
-        extraClass={styles.constructorElementHover}
-        handleClose={() => dispatch(removeConstructorIngredient(item._id))}
-      />
-    </article>
-  );
-};
-
-const MemoizedDraggableContsructorElement = memo(DraggableContsructorElement);
 
 const MemoizedBurgerConstructor = memo(BurgerConstructor);
 

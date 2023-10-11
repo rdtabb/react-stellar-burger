@@ -1,4 +1,4 @@
-import { useCallback, memo, useMemo } from "react";
+import { useCallback, memo } from "react";
 import styles from "../burgerIngredients.module.css";
 import { Ingredient, DRAGNDROP_TYPES } from "../../../utils/types";
 import {
@@ -18,12 +18,9 @@ type IngredientCardProps = {
 };
 
 const IgredientCard = ({ item }: IngredientCardProps) => {
-  const selectedItem = useSelector(
-    (state: RootState) => state.ingredients.selectedIngredient,
-  );
-  const quantity = useSelector((state: RootState) =>
-    quantitySelector(state, item._id),
-  );
+  // const quantity = useSelector((state: RootState) =>
+  //   quantitySelector(state, item._id),
+  // );
   const dispatch = useDispatch();
 
   const [{ isDragging }, dragRef] = useDrag(() => ({
@@ -36,8 +33,7 @@ const IgredientCard = ({ item }: IngredientCardProps) => {
 
   const openInfoPopup = useCallback(() => {
     dispatch(setPopupState("info"));
-
-    selectedItem?._id !== item._id && dispatch(saveSelectedItem(item));
+    dispatch(saveSelectedItem(item));
   }, []);
 
   return (
@@ -47,7 +43,7 @@ const IgredientCard = ({ item }: IngredientCardProps) => {
       onClick={openInfoPopup}
       className={styles.card}
     >
-      <Counter count={quantity} />
+      <CounterWithMemo item={item} />
       <img src={item.image} alt={item.name} />
       <div className={styles.card__price}>
         <CurrencyIcon type="primary" />
@@ -57,5 +53,13 @@ const IgredientCard = ({ item }: IngredientCardProps) => {
     </article>
   );
 };
+
+const CounterWithMemo = memo(({ item }: IngredientCardProps) => {
+  const quantity = useSelector((state: RootState) =>
+    quantitySelector(state, item._id),
+  );
+
+  return <Counter count={quantity} />;
+});
 
 export default memo(IgredientCard);

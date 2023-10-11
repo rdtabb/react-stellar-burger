@@ -11,10 +11,12 @@ import styles from "../burgerConstructor.module.css";
 
 type DraggableContsructorElementProps = {
   item: Ingredient;
+  index: number;
 };
 
 const DraggableContsructorElement = ({
   item,
+  index,
 }: DraggableContsructorElementProps) => {
   const [{ handlerId }, dragref] = useDrag(() => ({
     type: DRAGNDROP_TYPES.constructorElements,
@@ -36,7 +38,7 @@ const DraggableContsructorElement = ({
         isLocked={false}
         price={item.price}
         extraClass={styles.constructorElementHover}
-        handleClose={() => dispatch(removeConstructorIngredient(item._id))}
+        handleClose={() => dispatch(removeConstructorIngredient(index))}
       />
     </article>
   );

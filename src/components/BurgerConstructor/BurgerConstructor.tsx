@@ -73,7 +73,11 @@ const BurgerConstructor = () => {
         {constructorIngredients?.length ? (
           <div className={styles.draggableElements}>
             {constructorIngredients.map((item: Ingredient, index: number) => (
-              <DraggableConstructorElement key={index} item={item} />
+              <DraggableConstructorElement
+                key={nanoid()}
+                item={item}
+                index={index}
+              />
             ))}
           </div>
         ) : (

@@ -60,9 +60,9 @@ const orderSlice = createSlice({
     addConstructorIngredient(state, { payload }: PayloadAction<Ingredient>) {
       state.constructorIngredients.push(payload);
     },
-    removeConstructorIngredient(state, { payload }: PayloadAction<string>) {
+    removeConstructorIngredient(state, { payload }: PayloadAction<number>) {
       const filteredIngredients = state.constructorIngredients.filter(
-        (item) => item._id !== payload,
+        (item, index) => index !== payload,
       );
       state.constructorIngredients = filteredIngredients;
     },

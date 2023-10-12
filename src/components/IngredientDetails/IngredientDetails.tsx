@@ -1,17 +1,10 @@
-import { useMemo, memo } from "react";
+import { memo } from "react";
 import styles from "./infomodal.module.css";
 import { useSelector } from "react-redux";
-import {
-  selectSelectedItem,
-  saveSelectedItem,
-} from "../../services/ingredientsSlice";
+import { selectedItemSelector } from "../../services/ingredientsSlice";
 
 const IngredientDetails = () => {
-  const selectedItemMemoizedSelector = useMemo(selectSelectedItem, [
-    saveSelectedItem,
-  ]);
-
-  const selectedItem = useSelector(selectedItemMemoizedSelector);
+  const selectedItem = useSelector(selectedItemSelector);
 
   return (
     <article className={styles.modalGrid}>

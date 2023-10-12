@@ -1,4 +1,28 @@
 import { ReactNode } from "react";
+import modalStyles from "../components/Modal/modal.module.css";
+
+export interface IInitialOrderSliceState {
+  constructorBun?: Ingredient;
+  constructorIngredients: IngrdientWithUniqueId[];
+  constructorIngredientsIds: string[];
+  orderData?: Order;
+  orderFetchStatus: FetchStatus;
+}
+
+export interface IInitialModalSliceState {
+  openPopupType: ModalType;
+  popupClass: ModalClass;
+}
+
+export interface IInitialIngredientSliceState {
+  ingredients?: Ingredient[];
+  selectedIngredient?: Ingredient;
+  ingredientsFetchState: FetchStatus;
+  selectedTab: Tab;
+}
+
+// @ts-ignore
+export type ModalClass = modalStyles.modal | modalStyles.modalActive;
 
 export type ModalType = "order" | "info" | "closed";
 
@@ -15,6 +39,20 @@ export interface Ingredient {
   type: "bun" | "main" | "sauce";
   __v: number;
   _id: string;
+}
+
+export interface IngrdientWithUniqueId extends Ingredient {
+  uniqueId: string;
+}
+
+export interface MoveIngredientsPayload {
+  hoverIndex: number;
+  dragIndex: number;
+}
+
+export interface DragItem {
+  id: string;
+  index: number;
 }
 
 export interface FetchIngredientsResponse {
@@ -41,8 +79,7 @@ export interface Children {
   children: ReactNode | ReactNode[];
 }
 
-export type IngredientsFetchStatus = "idle" | "success" | "loading" | "failed";
-export type CreateOrderFetchStatus = "idle" | "success" | "loading" | "failed";
+export type FetchStatus = "idle" | "success" | "loading" | "failed";
 
 export type Tab = "buns" | "mains" | "sauces";
 

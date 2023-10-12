@@ -18,9 +18,6 @@ type IngredientCardProps = {
 };
 
 const IgredientCard = ({ item }: IngredientCardProps) => {
-  // const quantity = useSelector((state: RootState) =>
-  //   quantitySelector(state, item._id),
-  // );
   const dispatch = useDispatch();
 
   const [{ isDragging }, dragRef] = useDrag(() => ({

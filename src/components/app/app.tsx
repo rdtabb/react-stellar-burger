@@ -5,14 +5,14 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 
 import {
-  fetchIngredients,
   setIngredientsStatus,
-  selectIngredientsFetchStatus,
+  ingredientsFetchStatusSelector,
 } from "../../services/ingredientsSlice";
+import { fetchIngredients } from "../../services/asyncThunks";
 import { useDispatch, useSelector } from "react-redux";
 
 const App = () => {
-  const ingredientsFetchState = useSelector(selectIngredientsFetchStatus);
+  const ingredientsFetchState = useSelector(ingredientsFetchStatusSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {

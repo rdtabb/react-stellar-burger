@@ -1,51 +1,15 @@
-import {
-  createSlice,
-  createSelector,
-  PayloadAction,
-  createAsyncThunk,
-} from "@reduxjs/toolkit";
+import { createSlice, createSelector, PayloadAction } from "@reduxjs/toolkit";
 import {
   Ingredient,
-  CreateOrderResponse,
+  IngrdientWithUniqueId,
   Order,
-  CreateOrderFetchStatus,
+  MoveIngredientsPayload,
+  IInitialOrderSliceState,
 } from "../utils/types";
+import { createOrder } from "./asyncThunks";
 import { RootState } from "../store/store";
 
-const POST_ORDER_URL = "https://norma.nomoreparties.space/api/orders";
-
-export const createOrder = createAsyncThunk(
-  "services/orderSlice/createOrder",
-  async (ids: (string | undefined)[]): Promise<Order> => {
-    const requestBody = {
-      ingredients: ids,
-    };
-    const response = await fetch(POST_ORDER_URL, {
-      body: JSON.stringify(requestBody),
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      throw new Error(
-        `Order fetch failed with response status: ${response.status}`,
-      );
-    }
-    const data: CreateOrderResponse = await response.json();
-    return data;
-  },
-);
-
-interface IInitialState {
-  constructorBun?: Ingredient;
-  constructorIngredients: Ingredient[];
-  constructorIngredientsIds: string[];
-  orderData?: Order;
-  orderFetchStatus: CreateOrderFetchStatus;
-}
-
-const initialState: IInitialState = {
+const initialState: IInitialOrderSliceState = {
   constructorBun: undefined,
   constructorIngredients: [],
   constructorIngredientsIds: [],
@@ -57,17 +21,32 @@ const orderSlice = createSlice({
   name: "services/orderSlice",
   initialState,
   reducers: {
-    addConstructorIngredient(state, { payload }: PayloadAction<Ingredient>) {
+    addConstructorIngredient(
+      state,
+      { payload }: PayloadAction<IngrdientWithUniqueId>,
+    ) {
       state.constructorIngredients.push(payload);
     },
-    removeConstructorIngredient(state, { payload }: PayloadAction<number>) {
+    removeConstructorIngredient(state, { payload }: PayloadAction<string>) {
       const filteredIngredients = state.constructorIngredients.filter(
-        (item, index) => index !== payload,
+        (item) => item.uniqueId !== payload,
       );
       state.constructorIngredients = filteredIngredients;
     },
     addConstructorBun(state, { payload }: PayloadAction<Ingredient>) {
       state.constructorBun = payload;
+    },
+    moveConstructorIngredient(
+      state,
+      { payload }: PayloadAction<MoveIngredientsPayload>,
+    ) {
+      const newIngredients = [...state.constructorIngredients];
+      newIngredients.splice(
+        payload.hoverIndex,
+        0,
+        newIngredients.splice(payload.dragIndex, 1)[0],
+      );
+      state.constructorIngredients = newIngredients;
     },
   },
   extraReducers: (builder) => {
@@ -116,6 +95,7 @@ export const quantitySelector = createSelector(
   [rawSelectOrderSlice, (state: RootState, item_id: string) => item_id],
   (orderSliceState, item_id) =>
     [
+      orderSliceState.constructorBun,
       ...orderSliceState.constructorIngredients,
       orderSliceState.constructorBun,
     ].reduce((acc, curr) => (curr?._id === item_id ? acc + 1 : acc), 0),
@@ -139,6 +119,7 @@ export const {
   addConstructorIngredient,
   addConstructorBun,
   removeConstructorIngredient,
+  moveConstructorIngredient,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

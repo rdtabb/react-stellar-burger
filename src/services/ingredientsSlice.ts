@@ -1,41 +1,14 @@
-import {
-  createSlice,
-  PayloadAction,
-  createAsyncThunk,
-  createSelector,
-} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import {
   Ingredient,
-  FetchIngredientsResponse,
-  IngredientsFetchStatus,
+  FetchStatus,
   Tab,
+  IInitialIngredientSliceState,
 } from "../utils/types";
+import { fetchIngredients } from "./asyncThunks";
 
-const FETCH_INGREDIENTS = "https://norma.nomoreparties.space/api/ingredients";
-
-export const fetchIngredients = createAsyncThunk(
-  "services/ingredientsSlice/fetchIngredients",
-  async (): Promise<Ingredient[]> => {
-    const response = await fetch(FETCH_INGREDIENTS);
-    if (!response.ok) {
-      throw new Error(
-        `Ingredient fetch failed with response status: ${response.status}`,
-      );
-    }
-    const data: FetchIngredientsResponse = await response.json();
-    return data.data;
-  },
-);
-
-interface IInitialState {
-  ingredients?: Ingredient[];
-  selectedIngredient?: Ingredient;
-  ingredientsFetchState: IngredientsFetchStatus;
-  selectedTab: Tab;
-}
-
-const initialState: IInitialState = {
+const initialState: IInitialIngredientSliceState = {
   selectedIngredient: undefined,
   ingredientsFetchState: "idle",
   ingredients: [],
@@ -49,10 +22,7 @@ const ingredientsSlice = createSlice({
     saveSelectedItem(state, { payload }: PayloadAction<Ingredient>) {
       state.selectedIngredient = payload;
     },
-    setIngredientsStatus(
-      state,
-      { payload }: PayloadAction<IngredientsFetchStatus>,
-    ) {
+    setIngredientsStatus(state, { payload }: PayloadAction<FetchStatus>) {
       state.ingredientsFetchState = payload;
     },
     setTab(state, { payload }: PayloadAction<Tab>) {
@@ -80,33 +50,34 @@ const ingredientsSlice = createSlice({
 export const { saveSelectedItem, setIngredientsStatus, setTab } =
   ingredientsSlice.actions;
 
-export const selectTab = (state: RootState) => state.ingredients.selectedTab;
+export const tabSelector = createSelector(
+  (state: RootState) => state.ingredients.selectedTab,
+  (tab) => tab,
+);
 
-export const selectIngredientsFetchStatus = (state: RootState) =>
-  state.ingredients.ingredientsFetchState;
+export const ingredientsFetchStatusSelector = createSelector(
+  (state: RootState) => state.ingredients.ingredientsFetchState,
+  (fetchState) => fetchState,
+);
 
-export const selectSelectedItem = () =>
-  createSelector(
-    (state: RootState) => state.ingredients,
-    (ingredients) => ingredients.selectedIngredient,
-  );
+export const selectedItemSelector = createSelector(
+  (state: RootState) => state.ingredients.selectedIngredient,
+  (selectedIngredient) => selectedIngredient,
+);
 
-export const selectBuns = () =>
-  createSelector(
-    (state: RootState) => state.ingredients.ingredients,
-    (ingredients) => ingredients?.filter((ingr) => ingr.type === "bun"),
-  );
+export const bunSelector = createSelector(
+  (state: RootState) => state.ingredients.ingredients,
+  (ingredients) => ingredients?.filter((ingr) => ingr.type === "bun"),
+);
 
-export const selectMains = () =>
-  createSelector(
-    (state: RootState) => state.ingredients.ingredients,
-    (ingredients) => ingredients?.filter((ingr) => ingr.type === "main"),
-  );
+export const mainsSelector = createSelector(
+  (state: RootState) => state.ingredients.ingredients,
+  (ingredients) => ingredients?.filter((ingr) => ingr.type === "main"),
+);
 
-export const selectSauces = () =>
-  createSelector(
-    (state: RootState) => state.ingredients.ingredients,
-    (ingredients) => ingredients?.filter((ingr) => ingr.type === "sauce"),
-  );
+export const saucesSelector = createSelector(
+  (state: RootState) => state.ingredients.ingredients,
+  (ingredients) => ingredients?.filter((ingr) => ingr.type === "sauce"),
+);
 
 export default ingredientsSlice.reducer;

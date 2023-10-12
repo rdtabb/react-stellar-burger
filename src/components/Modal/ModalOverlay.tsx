@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo } from "react";
+import { memo, useEffect } from "react";
 import { Children } from "../../utils/types";
 import styles from "./modal.module.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,8 +11,7 @@ type ModalOverlayProps = Children & {
 };
 
 const ModalOverlay = ({ children, closePopupOnOverlay }: ModalOverlayProps) => {
-  const memoizedPopupClassSelector = useMemo(popupClassSelector, []);
-  const popupClass = useSelector(memoizedPopupClassSelector);
+  const popupClass = useSelector(popupClassSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {

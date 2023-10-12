@@ -5,47 +5,40 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Ingredient, DRAGNDROP_TYPES } from "../../utils/types";
+import {
+  Ingredient,
+  DRAGNDROP_TYPES,
+  IngrdientWithUniqueId,
+} from "../../utils/types";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import DraggableConstructorElement from "./components/DraggableConstructorElement";
 import BunConstructorElement from "./components/BunConstructorElement";
-import { nanoid } from "@reduxjs/toolkit";
 
 import {
   addConstructorBun,
   addConstructorIngredient,
+  removeConstructorIngredient,
   ingredientsSelector,
   priceSelector,
-  createOrder,
   idsSelector,
 } from "../../services/orderSlice";
+import { createOrder } from "../../services/asyncThunks";
 import {
   openPopupTypeSelector,
   setPopupState,
 } from "../../services/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store/store";
+import { nanoid } from "@reduxjs/toolkit";
 import { useDrop } from "react-dnd";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
-  const memoizedOpenPopupTypeSelector = useMemo(openPopupTypeSelector, []);
-  const openPopupType = useSelector(memoizedOpenPopupTypeSelector);
 
-  const constructorIngredients = useSelector((state: RootState) =>
-    ingredientsSelector(state),
-  );
-  const price = useSelector((state: RootState) => priceSelector(state));
-  const ids = useSelector((state: RootState) => idsSelector(state));
-
-  const handleDrop = useCallback((item: Ingredient) => {
-    if (item.type === "bun") {
-      dispatch(addConstructorBun(item));
-    } else {
-      dispatch(addConstructorIngredient(item));
-    }
-  }, []);
+  const openPopupType = useSelector(openPopupTypeSelector);
+  const constructorIngredients = useSelector(ingredientsSelector);
+  const price = useSelector(priceSelector);
+  const ids = useSelector(idsSelector);
 
   const [{ isOver }, ingridientDropRef] = useDrop(() => ({
     accept: DRAGNDROP_TYPES.ingredients,
@@ -61,6 +54,22 @@ const BurgerConstructor = () => {
     accept: DRAGNDROP_TYPES.constructorElements,
   }));
 
+  const handleDrop = useCallback((item: Ingredient) => {
+    if (item.type === "bun") {
+      dispatch(addConstructorBun(item));
+    } else {
+      const uniqueIdItem: IngrdientWithUniqueId = {
+        ...item,
+        uniqueId: nanoid(),
+      };
+      dispatch(addConstructorIngredient(uniqueIdItem));
+    }
+  }, []);
+
+  const handleRemoveConstructorIngredient = useCallback((id: string) => {
+    dispatch(removeConstructorIngredient(id));
+  }, []);
+
   const boxShadow = useMemo(
     () => (isOver ? "0 0 23px 15px var(--clr-accent)" : "none"),
     [isOver],
@@ -72,13 +81,18 @@ const BurgerConstructor = () => {
         <BunConstructorElement type="top" key={nanoid()} />
         {constructorIngredients?.length ? (
           <div className={styles.draggableElements}>
-            {constructorIngredients.map((item: Ingredient, index: number) => (
-              <DraggableConstructorElement
-                key={nanoid()}
-                item={item}
-                index={index}
-              />
-            ))}
+            {constructorIngredients.map(
+              (item: IngrdientWithUniqueId, index: number) => (
+                <DraggableConstructorElement
+                  key={nanoid()}
+                  handleRemoveConstructorIngredient={
+                    handleRemoveConstructorIngredient
+                  }
+                  item={item}
+                  index={index}
+                />
+              ),
+            )}
           </div>
         ) : (
           <div className={styles.draggableElementsEmpty}>
@@ -113,6 +127,4 @@ const BurgerConstructor = () => {
   );
 };
 
-const MemoizedBurgerConstructor = memo(BurgerConstructor);
-
-export default MemoizedBurgerConstructor;
+export default memo(BurgerConstructor);

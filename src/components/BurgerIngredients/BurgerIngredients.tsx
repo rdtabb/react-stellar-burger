@@ -1,13 +1,13 @@
-import { useMemo, useRef, memo } from "react";
+import { useRef, memo } from "react";
 import ingredientDetailstyles from "../IngredientDetails/infomodal.module.css";
 import styles from "./burgerIngredients.module.css";
 
 import {
   setTab,
-  selectSauces,
-  selectMains,
-  selectBuns,
-  selectTab,
+  tabSelector,
+  bunSelector,
+  mainsSelector,
+  saucesSelector,
 } from "../../services/ingredientsSlice";
 import { openPopupTypeSelector } from "../../services/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,18 +18,13 @@ import CardsSection from "./components/CardsSection";
 import Modal from "../Modal/Modal";
 
 const BurgerIngredients = () => {
-  const selectedTab = useSelector(selectTab);
   const dispatch = useDispatch();
 
-  const memoizedOpenPopupType = useMemo(openPopupTypeSelector, []);
-  const openPopupType = useSelector(memoizedOpenPopupType);
-
-  const selectFilteredBuns = useMemo(selectBuns, []);
-  const selectFilteredMains = useMemo(selectMains, []);
-  const selectFilteredSauces = useMemo(selectSauces, []);
-  const buns = useSelector(selectFilteredBuns);
-  const mains = useSelector(selectFilteredMains);
-  const sauces = useSelector(selectFilteredSauces);
+  const selectedTab = useSelector(tabSelector);
+  const openPopupType = useSelector(openPopupTypeSelector);
+  const buns = useSelector(bunSelector);
+  const mains = useSelector(mainsSelector);
+  const sauces = useSelector(saucesSelector);
 
   const bunRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -88,6 +83,4 @@ const BurgerIngredients = () => {
   );
 };
 
-const MemoizedIngredients = memo(BurgerIngredients);
-
-export default MemoizedIngredients;
+export default memo(BurgerIngredients);

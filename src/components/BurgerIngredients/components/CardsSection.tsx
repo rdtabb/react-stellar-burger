@@ -4,16 +4,16 @@ import { Ingredient } from "../../../utils/types";
 import IgredientCard from "./IgredientCard";
 import LoadingIngredients from "../states/LoadingIngredients";
 import ErrorIngredients from "../states/ErrorIngredients";
-import { selectIngredientsFetchStatus } from "../../../services/ingredientsSlice";
+import { ingredientsFetchStatusSelector } from "../../../services/ingredientsSlice";
 import { useSelector } from "react-redux";
 
 type CardsSectionProps = {
   title: string;
-  ingredients: Ingredient[] | undefined;
+  ingredients?: Ingredient[];
 };
 
 const CardsSection = forwardRef((props: CardsSectionProps, ref: any) => {
-  const status = useSelector(selectIngredientsFetchStatus);
+  const status = useSelector(ingredientsFetchStatusSelector);
 
   return (
     <div ref={ref}>

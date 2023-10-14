@@ -72,8 +72,6 @@ const DraggableContsructorElement = ({
       }
       item.index = hoverIndex;
 
-      console.log(dragIndex, hoverIndex);
-
       dispatch(moveConstructorIngredient({ dragIndex, hoverIndex }));
     },
   }));
@@ -82,9 +80,10 @@ const DraggableContsructorElement = ({
 
   return (
     <article
-      style={{ opacity: isDragging ? "0.5" : "1" }}
+      style={{ opacity: isDragging ? "0" : "1" }}
       className={styles.draggable}
       ref={ref}
+      data-handler-id={handlerId}
     >
       <DragIcon type="primary" />
       <ConstructorElement

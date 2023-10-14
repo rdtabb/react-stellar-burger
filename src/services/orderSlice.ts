@@ -1,7 +1,12 @@
-import { createSlice, createSelector, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createSelector,
+  PayloadAction,
+  nanoid,
+} from "@reduxjs/toolkit";
 import {
   Ingredient,
-  IngrdientWithUniqueId,
+  IngredientWithUniqueId,
   Order,
   MoveIngredientsPayload,
   IInitialOrderSliceState,
@@ -15,17 +20,19 @@ const initialState: IInitialOrderSliceState = {
   constructorIngredientsIds: [],
   orderData: undefined,
   orderFetchStatus: "idle",
+  error: "",
 };
 
 const orderSlice = createSlice({
   name: "services/orderSlice",
   initialState,
   reducers: {
-    addConstructorIngredient(
-      state,
-      { payload }: PayloadAction<IngrdientWithUniqueId>,
-    ) {
-      state.constructorIngredients.push(payload);
+    addConstructorIngredient(state, { payload }: PayloadAction<Ingredient>) {
+      const uniqueIdItem: IngredientWithUniqueId = {
+        ...payload,
+        uniqueId: nanoid(),
+      };
+      state.constructorIngredients.push(uniqueIdItem);
     },
     removeConstructorIngredient(state, { payload }: PayloadAction<string>) {
       const filteredIngredients = state.constructorIngredients.filter(
@@ -54,8 +61,9 @@ const orderSlice = createSlice({
     builder.addCase(createOrder.pending, (state) => {
       state.orderFetchStatus = "loading";
     }),
-      builder.addCase(createOrder.rejected, (state) => {
+      builder.addCase(createOrder.rejected, (state, error) => {
         state.orderFetchStatus = "failed";
+        state.error = error.error.message;
       }),
       builder.addCase(
         createOrder.fulfilled,

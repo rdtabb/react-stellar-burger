@@ -3,10 +3,11 @@ import modalStyles from "../components/Modal/modal.module.css";
 
 export interface IInitialOrderSliceState {
   constructorBun?: Ingredient;
-  constructorIngredients: IngrdientWithUniqueId[];
+  constructorIngredients: IngredientWithUniqueId[];
   constructorIngredientsIds: string[];
   orderData?: Order;
   orderFetchStatus: FetchStatus;
+  error?: string;
 }
 
 export interface IInitialModalSliceState {
@@ -41,7 +42,7 @@ export interface Ingredient {
   _id: string;
 }
 
-export interface IngrdientWithUniqueId extends Ingredient {
+export interface IngredientWithUniqueId extends Ingredient {
   uniqueId: string;
 }
 
@@ -55,9 +56,9 @@ export interface DragItem {
   index: number;
 }
 
-export interface FetchIngredientsResponse {
+export interface FetchIngredientsResponse<T> {
   success: boolean;
-  data: Ingredient[];
+  data: T[];
 }
 
 export interface CreateOrderResponse {

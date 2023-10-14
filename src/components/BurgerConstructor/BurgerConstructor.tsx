@@ -8,7 +8,7 @@ import {
 import {
   Ingredient,
   DRAGNDROP_TYPES,
-  IngrdientWithUniqueId,
+  IngredientWithUniqueId,
 } from "../../utils/types";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
@@ -58,11 +58,7 @@ const BurgerConstructor = () => {
     if (item.type === "bun") {
       dispatch(addConstructorBun(item));
     } else {
-      const uniqueIdItem: IngrdientWithUniqueId = {
-        ...item,
-        uniqueId: nanoid(),
-      };
-      dispatch(addConstructorIngredient(uniqueIdItem));
+      dispatch(addConstructorIngredient(item));
     }
   }, []);
 
@@ -78,13 +74,13 @@ const BurgerConstructor = () => {
   return (
     <section ref={ingridientDropRef}>
       <div style={{ boxShadow }} className={styles.elementsGrid} ref={sortRef}>
-        <BunConstructorElement type="top" key={nanoid()} />
+        <BunConstructorElement type="top" />
         {constructorIngredients?.length ? (
           <div className={styles.draggableElements}>
             {constructorIngredients.map(
-              (item: IngrdientWithUniqueId, index: number) => (
+              (item: IngredientWithUniqueId, index: number) => (
                 <DraggableConstructorElement
-                  key={nanoid()}
+                  key={item.uniqueId}
                   handleRemoveConstructorIngredient={
                     handleRemoveConstructorIngredient
                   }
@@ -99,7 +95,7 @@ const BurgerConstructor = () => {
             <p>Добавьте ингредиенты</p>
           </div>
         )}
-        <BunConstructorElement type="bottom" key={nanoid()} />
+        <BunConstructorElement type="bottom" />
       </div>
       <div className={styles.order}>
         <div className={styles.priceContainer}>

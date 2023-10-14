@@ -6,7 +6,7 @@ import {
 import {
   DragItem,
   DRAGNDROP_TYPES,
-  IngrdientWithUniqueId,
+  IngredientWithUniqueId,
 } from "../../../utils/types";
 import { moveConstructorIngredient } from "../../../services/orderSlice";
 import { useDrag, useDrop } from "react-dnd";
@@ -14,7 +14,7 @@ import styles from "../burgerConstructor.module.css";
 import { useDispatch } from "react-redux";
 
 type DraggableContsructorElementProps = {
-  item: IngrdientWithUniqueId;
+  item: IngredientWithUniqueId;
   index: number;
   handleRemoveConstructorIngredient: (id: string) => void;
 };
@@ -28,8 +28,11 @@ const DraggableContsructorElement = ({
   const id = useMemo(() => item.uniqueId, [item]);
   const ref = useRef<HTMLElement>(null);
 
-  const [, drag] = useDrag(() => ({
+  const [{ isDragging }, drag] = useDrag(() => ({
     type: DRAGNDROP_TYPES.constructorElements,
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
     item: () => {
       return { id, index };
     },
@@ -69,6 +72,8 @@ const DraggableContsructorElement = ({
       }
       item.index = hoverIndex;
 
+      console.log(dragIndex, hoverIndex);
+
       dispatch(moveConstructorIngredient({ dragIndex, hoverIndex }));
     },
   }));
@@ -76,7 +81,11 @@ const DraggableContsructorElement = ({
   drag(drop(ref));
 
   return (
-    <article className={styles.draggable} ref={ref}>
+    <article
+      style={{ opacity: isDragging ? "0.5" : "1" }}
+      className={styles.draggable}
+      ref={ref}
+    >
       <DragIcon type="primary" />
       <ConstructorElement
         text={item.name}

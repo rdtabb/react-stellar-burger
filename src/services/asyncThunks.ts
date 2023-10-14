@@ -1,12 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { Order, Ingredient } from "../utils/types";
 import {
-  Order,
-  CreateOrderResponse,
-  Ingredient,
-  FetchIngredientsResponse,
-} from "../utils/types";
-
-const POST_ORDER_URL = "https://norma.nomoreparties.space/api/orders";
+  request,
+  headers,
+  POST_ORDER_URL,
+  FETCH_INGREDIENTS,
+} from "../utils/api";
 
 export const createOrder = createAsyncThunk(
   "services/orderSlice/createOrder",
@@ -14,35 +13,24 @@ export const createOrder = createAsyncThunk(
     const requestBody = {
       ingredients: ids,
     };
-    const response = await fetch(POST_ORDER_URL, {
-      body: JSON.stringify(requestBody),
+    //@ts-ignore
+    const data: Order = await request<Order>(POST_ORDER_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: JSON.stringify(requestBody),
+      headers,
     });
-    if (!response.ok) {
-      throw new Error(
-        `Order fetch failed with response status: ${response.status}`,
-      );
-    }
-    const data: CreateOrderResponse = await response.json();
+
     return data;
   },
 );
 
-const FETCH_INGREDIENTS = "https://norma.nomoreparties.space/api/ingredients";
-
 export const fetchIngredients = createAsyncThunk(
   "services/ingredientsSlice/fetchIngredients",
   async (): Promise<Ingredient[]> => {
-    const response = await fetch(FETCH_INGREDIENTS);
-    if (!response.ok) {
-      throw new Error(
-        `Ingredient fetch failed with response status: ${response.status}`,
-      );
-    }
-    const data: FetchIngredientsResponse = await response.json();
-    return data.data;
+    //@ts-ignore
+    const data: Ingredient[] = await request<Ingredient>(FETCH_INGREDIENTS, {
+      headers,
+    });
+    return data;
   },
 );

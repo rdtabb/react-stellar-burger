@@ -19,7 +19,7 @@
   max-height: 100%;
   overflow: hidden;
   margin-inline: auto;
-  padding-top: 40px;
+  padding: 40px 10px 0;
 }
 
 @media (max-width: 1260px) {

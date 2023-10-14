@@ -1,25 +1,47 @@
 import { useCallback, memo } from "react";
 import styles from "../burgerIngredients.module.css";
-import { Ingredient } from "../../../utils/types";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import useIngredientsContext from "../../../hooks/useIngredientsContext";
-import { REDUCER_ACTION_TYPE } from "../../../context/IngredientsContext";
+import { Ingredient, DRAGNDROP_TYPES } from "../../../utils/types";
+import {
+  CurrencyIcon,
+  Counter,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+
+import { useDrag } from "react-dnd";
+import { useDispatch, useSelector } from "react-redux";
+import { saveSelectedItem } from "../../../services/ingredientsSlice";
+import { setPopupState } from "../../../services/modalSlice";
+import { quantitySelector } from "../../../services/orderSlice";
+import { RootState } from "../../../store/store";
 
 type IngredientCardProps = {
   item: Ingredient;
 };
 
 const IgredientCard = ({ item }: IngredientCardProps) => {
-  const { dispatch, setIsIngredientInfoOpen } = useIngredientsContext();
+  const dispatch = useDispatch();
+
+  const [{ isDragging }, dragRef] = useDrag(() => ({
+    type: DRAGNDROP_TYPES.ingredients,
+    item: item,
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
 
   const openInfoPopup = useCallback(() => {
-    setIsIngredientInfoOpen(true);
-    dispatch({ type: REDUCER_ACTION_TYPE.SELECT_ITEM, payload: item });
+    dispatch(setPopupState("info"));
+    dispatch(saveSelectedItem(item));
   }, []);
 
   return (
-    <article onClick={openInfoPopup} className={styles.card}>
-      <img loading="lazy" src={item.image} alt={item.name} />
+    <article
+      style={{ opacity: isDragging ? "0.5" : "1", position: "relative" }}
+      ref={dragRef}
+      onClick={openInfoPopup}
+      className={styles.card}
+    >
+      <CounterWithMemo item={item} />
+      <img src={item.image} alt={item.name} />
       <div className={styles.card__price}>
         <CurrencyIcon type="primary" />
         <p>{item.price}</p>
@@ -28,5 +50,13 @@ const IgredientCard = ({ item }: IngredientCardProps) => {
     </article>
   );
 };
+
+const CounterWithMemo = memo(({ item }: IngredientCardProps) => {
+  const quantity = useSelector((state: RootState) =>
+    quantitySelector(state, item._id),
+  );
+
+  return <Counter count={quantity} />;
+});
 
 export default memo(IgredientCard);

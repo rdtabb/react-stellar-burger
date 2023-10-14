@@ -4,28 +4,28 @@ import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Children } from "../../utils/types";
 import ModalOverlay from "./ModalOverlay";
+import { useDispatch } from "react-redux";
+import { setPopupClass, setPopupState } from "../../services/modalSlice";
 
 type ModalProps = Children & {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   modalContentClass: string;
 };
 
-const Modal = ({
-  children,
-  isOpen,
-  setIsOpen,
-  modalContentClass,
-}: ModalProps) => {
+const Modal = ({ children, modalContentClass }: ModalProps) => {
+  const dispatch = useDispatch();
   const closePopup = useCallback((): void => {
-    setIsOpen(false);
+    dispatch(setPopupClass(styles.modal));
+    setTimeout(() => {
+      dispatch(setPopupState("closed"));
+    }, 200);
   }, []);
 
-  const closePopupOnOverlay = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) => {
-    if (e.target === e.currentTarget) closePopup();
-  };
+  const closePopupOnOverlay = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+      if (e.target === e.currentTarget) closePopup();
+    },
+    [],
+  );
 
   useEffect(() => {
     const handleEscKey = (e: KeyboardEvent): void => {
@@ -34,17 +34,15 @@ const Modal = ({
       }
     };
 
-    isOpen
-      ? document.addEventListener("keydown", handleEscKey)
-      : document.removeEventListener("keydown", handleEscKey);
+    document.addEventListener("keydown", handleEscKey);
 
     return () => {
       document.removeEventListener("keydown", handleEscKey);
     };
-  }, [isOpen]);
+  }, []);
 
   return createPortal(
-    <ModalOverlay isOpen={isOpen} closePopupOnOverlay={closePopupOnOverlay}>
+    <ModalOverlay closePopupOnOverlay={closePopupOnOverlay}>
       <div className={modalContentClass}>
         {children}
         <div className={styles.closeWrapper}>

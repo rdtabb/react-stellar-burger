@@ -1,57 +1,112 @@
-import { memo } from "react";
+import { useCallback, useMemo, memo } from "react";
 import orderDetailsStyles from "../OrderDetails/modal.module.css";
 import styles from "./burgerConstructor.module.css";
 import {
-  ConstructorElement,
   CurrencyIcon,
   Button,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import useConstructorContext from "../../hooks/useConstructorContext";
-import { Ingredient } from "../../utils/types";
+import {
+  Ingredient,
+  DRAGNDROP_TYPES,
+  IngredientWithUniqueId,
+} from "../../utils/types";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
+import DraggableConstructorElement from "./components/DraggableConstructorElement";
+import BunConstructorElement from "./components/BunConstructorElement";
+
+import {
+  addConstructorBun,
+  addConstructorIngredient,
+  removeConstructorIngredient,
+  ingredientsSelector,
+  priceSelector,
+  idsSelector,
+} from "../../services/orderSlice";
+import { createOrder } from "../../services/asyncThunks";
+import {
+  openPopupTypeSelector,
+  setPopupState,
+} from "../../services/modalSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
+import { useDrop } from "react-dnd";
 
 const BurgerConstructor = () => {
-  const {
-    state: { constructorIngredients },
-    totalPrice,
-    setIsAcceptedOrderOpen,
-    isAcceptedOrderOpen,
-  } = useConstructorContext();
-  const bun = constructorIngredients.find((item) => item.type === "bun")!;
-  const mappable = constructorIngredients.filter((item) => item.type !== "bun");
+  const dispatch = useDispatch();
+
+  const openPopupType = useSelector(openPopupTypeSelector);
+  const constructorIngredients = useSelector(ingredientsSelector);
+  const price = useSelector(priceSelector);
+  const ids = useSelector(idsSelector);
+
+  const [{ isOver }, ingridientDropRef] = useDrop(() => ({
+    accept: DRAGNDROP_TYPES.ingredients,
+    drop: (item: Ingredient) => {
+      handleDrop(item);
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  }));
+
+  const [, sortRef] = useDrop(() => ({
+    accept: DRAGNDROP_TYPES.constructorElements,
+  }));
+
+  const handleDrop = useCallback((item: Ingredient) => {
+    if (item.type === "bun") {
+      dispatch(addConstructorBun(item));
+    } else {
+      dispatch(addConstructorIngredient(item));
+    }
+  }, []);
+
+  const handleRemoveConstructorIngredient = useCallback((id: string) => {
+    dispatch(removeConstructorIngredient(id));
+  }, []);
+
+  const boxShadow = useMemo(
+    () => (isOver ? "0 0 23px 15px var(--clr-accent)" : "none"),
+    [isOver],
+  );
 
   return (
-    <section>
-      <div className={styles.elementsGrid}>
-        <ConstructorElement
-          thumbnail={bun.image_mobile}
-          price={bun.price}
-          text={`${bun.name} (верх)`}
-          isLocked={true}
-          type="top"
-        />
-        <div className={styles.draggableElements}>
-          {mappable.map((item: Ingredient, index: number) => (
-            <MemoizedDraggableContsructorElement key={index} item={item} />
-          ))}
-        </div>
-        <ConstructorElement
-          thumbnail={bun.image}
-          price={bun.price}
-          text={`${bun.name} (низ)`}
-          isLocked={true}
-          type="bottom"
-        />
+    <section ref={ingridientDropRef}>
+      <div style={{ boxShadow }} className={styles.elementsGrid} ref={sortRef}>
+        <BunConstructorElement type="top" />
+        {constructorIngredients?.length ? (
+          <div className={styles.draggableElements}>
+            {constructorIngredients.map(
+              (item: IngredientWithUniqueId, index: number) => (
+                <DraggableConstructorElement
+                  key={item.uniqueId}
+                  handleRemoveConstructorIngredient={
+                    handleRemoveConstructorIngredient
+                  }
+                  item={item}
+                  index={index}
+                />
+              ),
+            )}
+          </div>
+        ) : (
+          <div className={styles.draggableElementsEmpty}>
+            <p>Добавьте ингредиенты</p>
+          </div>
+        )}
+        <BunConstructorElement type="bottom" />
       </div>
       <div className={styles.order}>
         <div className={styles.priceContainer}>
-          <p className={styles.totalPrice}>{totalPrice}</p>
+          <p className={styles.totalPrice}>{price ? price : 0}</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button
-          onClick={() => setIsAcceptedOrderOpen(true)}
+          onClick={() => {
+            dispatch(setPopupState("order"));
+            dispatch(createOrder(ids));
+          }}
           title="Оформить заказ"
           type="primary"
           htmlType="submit"
@@ -59,34 +114,13 @@ const BurgerConstructor = () => {
           Оформить заказ
         </Button>
       </div>
-      <Modal
-        modalContentClass={orderDetailsStyles.modalContent}
-        isOpen={isAcceptedOrderOpen}
-        setIsOpen={setIsAcceptedOrderOpen}
-      >
-        <OrderDetails />
-      </Modal>
+      {openPopupType === "order" && (
+        <Modal modalContentClass={orderDetailsStyles.modalContent}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
   );
 };
 
-const DraggableContsructorElement = ({ item }: { item: Ingredient }) => {
-  return (
-    <article className={styles.draggable}>
-      <DragIcon type="primary" />
-      <ConstructorElement
-        text={item.name}
-        thumbnail={item.image}
-        isLocked={false}
-        price={item.price}
-        extraClass={styles.constElement}
-      />
-    </article>
-  );
-};
-
-const MemoizedDraggableContsructorElement = memo(DraggableContsructorElement);
-
-const MemoizedBurgerConstructor = memo(BurgerConstructor);
-
-export default MemoizedBurgerConstructor;
+export default memo(BurgerConstructor);

@@ -1,8 +1,10 @@
+import { memo } from "react";
 import styles from "./infomodal.module.css";
-import useIngredientsContext from "../../hooks/useIngredientsContext";
+import { useSelector } from "react-redux";
+import { selectedItemSelector } from "../../services/ingredientsSlice";
 
 const IngredientDetails = () => {
-  const { state } = useIngredientsContext();
+  const selectedItem = useSelector(selectedItemSelector);
 
   return (
     <article className={styles.modalGrid}>
@@ -10,28 +12,26 @@ const IngredientDetails = () => {
       <div className={styles.wrapper}>
         <img
           className={styles.image}
-          src={state.selectedItem?.image_large}
-          alt={state.selectedItem?.name}
+          src={selectedItem?.image_large}
+          alt={selectedItem?.name}
         />
-        <p className={styles.caption}>{state.selectedItem?.name}</p>
+        <p className={styles.caption}>{selectedItem?.name}</p>
         <div className={styles.stats}>
           <div className={styles.stat}>
             <p>Калории,ккал</p>
-            <p className={styles.statNum}>{state.selectedItem?.calories}</p>
+            <p className={styles.statNum}>{selectedItem?.calories}</p>
           </div>
           <div className={styles.stat}>
             <p>Белки, г</p>
-            <p className={styles.statNum}>{state.selectedItem?.proteins}</p>
+            <p className={styles.statNum}>{selectedItem?.proteins}</p>
           </div>
           <div className={styles.stat}>
             <p>Жиры, г</p>
-            <p className={styles.statNum}>{state.selectedItem?.fat}</p>
+            <p className={styles.statNum}>{selectedItem?.fat}</p>
           </div>
           <div className={styles.stat}>
             <p>Углеводы, г</p>
-            <p className={styles.statNum}>
-              {state.selectedItem?.carbohydrates}
-            </p>
+            <p className={styles.statNum}>{selectedItem?.carbohydrates}</p>
           </div>
         </div>
       </div>
@@ -39,4 +39,4 @@ const IngredientDetails = () => {
   );
 };
 
-export default IngredientDetails;
+export default memo(IngredientDetails);

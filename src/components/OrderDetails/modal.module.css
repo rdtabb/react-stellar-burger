@@ -25,6 +25,7 @@
   padding: 32px 0 60px;
   font-size: var(--fs-450);
   line-height: 30px;
+  max-width: 55ch;
 }
 
 .accepted {
@@ -37,4 +38,8 @@
 .caption {
   padding: 60px 0 2px;
   color: var(--text-clr-accent);
+}
+
+.subcaption {
+  max-width: 55ch;
 }

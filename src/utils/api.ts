@@ -1,8 +1,17 @@
-import { FetchIngredientsResponse } from "./types";
+import { Urls } from "./types";
 
 const BASE_URL = "https://norma.nomoreparties.space/api";
-export const POST_ORDER_URL = `${BASE_URL}/orders`;
-export const FETCH_INGREDIENTS = `${BASE_URL}/ingredients`;
+const BASE_AUTH_URL = `${BASE_URL}/auth`;
+
+export const URLS: Urls = {
+  POST_ORDER_URL: `${BASE_URL}/orders`,
+  FETCH_INGREDIENTS: `${BASE_URL}/ingredients`,
+  AUTH_URL: `${BASE_AUTH_URL}/login`,
+  REGISTER_URL: `${BASE_AUTH_URL}/register`,
+  SIGNOUT_URL: `${BASE_AUTH_URL}/logout`,
+  UPDATE_TOKEN_URL: `${BASE_AUTH_URL}/token`,
+};
+
 export const headers = {
   "Content-Type": "application/json",
 };
@@ -18,14 +27,9 @@ const checkResponse = (response: Response): void => {
 export const request = async <T>(
   url: string,
   requestParams: RequestInit,
-): Promise<T[] | T> => {
+): Promise<T> => {
   const response = await fetch(url, requestParams);
   checkResponse(response);
-  const data: FetchIngredientsResponse<T> | T = await response.json();
-
-  if ((data as FetchIngredientsResponse<T>).data) {
-    return (data as FetchIngredientsResponse<T>).data as T[];
-  }
-
-  return data as T;
+  const data: T = await response.json();
+  return data;
 };

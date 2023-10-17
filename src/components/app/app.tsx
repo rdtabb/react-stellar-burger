@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
+import { Link } from "react-router-dom";
 
 import {
   setIngredientsStatus,
@@ -27,7 +28,7 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      <AppHeader />
+      <Link to={"/login"}>LoginPage</Link>
       <main className={styles.container}>
         <BurgerIngredients />
         <BurgerConstructor />

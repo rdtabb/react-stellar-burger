@@ -1,11 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Order, Ingredient } from "../utils/types";
 import {
-  request,
-  headers,
-  POST_ORDER_URL,
-  FETCH_INGREDIENTS,
-} from "../utils/api";
+  Order,
+  Ingredient,
+  FetchIngredientsResponse,
+  AuthRegResponse,
+  UserPayload,
+} from "../utils/types";
+import { request, headers, URLS } from "../utils/api";
 
 export const createOrder = createAsyncThunk(
   "services/orderSlice/createOrder",
@@ -13,8 +14,7 @@ export const createOrder = createAsyncThunk(
     const requestBody = {
       ingredients: ids,
     };
-    //@ts-ignore
-    const data: Order = await request<Order>(POST_ORDER_URL, {
+    const data: Order = await request<Order>(URLS.POST_ORDER_URL, {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers,
@@ -27,9 +27,23 @@ export const createOrder = createAsyncThunk(
 export const fetchIngredients = createAsyncThunk(
   "services/ingredientsSlice/fetchIngredients",
   async (): Promise<Ingredient[]> => {
-    //@ts-ignore
-    const data: Ingredient[] = await request<Ingredient>(FETCH_INGREDIENTS, {
+    const { data } = await request<FetchIngredientsResponse>(
+      URLS.FETCH_INGREDIENTS,
+      {
+        headers,
+      },
+    );
+    return data;
+  },
+);
+
+export const registerUser = createAsyncThunk(
+  "services/authSlice/authorizeUser",
+  async (payload: UserPayload): Promise<AuthRegResponse> => {
+    const data = await request<AuthRegResponse>(URLS.REGISTER_URL, {
       headers,
+      method: "POST",
+      body: JSON.stringify(payload),
     });
     return data;
   },

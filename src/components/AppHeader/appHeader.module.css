@@ -4,6 +4,7 @@
   align-items: center;
   background-color: var(--bg-500);
   padding-block: 16px;
+  font-family: var(--ff-primary);
 }
 
 .nav {

@@ -1,0 +1,49 @@
+.main {
+  --_width: 1280px;
+
+  display: grid;
+  grid-template-columns: 0.4fr 0.6fr;
+  gap: 60px;
+  width: min(var(--_width), 100% - 1rem);
+  margin: 120px auto 0;
+  font-family: var(--ff-primary);
+}
+
+.route {
+  font-size: var(--fs-450);
+  font-weight: var(--fw-700);
+  line-height: var(--line-height-450);
+  padding-block: 8px;
+  color: var(--clr-primary);
+  text-decoration: none;
+  transition: opacity 200ms ease-in;
+}
+
+.route:hover {
+  opacity: 1;
+}
+
+.route_active {
+  composes: route;
+  color: var(--clr-secondary);
+  opacity: 0.8;
+}
+
+.aside {
+  display: grid;
+  gap: 80px;
+}
+
+.nav {
+  display: grid;
+}
+
+.caption {
+  color: var(--clr-secondary);
+  opacity: 0.4;
+}
+
+.inputs {
+  display: grid;
+  gap: 24px;
+}

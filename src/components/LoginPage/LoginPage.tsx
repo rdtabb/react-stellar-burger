@@ -6,18 +6,26 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./loginPage.module.css";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authenticateUser } from "../../services/asyncThunks";
 
 const LoginPage = () => {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const dispatch = useDispatch();
 
-  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log({
-      password,
-      email,
-    });
-  }, []);
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      dispatch(
+        authenticateUser({
+          email,
+          password,
+        }),
+      );
+    },
+    [password, email],
+  );
 
   return (
     <main className={styles.main}>

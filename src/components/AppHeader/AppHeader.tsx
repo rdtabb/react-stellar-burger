@@ -1,31 +1,48 @@
 import styles from "./appHeader.module.css";
+import { NavLink } from "react-router-dom";
 import {
   BurgerIcon,
   Logo,
   ProfileIcon,
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { ROUTES } from "../../utils/api";
 
 const AppHeader = () => {
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
         <div className={styles.tabs}>
-          <div className={styles.tab_active}>
+          <NavLink
+            to={ROUTES.CONSTRUCTOR}
+            className={({ isActive }) =>
+              isActive ? styles.tab_active : styles.tab
+            }
+          >
             <BurgerIcon type="primary" />
             Конструктор
-          </div>
-          <div className={styles.tab}>
+          </NavLink>
+          <NavLink
+            to={ROUTES.LOGIN}
+            className={({ isActive }) =>
+              isActive ? styles.tab_active : styles.tab
+            }
+          >
             <ListIcon type="secondary" /> Лента заказов
-          </div>
+          </NavLink>
         </div>
         <div className={styles.logo}>
           <Logo />
         </div>
-        <div className={styles.tab}>
+        <NavLink
+          to={ROUTES.PROFILE}
+          className={({ isActive }) =>
+            isActive ? styles.tab_active : styles.tab
+          }
+        >
           <ProfileIcon type="secondary" />
           Личный кабинет
-        </div>
+        </NavLink>
       </nav>
     </header>
   );

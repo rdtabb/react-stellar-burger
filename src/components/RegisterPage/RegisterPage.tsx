@@ -54,7 +54,7 @@ const RegisterPage = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button htmlType="submit" type="primary" extraClass={styles.submit}>
-          Войти
+          Зарегистрироваться
         </Button>
       </form>
       <div className={styles.captionContainer}>

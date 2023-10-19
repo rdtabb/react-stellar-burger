@@ -20,7 +20,7 @@ const ResetPage = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <Button htmlType="submit" type="primary" extraClass={styles.submit}>
-          Войти
+          Восстановить
         </Button>
       </form>
       <div className={styles.captionContainer}>

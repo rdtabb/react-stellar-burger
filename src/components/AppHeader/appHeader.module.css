@@ -32,6 +32,7 @@
   gap: 8px;
   color: var(--clr-primary);
   opacity: 0.6;
+  text-decoration: none;
   transition: opacity 200ms ease-in;
 }
 

@@ -6,9 +6,10 @@ import modalStyles from "../components/Modal/modal.module.css";
 //----------------------------------------
 
 export interface IInitialAuthSliceState {
-  user: User;
-  tokens: Pick<AuthRegResponse, "accessToken" | "refreshToken">;
+  user?: User;
+  tokens?: Tokens;
   authFetchStatus: FetchStatus;
+  isCheckedAuth: boolean;
 }
 
 export interface IInitialOrderSliceState {
@@ -88,9 +89,15 @@ export interface Urls {
   POST_ORDER_URL: string;
   FETCH_INGREDIENTS: string;
   AUTH_URL: string;
+  GET_USER_INFO_URL: string;
   REGISTER_URL: string;
   SIGNOUT_URL: string;
   UPDATE_TOKEN_URL: string;
+}
+
+export interface Tokens {
+  refreshToken: string;
+  accessToken: string;
 }
 
 export interface FetchIngredientsResponse {
@@ -119,6 +126,8 @@ export interface FetchUserResponse {
 export interface UserPayload extends User {
   password: string;
 }
+
+export type AuthPayload = Pick<UserPayload, "password" | "email">;
 
 //----------------------------------------
 // Drag and drop types

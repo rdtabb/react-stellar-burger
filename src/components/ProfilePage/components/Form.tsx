@@ -16,7 +16,9 @@ const Form = () => {
 
   return (
     <form name="editProfileForm" className={styles.inputs}>
-      <InputWrapper />
+      {user?.name && (
+        <Input placeholder="Имя" value={user?.name} onChange={handleChange} />
+      )}
       {user?.email && (
         <EmailInput value={user?.email} onChange={handleChange} />
       )}
@@ -24,13 +26,5 @@ const Form = () => {
     </form>
   );
 };
-
-const InputWrapper = memo(() => {
-  const user = useSelector(userSelector);
-
-  const handleChange = useCallback((e: any) => console.log(e), []);
-  //@ts-ignore
-  return <Input placeholder="Имя" value={user?.name} onChange={handleChange} />;
-});
 
 export default memo(Form);

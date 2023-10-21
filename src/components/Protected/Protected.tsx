@@ -1,6 +1,8 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
-import { authInfoSelector } from "../../services/authSlice";
+import { authInfoSelector, initAuthCheck } from "../../services/authSlice";
+import { fetchUserInfo } from "../../services/asyncThunks";
 import { ROUTES } from "../../utils/api";
 
 interface IProtectedProps {
@@ -12,23 +14,24 @@ const Protected = ({
   onlyUnAuth = false,
   component,
 }: IProtectedProps): JSX.Element => {
-  const { user, status } = useSelector(authInfoSelector);
+  const { isAuth } = useSelector(authInfoSelector);
   const location = useLocation();
+  const dispatch = useDispatch();
 
-  if (onlyUnAuth && user) {
+  useEffect(() => {
+    dispatch(initAuthCheck());
+    dispatch(fetchUserInfo());
+  }, []);
+
+  if (onlyUnAuth && isAuth) {
     const { from } = location.state || { from: { pathName: "/" } };
-    console.log("case 1: ", user, onlyUnAuth);
-
     return <Navigate to={from} />;
   }
 
-  if (!onlyUnAuth && !user) {
-    console.log("case 2: ", user, onlyUnAuth);
-
+  if (!onlyUnAuth && !isAuth) {
     return <Navigate to={ROUTES.LOGIN} state={{ from: location }} />;
   }
 
-  console.log("case 3: ", user, onlyUnAuth);
   return component;
 };
 

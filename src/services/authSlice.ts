@@ -2,77 +2,94 @@ import { createSlice, createSelector, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import {
   AuthRegResponse,
+  FetchStatus,
   FetchUserResponse,
   IInitialAuthSliceState,
-  User,
 } from "../utils/types";
-import { registerUser, authenticateUser, fetchUserInfo } from "./asyncThunks";
+import { authenticateUser, fetchUserInfo, registerUser } from "./asyncThunks";
 import { setTokens, getTokens } from "../utils/sessionStorage";
 
 const initialState: IInitialAuthSliceState = {
   tokens: undefined,
   user: undefined,
-  authFetchStatus: "idle",
-  isCheckedAuth: false,
+  asyncLoginStatus: "idle",
+  asyncRegisterStatus: "idle",
 };
 
 export const authSlice = createSlice({
   name: "services/authSlice",
   initialState,
   reducers: {
-    saveCurrentUser(state, { payload }: PayloadAction<User>) {
-      state.user = payload;
-    },
     initAuthCheck(state) {
       const tokens = getTokens();
       if (!tokens) {
         return state;
       }
       state.tokens = tokens;
-      state.isCheckedAuth = true;
+    },
+    setRegisterStatus(state, { payload }: PayloadAction<FetchStatus>) {
+      state.asyncRegisterStatus = payload;
+    },
+    setLoginStatus(state, { payload }: PayloadAction<FetchStatus>) {
+      state.asyncLoginStatus = payload;
     },
   },
   extraReducers: (builder) => {
     /* eslint-disable */
+    builder.addCase(authenticateUser.pending, (state) => {
+      state.asyncLoginStatus = "loading";
+    });
+    builder.addCase(authenticateUser.rejected, (state) => {
+      state.asyncLoginStatus = "failed";
+    });
     builder.addCase(
-      registerUser.fulfilled,
+      authenticateUser.fulfilled,
       (state, { payload }: PayloadAction<AuthRegResponse>) => {
         state.user = payload.user;
         state.tokens = {
           accessToken: payload.accessToken,
           refreshToken: payload.refreshToken,
         };
+        state.asyncRegisterStatus = "success";
         setTokens(payload);
       },
-    ),
-      builder.addCase(
-        authenticateUser.fulfilled,
-        (state, { payload }: PayloadAction<AuthRegResponse>) => {
-          state.user = payload.user;
-          state.tokens = {
-            accessToken: payload.accessToken,
-            refreshToken: payload.refreshToken,
-          };
-          setTokens(payload);
-        },
-      ),
-      builder.addCase(
-        fetchUserInfo.fulfilled,
-        (state, { payload }: PayloadAction<FetchUserResponse>) => {
-          state.user = payload.user;
-        },
-      );
+    );
+    builder.addCase(registerUser.pending, (state) => {
+      state.asyncRegisterStatus = "loading";
+    });
+    builder.addCase(registerUser.rejected, (state) => {
+      state.asyncRegisterStatus = "failed";
+    });
+    builder.addCase(registerUser.fulfilled, (state) => {
+      state.asyncRegisterStatus = "success";
+    });
+    builder.addCase(
+      fetchUserInfo.fulfilled,
+      (state, { payload }: PayloadAction<FetchUserResponse | undefined>) => {
+        state.user = payload?.user;
+      },
+    );
   },
 });
 
 const selectUser = (state: RootState) => state.auth.user;
-const selectIsAuth = (state: RootState) => state.auth.isCheckedAuth;
+const selectTokens = (state: RootState) => state.auth.tokens;
 export const userSelector = createSelector(selectUser, (user) => user);
-export const authInfoSelector = createSelector(
-  [selectUser, selectIsAuth],
-  (user, status) => ({ user, status }),
+export const authInfoSelector = createSelector(selectTokens, (tokens) => ({
+  tokens: tokens,
+  isAuth: !!tokens,
+}));
+export const loginStatusSelector = createSelector(
+  (state: RootState) => state.auth.asyncLoginStatus,
+  (status) => status,
 );
 
-export const { saveCurrentUser, initAuthCheck } = authSlice.actions;
+export const registerStatusSelector = createSelector(
+  (state: RootState) => state.auth.asyncRegisterStatus,
+  (status) => status,
+);
+
+export const { initAuthCheck, setLoginStatus, setRegisterStatus } =
+  authSlice.actions;
 
 export default authSlice.reducer;

@@ -8,8 +8,8 @@ import modalStyles from "../components/Modal/modal.module.css";
 export interface IInitialAuthSliceState {
   user?: User;
   tokens?: Tokens;
-  authFetchStatus: FetchStatus;
-  isCheckedAuth: boolean;
+  asyncRegisterStatus: FetchStatus;
+  asyncLoginStatus: FetchStatus;
 }
 
 export interface IInitialOrderSliceState {

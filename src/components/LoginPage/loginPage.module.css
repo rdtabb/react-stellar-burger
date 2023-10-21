@@ -33,7 +33,7 @@
 }
 
 .submit {
-  width: min-content;
+  width: fit-content;
 }
 
 .captionContainer {

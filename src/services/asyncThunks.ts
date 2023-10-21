@@ -43,11 +43,15 @@ export const fetchIngredients = createAsyncThunk(
 
 export const fetchUserInfo = createAsyncThunk(
   "services/authSlice/fetchUserInfo",
-  async (): Promise<FetchUserResponse> => {
+  async (): Promise<FetchUserResponse | undefined> => {
+    const token = getTokens()?.accessToken;
+    if (!token) return;
     const data = await request<FetchUserResponse>(URLS.GET_USER_INFO_URL, {
-      headers,
+      headers: {
+        ...headers,
+        Authorization: token,
+      },
       method: "GET",
-      body: JSON.stringify(getTokens()?.accessToken),
     });
     return data;
   },
@@ -55,7 +59,7 @@ export const fetchUserInfo = createAsyncThunk(
 
 export const registerUser = createAsyncThunk(
   "services/authSlice/registerUser",
-  async (payload: UserPayload): Promise<AuthRegResponse> => {
+  async (payload: UserPayload, thunkAPI): Promise<AuthRegResponse> => {
     const data = await request<AuthRegResponse>(URLS.REGISTER_URL, {
       headers,
       method: "POST",

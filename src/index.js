@@ -9,10 +9,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ROUTES } from "./utils/api";
 
 import { OnlyAuth, OnlyUnAuth } from "./components/Protected/Protected";
-import Constructor from "./pages/Constructor/Constructor";
+import App from "./components/app/app";
 import AppHeader from "./components/AppHeader/AppHeader";
-import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
+import LoginPage from "./components/LoginPage/LoginPage";
+import RegisterPage from "./components/RegisterPage/RegisterPage";
 import ForgotPage from "./components/ForgotPage/ForgotPage";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 
@@ -25,15 +25,15 @@ ReactDOM.render(
           <Routes>
             <Route
               path={ROUTES.CONSTRUCTOR}
-              element={<OnlyAuth component={<Constructor />} />}
+              element={<OnlyAuth component={<App />} />}
             />
             <Route
               path={ROUTES.LOGIN}
-              element={<OnlyUnAuth component={<Login />} />}
+              element={<OnlyUnAuth component={<LoginPage />} />}
             />
             <Route
               path={ROUTES.REGISTER}
-              element={<OnlyUnAuth component={<Register />} />}
+              element={<OnlyUnAuth component={<RegisterPage />} />}
             />
             <Route
               path={ROUTES.FORGOT_PASSWORD}
@@ -41,7 +41,7 @@ ReactDOM.render(
             />
             <Route
               path={ROUTES.PROFILE}
-              element={<OnlyUnAuth component={<ProfilePage />} />}
+              element={<OnlyAuth component={<ProfilePage />} />}
             ></Route>
           </Routes>
         </Router>

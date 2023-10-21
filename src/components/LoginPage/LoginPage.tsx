@@ -1,4 +1,4 @@
-import { useState, memo, useCallback } from "react";
+import { useState, memo, useCallback, useEffect } from "react";
 import {
   Button,
   PasswordInput,
@@ -6,23 +6,37 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./loginPage.module.css";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../store/store";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import { loginStatusSelector, setLoginStatus } from "../../services/authSlice";
 import { authenticateUser } from "../../services/asyncThunks";
+import { ROUTES } from "../../utils/api";
 
 const LoginPage = () => {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const dispatch = useDispatch();
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  useEffect(
+    () => () => {
+      dispatch(setLoginStatus("idle"));
+    },
+    [],
+  );
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      dispatch(
-        authenticateUser({
-          email,
-          password,
-        }),
-      );
+      const params = { email, password };
+      dispatch(authenticateUser(params))
+        .unwrap()
+        .then((res) => {
+          if (res.success) navigate(ROUTES.CONSTRUCTOR);
+        });
     },
     [password, email],
   );
@@ -42,9 +56,7 @@ const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button htmlType="submit" type="primary" extraClass={styles.submit}>
-          Войти
-        </Button>
+        <ButtonLogin />
       </form>
       <div className={styles.captionContainer}>
         <p className={styles.caption}>
@@ -61,6 +73,20 @@ const LoginPage = () => {
         </p>
       </div>
     </main>
+  );
+};
+
+const ButtonLogin = () => {
+  const status = useSelector(loginStatusSelector);
+
+  return (
+    <Button htmlType="submit" type="primary" extraClass={styles.submit}>
+      {status === "idle" || status === "success"
+        ? "Войти"
+        : status === "failed"
+        ? "Что-то пошло не так, попробуйте еще раз"
+        : "Пров�ряем логин..."}
+    </Button>
   );
 };
 

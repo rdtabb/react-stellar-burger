@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import styles from "../LoginPage/loginPage.module.css";
 import {
   EmailInput,
@@ -7,25 +7,42 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { ROUTES } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../store/store";
+import { useSelector } from "react-redux";
+import {
+  registerStatusSelector,
+  setRegisterStatus,
+} from "../../services/authSlice";
 import { registerUser } from "../../services/asyncThunks";
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
 
+  useEffect(
+    () => () => {
+      dispatch(setRegisterStatus("idle"));
+    },
+    [],
+  );
+
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      dispatch(
-        registerUser({
-          name,
-          email,
-          password,
-        }),
-      );
+      const params = {
+        name,
+        email,
+        password,
+      };
+      dispatch(registerUser(params))
+        .unwrap()
+        .then((res) => (res.success ? navigate(ROUTES.LOGIN) : null));
     },
     [name, email, password],
   );
@@ -53,9 +70,7 @@ const RegisterPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button htmlType="submit" type="primary" extraClass={styles.submit}>
-          Зарегистрироваться
-        </Button>
+        <RegisterButton />
       </form>
       <div className={styles.captionContainer}>
         <p className={styles.caption}>
@@ -66,6 +81,18 @@ const RegisterPage = () => {
         </p>
       </div>
     </main>
+  );
+};
+
+const RegisterButton = () => {
+  const status = useSelector(registerStatusSelector);
+
+  return (
+    <Button htmlType="submit" type="primary" extraClass={styles.submit}>
+      {status === "idle" || status === "success"
+        ? "Зарегистрироваться"
+        : "Регистрируем..."}
+    </Button>
   );
 };
 

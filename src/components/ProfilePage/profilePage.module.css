@@ -47,3 +47,12 @@
   display: grid;
   gap: 24px;
 }
+
+.editButton {
+  position: absolute;
+  top: 1.3rem;
+  right: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}

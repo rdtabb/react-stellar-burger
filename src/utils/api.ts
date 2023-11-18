@@ -11,6 +11,7 @@ export const URLS: Urls = {
   REGISTER_URL: `${BASE_AUTH_URL}/register`,
   SIGNOUT_URL: `${BASE_AUTH_URL}/logout`,
   UPDATE_TOKEN_URL: `${BASE_AUTH_URL}/token`,
+  RESET_PASSWORD_EMAIL_STAGE: `${BASE_URL}/password-reset`,
 };
 
 export const ROUTES = {
@@ -19,6 +20,7 @@ export const ROUTES = {
   REGISTER: "/register",
   FORGOT_PASSWORD: "/forgot-password",
   PROFILE: "/profile",
+  RESET_PASSWORD: "/reset-password",
 };
 
 export const headers = {

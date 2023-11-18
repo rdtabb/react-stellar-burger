@@ -8,6 +8,7 @@ import {
   UserPayload,
   User,
   AuthPayload,
+  ResetPasswordEmailStageResponse,
 } from "../utils/types";
 import { request, headers, URLS } from "../utils/api";
 import { getTokens } from "../utils/sessionStorage";
@@ -77,6 +78,23 @@ export const authenticateUser = createAsyncThunk(
       method: "POST",
       body: JSON.stringify(payload),
     });
+    return data;
+  },
+);
+
+export const resetWithEmail = createAsyncThunk(
+  "services/authSlice/resetWithEmail",
+  async (payload: {
+    email: string;
+  }): Promise<ResetPasswordEmailStageResponse> => {
+    const data = await request<ResetPasswordEmailStageResponse>(
+      URLS.RESET_PASSWORD_EMAIL_STAGE,
+      {
+        headers,
+        method: "POST",
+        body: JSON.stringify(payload),
+      },
+    );
     return data;
   },
 );

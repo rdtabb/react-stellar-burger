@@ -93,6 +93,7 @@ export interface Urls {
   REGISTER_URL: string;
   SIGNOUT_URL: string;
   UPDATE_TOKEN_URL: string;
+  RESET_PASSWORD_EMAIL_STAGE: string;
 }
 
 export interface Tokens {
@@ -125,6 +126,11 @@ export interface FetchUserResponse {
 
 export interface UserPayload extends User {
   password: string;
+}
+
+export interface ResetPasswordEmailStageResponse {
+  success: boolean;
+  message: string;
 }
 
 export type AuthPayload = Pick<UserPayload, "password" | "email">;

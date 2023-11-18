@@ -15,6 +15,7 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import ForgotPage from "./components/ForgotPage/ForgotPage";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
+import ResetPage from "./components/ResetPage/ResetPage";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -42,6 +43,10 @@ ReactDOM.render(
             <Route
               path={ROUTES.PROFILE}
               element={<OnlyAuth component={<ProfilePage />} />}
+            ></Route>
+            <Route
+              path={ROUTES.RESET_PASSWORD}
+              element={<OnlyUnAuth component={<ResetPage />} />}
             ></Route>
           </Routes>
         </Router>

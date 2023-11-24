@@ -6,7 +6,6 @@ import {
   Tab,
   IInitialIngredientSliceState,
 } from "../utils/types";
-import { fetchIngredients } from "./asyncThunks";
 
 const initialState: IInitialIngredientSliceState = {
   selectedIngredient: undefined,
@@ -29,22 +28,6 @@ const ingredientsSlice = createSlice({
       state.selectedTab = payload;
     },
   },
-  extraReducers: (builder) => {
-    /* eslint-disable */
-    builder.addCase(fetchIngredients.pending, (state) => {
-      state.ingredientsFetchState = "loading";
-    }),
-      builder.addCase(
-        fetchIngredients.fulfilled,
-        (state, { payload }: PayloadAction<Ingredient[]>) => {
-          state.ingredientsFetchState = "success";
-          state.ingredients = payload;
-        },
-      ),
-      builder.addCase(fetchIngredients.rejected, (state) => {
-        state.ingredientsFetchState = "failed";
-      });
-  },
 });
 
 export const { saveSelectedItem, setIngredientsStatus, setTab } =
@@ -63,21 +46,6 @@ export const ingredientsFetchStatusSelector = createSelector(
 export const selectedItemSelector = createSelector(
   (state: RootState) => state.ingredients.selectedIngredient,
   (selectedIngredient) => selectedIngredient,
-);
-
-export const bunSelector = createSelector(
-  (state: RootState) => state.ingredients.ingredients,
-  (ingredients) => ingredients?.filter((ingr) => ingr.type === "bun"),
-);
-
-export const mainsSelector = createSelector(
-  (state: RootState) => state.ingredients.ingredients,
-  (ingredients) => ingredients?.filter((ingr) => ingr.type === "main"),
-);
-
-export const saucesSelector = createSelector(
-  (state: RootState) => state.ingredients.ingredients,
-  (ingredients) => ingredients?.filter((ingr) => ingr.type === "sauce"),
 );
 
 export default ingredientsSlice.reducer;

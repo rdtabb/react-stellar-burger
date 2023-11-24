@@ -7,20 +7,14 @@ import {
 import {
   Ingredient,
   IngredientWithUniqueId,
-  Order,
   MoveIngredientsPayload,
   IInitialOrderSliceState,
 } from "../utils/types";
-import { createOrder } from "./asyncThunks";
 import { RootState } from "../store/store";
 
 const initialState: IInitialOrderSliceState = {
   constructorBun: undefined,
   constructorIngredients: [],
-  constructorIngredientsIds: [],
-  orderData: undefined,
-  orderFetchStatus: "idle",
-  error: "",
 };
 
 const orderSlice = createSlice({
@@ -55,25 +49,6 @@ const orderSlice = createSlice({
       );
       state.constructorIngredients = newIngredients;
     },
-  },
-  extraReducers: (builder) => {
-    /* eslint-disable */
-    builder.addCase(createOrder.pending, (state) => {
-      state.orderFetchStatus = "loading";
-    }),
-      builder.addCase(createOrder.rejected, (state, error) => {
-        state.orderFetchStatus = "failed";
-        state.error = error.error.message;
-      }),
-      builder.addCase(
-        createOrder.fulfilled,
-        (state, { payload }: PayloadAction<Order>) => {
-          state.orderData = payload;
-          state.orderFetchStatus = "success";
-          state.constructorBun = undefined;
-          state.constructorIngredients = [];
-        },
-      );
   },
 });
 
@@ -113,14 +88,10 @@ export const idsSelector = createSelector(
   rawSelectOrderSlice,
   (orderSliceState) =>
     [
+      orderSliceState.constructorBun,
       ...orderSliceState.constructorIngredients,
       orderSliceState.constructorBun,
     ].map((item) => item?._id),
-);
-
-export const orderSelector = createSelector(
-  rawSelectOrderSlice,
-  (orderSliceState) => orderSliceState,
 );
 
 export const {

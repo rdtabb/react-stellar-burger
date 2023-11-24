@@ -1,44 +1,40 @@
-import { useState, memo, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   Button,
   PasswordInput,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./loginPage.module.css";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../store/store";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import styles from "./loginPage.module.css";
 
-import { loginStatusSelector, setLoginStatus } from "../../services/authSlice";
-import { authenticateUser } from "../../services/asyncThunks";
+import { useAuthenticateUserMutation } from "../../services/api/apiSlice";
+import { setAuthInfo } from "../../services/authSlice";
+import { setTokens } from "../../utils/sessionStorage";
+import { AuthRegResponse } from "../../utils/types";
 import { ROUTES } from "../../utils/api";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading, isError }] = useAuthenticateUserMutation();
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  useEffect(
-    () => () => {
-      dispatch(setLoginStatus("idle"));
-    },
-    [],
-  );
-
   const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
       const params = { email, password };
-      dispatch(authenticateUser(params))
-        .unwrap()
-        .then((res) => {
-          if (res.success) navigate(ROUTES.CONSTRUCTOR);
-        });
+      const result = (await login(params)) as { data: AuthRegResponse };
+      if (result.data.success) {
+        dispatch(setAuthInfo(result.data));
+        setTokens(result.data);
+        navigate(ROUTES.CONSTRUCTOR);
+      }
     },
-    [password, email],
+    [password, email]
   );
 
   return (
@@ -56,7 +52,13 @@ const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <ButtonLogin />
+        <Button htmlType="submit" type="primary" extraClass={styles.submit}>
+          {isLoading
+            ? "Войти"
+            : isError
+            ? "Что-то пошло не так, попробуйте еще раз"
+            : "Проверяем логин..."}
+        </Button>
       </form>
       <div className={styles.captionContainer}>
         <p className={styles.caption}>
@@ -76,18 +78,4 @@ const LoginPage = () => {
   );
 };
 
-const ButtonLogin = () => {
-  const status = useSelector(loginStatusSelector);
-
-  return (
-    <Button htmlType="submit" type="primary" extraClass={styles.submit}>
-      {status === "idle" || status === "success"
-        ? "Войти"
-        : status === "failed"
-        ? "Что-то пошло не так, попробуйте еще раз"
-        : "Пров�ряем логин..."}
-    </Button>
-  );
-};
-
-export default memo(LoginPage);
+export default LoginPage;

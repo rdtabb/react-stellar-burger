@@ -1,50 +1,40 @@
-import { useState, useCallback, useEffect } from "react";
-import styles from "../LoginPage/loginPage.module.css";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   EmailInput,
   PasswordInput,
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import styles from "../LoginPage/loginPage.module.css";
+
+import { useRegisterUserMutation } from "../../services/api/apiSlice";
+import { AuthRegResponse } from "../../utils/types";
 import { ROUTES } from "../../utils/api";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store/store";
-import { useSelector } from "react-redux";
-import {
-  registerStatusSelector,
-  setRegisterStatus,
-} from "../../services/authSlice";
-import { registerUser } from "../../services/asyncThunks";
 
 const RegisterPage = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const [register, { isLoading }] = useRegisterUserMutation();
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
 
-  useEffect(
-    () => () => {
-      dispatch(setRegisterStatus("idle"));
-    },
-    [],
-  );
-
   const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
       const params = {
         name,
         email,
         password,
       };
-      dispatch(registerUser(params))
-        .unwrap()
-        .then((res) => (res.success ? navigate(ROUTES.LOGIN) : null));
+      const result = (await register(params)) as { data: AuthRegResponse };
+      if (result.data.success) {
+        navigate(ROUTES.LOGIN);
+      }
     },
-    [name, email, password],
+    [name, email, password]
   );
 
   return (
@@ -60,17 +50,16 @@ const RegisterPage = () => {
         <EmailInput
           value={email}
           extraClass={styles.input}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
+          onChange={(e) => setEmail(e.target.value)}
         />
-
         <PasswordInput
           extraClass={styles.input}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <RegisterButton />
+        <Button htmlType="submit" type="primary" extraClass={styles.submit}>
+          {!isLoading ? "Зарегистрироваться" : "Регистрируем..."}
+        </Button>
       </form>
       <div className={styles.captionContainer}>
         <p className={styles.caption}>
@@ -81,18 +70,6 @@ const RegisterPage = () => {
         </p>
       </div>
     </main>
-  );
-};
-
-const RegisterButton = () => {
-  const status = useSelector(registerStatusSelector);
-
-  return (
-    <Button htmlType="submit" type="primary" extraClass={styles.submit}>
-      {status === "idle" || status === "success"
-        ? "Зарегистрироваться"
-        : "Регистрируем..."}
-    </Button>
   );
 };
 

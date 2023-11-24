@@ -1,119 +1,37 @@
-import { useCallback, useMemo, memo } from "react";
+import { memo } from "react";
+import { useSelector } from "react-redux";
+
 import orderDetailsStyles from "../OrderDetails/modal.module.css";
 import styles from "./burgerConstructor.module.css";
-import {
-  CurrencyIcon,
-  Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-  Ingredient,
-  DRAGNDROP_TYPES,
-  IngredientWithUniqueId,
-} from "../../utils/types";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import DraggableConstructorElement from "./components/DraggableConstructorElement";
-import BunConstructorElement from "./components/BunConstructorElement";
+import Ingredients from "./components/Ingredients";
+import PriceOrder from "./components/PriceOrder";
 
-import {
-  addConstructorBun,
-  addConstructorIngredient,
-  removeConstructorIngredient,
-  ingredientsSelector,
-  priceSelector,
-  idsSelector,
-} from "../../services/orderSlice";
-import { createOrder } from "../../services/asyncThunks";
-import {
-  openPopupTypeSelector,
-  setPopupState,
-} from "../../services/modalSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
-import { useDrop } from "react-dnd";
+import { ingredientsSelector } from "../../services/orderSlice";
+import { openPopupTypeSelector } from "../../services/modalSlice";
+import { useConstructorDnd } from "./hooks/hooks";
 
 const BurgerConstructor = () => {
-  const dispatch = useDispatch();
-
-  const openPopupType = useSelector(openPopupTypeSelector);
   const constructorIngredients = useSelector(ingredientsSelector);
-  const price = useSelector(priceSelector);
-  const ids = useSelector(idsSelector);
+  const openPopupType = useSelector(openPopupTypeSelector);
 
-  const [{ isOver }, ingridientDropRef] = useDrop(() => ({
-    accept: DRAGNDROP_TYPES.ingredients,
-    drop: (item: Ingredient) => {
-      handleDrop(item);
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-  }));
-
-  const [, sortRef] = useDrop(() => ({
-    accept: DRAGNDROP_TYPES.constructorElements,
-  }));
-
-  const handleDrop = useCallback((item: Ingredient) => {
-    if (item.type === "bun") {
-      dispatch(addConstructorBun(item));
-    } else {
-      dispatch(addConstructorIngredient(item));
-    }
-  }, []);
-
-  const handleRemoveConstructorIngredient = useCallback((id: string) => {
-    dispatch(removeConstructorIngredient(id));
-  }, []);
-
-  const boxShadow = useMemo(
-    () => (isOver ? "0 0 23px 15px var(--clr-accent)" : "none"),
-    [isOver],
-  );
+  const {
+    ingridientDropRef,
+    sortRef,
+    handleRemoveConstructorIngredient,
+    boxShadow,
+  } = useConstructorDnd();
 
   return (
     <section ref={ingridientDropRef}>
       <div style={{ boxShadow }} className={styles.elementsGrid} ref={sortRef}>
-        <BunConstructorElement type="top" />
-        {constructorIngredients?.length ? (
-          <div className={styles.draggableElements}>
-            {constructorIngredients.map(
-              (item: IngredientWithUniqueId, index: number) => (
-                <DraggableConstructorElement
-                  key={item.uniqueId}
-                  handleRemoveConstructorIngredient={
-                    handleRemoveConstructorIngredient
-                  }
-                  item={item}
-                  index={index}
-                />
-              ),
-            )}
-          </div>
-        ) : (
-          <div className={styles.draggableElementsEmpty}>
-            <p>Добавьте ингредиенты</p>
-          </div>
-        )}
-        <BunConstructorElement type="bottom" />
+        <Ingredients
+          ingredients={constructorIngredients}
+          handleRemoveConstructorIngredient={handleRemoveConstructorIngredient}
+        />
       </div>
-      <div className={styles.order}>
-        <div className={styles.priceContainer}>
-          <p className={styles.totalPrice}>{price ? price : 0}</p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <Button
-          onClick={() => {
-            dispatch(setPopupState("order"));
-            dispatch(createOrder(ids));
-          }}
-          title="Оформить заказ"
-          type="primary"
-          htmlType="submit"
-        >
-          Оформить заказ
-        </Button>
-      </div>
+      <PriceOrder />
       {openPopupType === "order" && (
         <Modal modalContentClass={orderDetailsStyles.modalContent}>
           <OrderDetails />

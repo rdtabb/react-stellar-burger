@@ -8,17 +8,11 @@ import modalStyles from "../components/Modal/modal.module.css";
 export interface IInitialAuthSliceState {
   user?: User;
   tokens?: Tokens;
-  asyncRegisterStatus: FetchStatus;
-  asyncLoginStatus: FetchStatus;
 }
 
 export interface IInitialOrderSliceState {
   constructorBun?: Ingredient;
   constructorIngredients: IngredientWithUniqueId[];
-  constructorIngredientsIds: string[];
-  orderData?: Order;
-  orderFetchStatus: FetchStatus;
-  error?: string;
 }
 
 export interface IInitialModalSliceState {

@@ -2,15 +2,10 @@ import { useRef, memo, useEffect } from "react";
 import ingredientDetailstyles from "../IngredientDetails/infomodal.module.css";
 import styles from "./burgerIngredients.module.css";
 
-import {
-  setTab,
-  tabSelector,
-  bunSelector,
-  mainsSelector,
-  saucesSelector,
-} from "../../services/ingredientsSlice";
+import { setTab, tabSelector } from "../../services/ingredientsSlice";
 import { openPopupTypeSelector } from "../../services/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { useIngredients } from "../../hooks/useIngredients";
 
 import { Tab as TabType } from "../../utils/types";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -24,13 +19,11 @@ interface RefElementsCollection {
 }
 
 const BurgerIngredients = () => {
+  const { buns, mains, sauces, isLoading, isError } = useIngredients();
   const dispatch = useDispatch();
 
   const selectedTab = useSelector(tabSelector);
   const openPopupType = useSelector(openPopupTypeSelector);
-  const buns = useSelector(bunSelector);
-  const mains = useSelector(mainsSelector);
-  const sauces = useSelector(saucesSelector);
 
   const scrollSectionRef = useRef<HTMLElement>(null);
   const bunRef = useRef<HTMLDivElement>(null);
@@ -116,9 +109,27 @@ const BurgerIngredients = () => {
         </Tab>
       </div>
       <section className={styles.overflow} ref={scrollSectionRef}>
-        <CardsSection title="Булки" ingredients={buns} ref={bunRef} />
-        <CardsSection title="Соусы" ingredients={sauces} ref={sauceRef} />
-        <CardsSection title="Начинки" ingredients={mains} ref={mainRef} />
+        <CardsSection
+          title="Булки"
+          ingredients={buns}
+          ref={bunRef}
+          isLoading={isLoading}
+          isError={isError}
+        />
+        <CardsSection
+          title="Соусы"
+          ingredients={sauces}
+          ref={sauceRef}
+          isLoading={isLoading}
+          isError={isError}
+        />
+        <CardsSection
+          title="Начинки"
+          ingredients={mains}
+          ref={mainRef}
+          isLoading={isLoading}
+          isError={isError}
+        />
       </section>
       {openPopupType === "info" && (
         <Modal modalContentClass={ingredientDetailstyles.modalContent}>

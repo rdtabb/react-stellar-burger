@@ -5,18 +5,16 @@ import {
   PasswordInput,
   EditIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { userSelector } from "../../../services/authSlice";
-import { useSelector } from "react-redux";
 import { memo, useCallback, useState } from "react";
+import { useUserInfoQuery } from "../../../services/api/apiSlice";
 
 const Form = () => {
-  const user = useSelector(userSelector);
+  const { data: user } = useUserInfoQuery("userinfo")
 
   const [isNameLocked, setIsNameLocked] = useState<boolean>(true);
   const [isEmailLocked, setIsEmailLocked] = useState<boolean>(true);
-
-  const [name, setName] = useState<string | undefined>(user?.name);
-  const [email, setEmail] = useState<string | undefined>(user?.email);
+  const [name, setName] = useState<string | undefined>(user?.user.name);
+  const [email, setEmail] = useState<string | undefined>(user?.user.email);
 
   const handleNameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

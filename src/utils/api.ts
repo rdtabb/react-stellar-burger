@@ -1,7 +1,11 @@
 import { AuthRegResponse, Urls } from "./types";
 
-const BASE_URL = "https://norma.nomoreparties.space/api";
-const BASE_AUTH_URL = `${BASE_URL}/auth`;
+export const BASE_URL = "https://norma.nomoreparties.space/api";
+export const BASE_AUTH_URL = `${BASE_URL}/auth`;
+
+export const CACHE_KEYS = {
+  ORDER_INFO: "ORDER_INFO"
+} as const;
 
 export const URLS: Urls = {
   POST_ORDER_URL: `${BASE_URL}/orders`,

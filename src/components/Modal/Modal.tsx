@@ -13,6 +13,7 @@ type ModalProps = Children & {
 
 const Modal = ({ children, modalContentClass }: ModalProps) => {
   const dispatch = useDispatch();
+  
   const closePopup = useCallback((): void => {
     dispatch(setPopupClass(styles.modal));
     setTimeout(() => {

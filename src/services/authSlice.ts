@@ -1,10 +1,7 @@
 import { createSlice, createSelector, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
-import {
-  AuthRegResponse,
-  IInitialAuthSliceState,
-} from "../utils/types";
-import { getTokens } from "../utils/sessionStorage";
+import { AuthRegResponse, IInitialAuthSliceState } from "../utils/types";
+import { getTokens, destroyTokens } from "../utils/sessionStorage";
 
 const initialState: IInitialAuthSliceState = {
   tokens: undefined,
@@ -28,17 +25,23 @@ export const authSlice = createSlice({
         accessToken: payload.accessToken,
         refreshToken: payload.refreshToken,
       };
-    }
+    },
+    destroyAuthInfo(state) {
+      destroyTokens();
+      state.user = undefined;
+      state.tokens = undefined;
+    },
   },
 });
 
 const selectTokens = (state: RootState) => state.auth.tokens;
+
 export const authInfoSelector = createSelector(selectTokens, (tokens) => ({
   tokens: tokens,
   isAuth: !!tokens,
 }));
 
-export const { initAuthCheck, setAuthInfo } =
+export const { initAuthCheck, setAuthInfo, destroyAuthInfo } =
   authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,19 +1,21 @@
 import React, { useCallback, useEffect, memo } from "react";
 import { createPortal } from "react-dom";
+import { useDispatch } from "react-redux";
+
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+
 import { Children } from "../../utils/types";
-import ModalOverlay from "./ModalOverlay";
-import { useDispatch } from "react-redux";
+import { ModalOverlay } from "./modal-overlay";
 import { setPopupClass, setPopupState } from "../../services/modalSlice";
 
 type ModalProps = Children & {
   modalContentClass: string;
 };
 
-const Modal = ({ children, modalContentClass }: ModalProps) => {
+export const Modal = memo(({ children, modalContentClass }: ModalProps) => {
   const dispatch = useDispatch();
-  
+
   const closePopup = useCallback((): void => {
     dispatch(setPopupClass(styles.modal));
     setTimeout(() => {
@@ -25,7 +27,7 @@ const Modal = ({ children, modalContentClass }: ModalProps) => {
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
       if (e.target === e.currentTarget) closePopup();
     },
-    [],
+    []
   );
 
   useEffect(() => {
@@ -51,8 +53,6 @@ const Modal = ({ children, modalContentClass }: ModalProps) => {
         </div>
       </div>
     </ModalOverlay>,
-    document.getElementById("modals")!,
+    document.getElementById("modals")!
   );
-};
-
-export default memo(Modal);
+});

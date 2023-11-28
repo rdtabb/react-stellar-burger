@@ -1,4 +1,4 @@
-import styles from "../components/Modal/modal.module.css";
+import styles from "../components/modal/modal.module.css";
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import { ModalType, ModalClass, IInitialModalSliceState } from "../utils/types";

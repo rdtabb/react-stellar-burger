@@ -62,6 +62,17 @@ export const apiSlice = createApi({
         headers,
       }),
     }),
+    resetPasswordTokenStage: builder.mutation<
+      ResetPasswordEmailStageResponse,
+      { password: string; token: string }
+    >({
+      query: (body) => ({
+        url: URLS.RESET_PASSWORD_TOKEN_STAGE,
+        method: "POST",
+        body,
+        headers,
+      }),
+    }),
   }),
 });
 
@@ -72,4 +83,5 @@ export const {
   useRegisterUserMutation,
   useAuthenticateUserMutation,
   useResetPasswordEmailStageMutation,
+  useResetPasswordTokenStageMutation,
 } = apiSlice;

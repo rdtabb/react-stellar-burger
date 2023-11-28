@@ -88,6 +88,7 @@ export interface Urls {
   SIGNOUT_URL: string;
   UPDATE_TOKEN_URL: string;
   RESET_PASSWORD_EMAIL_STAGE: string;
+  RESET_PASSWORD_TOKEN_STAGE: string;
 }
 
 export interface Tokens {

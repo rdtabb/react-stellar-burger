@@ -28,7 +28,7 @@ const orderSlice = createSlice({
       };
       state.constructorIngredients.push(uniqueIdItem);
     },
-    removeConstructorIngredient(state, { payload }: PayloadAction<string>) {
+    removeConstructorIngredient(state, { payload }: PayloadAction<string | undefined>) {
       const filteredIngredients = state.constructorIngredients.filter(
         (item) => item.uniqueId !== payload,
       );

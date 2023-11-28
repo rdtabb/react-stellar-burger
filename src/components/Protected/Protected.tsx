@@ -2,13 +2,12 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
 
-import { useUserInfoQuery } from "../../services/api/apiSlice";
 import { authInfoSelector, initAuthCheck } from "../../services/authSlice";
 
 import { ROUTES } from "../../utils/api";
 
 interface IProtectedProps {
-  onlyUnAuth: boolean;
+  onlyUnAuth?: boolean;
   component: JSX.Element;
 }
 
@@ -17,7 +16,6 @@ const Protected = ({
   component,
 }: IProtectedProps): JSX.Element => {
   const { isAuth } = useSelector(authInfoSelector);
-  const userInfoQuery = useUserInfoQuery('user');
   const location = useLocation();
   const dispatch = useDispatch();
 

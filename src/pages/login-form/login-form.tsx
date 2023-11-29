@@ -1,27 +1,39 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
-  Button,
   PasswordInput,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Form, ICaption, IFormInputConfig } from "../../components/form";
 
-import styles from "./loginForm.module.css";
 import { useAuthenticateUserMutation } from "../../services/api/apiSlice";
 import { setAuthInfo } from "../../services/authSlice";
 import { setTokens } from "../../utils/sessionStorage";
 import { AuthRegResponse } from "../../utils/types";
 import { ROUTES } from "../../utils/api";
 
+const loginFormCaptionsConfig: ICaption[] = [
+  {
+    linkRoute: ROUTES.REGISTER,
+    linkText: "Зарегистрироваться",
+    captionText: "Вы — новый пользователь?",
+  },
+  {
+    linkRoute: ROUTES.FORGOT_PASSWORD,
+    linkText: "Восстановить пароль",
+    captionText: "Забыли пароль?",
+  },
+];
+
 export const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [login, { isLoading, isError }] = useAuthenticateUserMutation();
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+
+  const [login, { isLoading, isError }] = useAuthenticateUserMutation();
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,43 +49,36 @@ export const LoginForm = () => {
     [password, email]
   );
 
-  return (
-    <main className={styles.main}>
-      <form name="loginForm" className={styles.form} onSubmit={handleSubmit}>
-        <h2 className={styles.title}>Вход</h2>
-        <EmailInput
-          value={email}
-          extraClass={styles.input}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+  const loginFormInputsConfig: IFormInputConfig[] = useMemo(
+    () => [
+      {
+        value: email,
+        valueSetter: setEmail,
+        as: EmailInput,
+      },
+      {
+        value: password,
+        valueSetter: setPassword,
+        as: PasswordInput,
+      },
+    ],
+    [password, email]
+  );
 
-        <PasswordInput
-          extraClass={styles.input}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button htmlType="submit" type="primary" extraClass={styles.submit}>
-          {isLoading
-            ? "Проверяем логин..."
-            : isError
-            ? "Что-то пошло не так, попробуйте еще раз"
-            : "Войти"}
-        </Button>
-      </form>
-      <div className={styles.captionContainer}>
-        <p className={styles.caption}>
-          Вы — новый пользователь?{" "}
-          <Link className={styles.captionLink} to="/register">
-            Зарегистрироваться
-          </Link>
-        </p>
-        <p className={styles.caption}>
-          Забыли пароль?{" "}
-          <Link className={styles.captionLink} to="/forgot-password">
-            Восстановить пароль
-          </Link>
-        </p>
-      </div>
-    </main>
+  return (
+    <Form
+      formName="loginForm"
+      formTitle="Вход"
+      submitButtonText={
+        isLoading
+          ? "Проверяем логин..."
+          : isError
+          ? "Что-то пошло не так, попробуйте еще раз"
+          : "Войти"
+      }
+      handleSubmit={handleSubmit}
+      captionsConfig={loginFormCaptionsConfig}
+      inputsConfig={loginFormInputsConfig}
+    />
   );
 };

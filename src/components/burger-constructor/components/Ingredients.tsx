@@ -9,7 +9,7 @@ interface IngredientsProps {
   ingredients?: IngredientWithUniqueId[];
 }
 
-const Ingredients = ({ ingredients }: IngredientsProps) => {
+export const Ingredients = memo(({ ingredients }: IngredientsProps) => {
   return (
     <>
       <BunConstructorElement type="top" />
@@ -31,6 +31,4 @@ const Ingredients = ({ ingredients }: IngredientsProps) => {
       <BunConstructorElement type="bottom" />
     </>
   );
-};
-
-export default memo(Ingredients);
+});

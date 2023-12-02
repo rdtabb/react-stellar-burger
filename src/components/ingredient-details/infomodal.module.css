@@ -8,7 +8,6 @@
   position: relative;
   z-index: 100;
   background-color: var(--modal-bg);
-  border: 1px solid var(--modal-border);
   border-radius: 40px;
   padding: 40px 40px 60px;
   width: min(var(--_width), 100% - 10px);

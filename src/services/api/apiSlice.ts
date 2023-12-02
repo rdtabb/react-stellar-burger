@@ -1,4 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  createApi,
+  fetchBaseQuery,
+  FetchArgs,
+  BaseQueryFn,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/query/react";
 
 import {
   FetchUserResponse,
@@ -9,11 +15,62 @@ import {
   ResetPasswordEmailStageResponse,
 } from "../../utils/types";
 import { BASE_URL, URLS, headers } from "../../utils/api";
-import { getTokens } from "../../utils/sessionStorage";
+import { getTokens, setTokens } from "../../utils/sessionStorage";
+import { RootState } from "../../store/store";
+import { initAuthCheck } from "../authSlice";
+
+const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  let result = await fetchBaseQuery({ baseUrl: BASE_URL })(
+    args,
+    api,
+    extraOptions,
+  );
+
+  if (result.error && result.error.status === 403) {
+    const state = api.getState() as RootState;
+
+    const refreshToken = state.auth.tokens?.refreshToken;
+
+    const refreshResult = (await fetchBaseQuery({ baseUrl: BASE_URL })(
+      {
+        method: "POST",
+        url: URLS.UPDATE_TOKEN_URL,
+        body: {
+          token: refreshToken,
+        },
+      },
+      api,
+      extraOptions,
+    )) as unknown as { data: AuthRegResponse };
+    console.log(refreshResult);
+
+    if (refreshResult.data.success) {
+      setTokens(refreshResult.data);
+      api.dispatch(initAuthCheck());
+
+      result = await fetchBaseQuery({ baseUrl: BASE_URL })(
+        // @ts-ignore
+        {
+          headers: {
+            ...headers,
+            Authorization: refreshResult.data.accessToken,
+          },
+        },
+        api,
+        {},
+      );
+    }
+  }
+  return result;
+};
 
 export const apiSlice = createApi({
   reducerPath: "apiSlice",
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     getIngredients: builder.query<{ data: Ingredient[] }, string>({
       query: () => URLS.FETCH_INGREDIENTS,

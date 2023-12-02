@@ -130,6 +130,16 @@ export interface ResetPasswordEmailStageResponse {
 
 export type AuthPayload = Pick<UserPayload, "password" | "email">;
 
+export interface UpdateTokenPayload {
+  token: string;
+}
+
+export interface UpdateTokenResponse {
+  success: boolean;
+  refreshToken: string;
+  accessToken: string;
+}
+
 //----------------------------------------
 // Drag and drop types
 //----------------------------------------

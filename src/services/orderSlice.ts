@@ -28,7 +28,10 @@ const orderSlice = createSlice({
       };
       state.constructorIngredients.push(uniqueIdItem);
     },
-    removeConstructorIngredient(state, { payload }: PayloadAction<string | undefined>) {
+    removeConstructorIngredient(
+      state,
+      { payload }: PayloadAction<string | undefined>,
+    ) {
       const filteredIngredients = state.constructorIngredients.filter(
         (item) => item.uniqueId !== payload,
       );
@@ -48,6 +51,9 @@ const orderSlice = createSlice({
         newIngredients.splice(payload.dragIndex, 1)[0],
       );
       state.constructorIngredients = newIngredients;
+    },
+    clearConstructorIngredients() {
+      return initialState;
     },
   },
 });
@@ -99,6 +105,7 @@ export const {
   addConstructorBun,
   removeConstructorIngredient,
   moveConstructorIngredient,
+  clearConstructorIngredients,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

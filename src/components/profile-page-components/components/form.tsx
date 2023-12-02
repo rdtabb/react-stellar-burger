@@ -22,7 +22,7 @@ export const Form = memo(() => {
       onSubmit={(event) => event.preventDefault()}
       className={styles.inputs}
     >
-      <div style={{ position: "relative", width: "fit-content" }}>
+      <div className={styles.inputContainer}>
         <Input
           placeholder="Имя"
           value={isLoading ? "Загружаем..." : name}
@@ -37,7 +37,7 @@ export const Form = memo(() => {
         </button>
       </div>
 
-      <div style={{ position: "relative", width: "fit-content" }}>
+      <div className={styles.inputContainer}>
         <EmailInput
           disabled={isEmailLocked}
           value={isLoading ? "Загружаем..." : email}
@@ -51,7 +51,7 @@ export const Form = memo(() => {
         </button>
       </div>
 
-      <PasswordInput value="********" onChange={() => {}} disabled />
+      <PasswordInput value="" onChange={() => {}} disabled={true} />
     </form>
   );
 });

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import styles from "./form.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -14,7 +15,7 @@ interface IFormProps {
   inputsConfig: IFormInputConfig[]
 }
 
-export const Form = ({
+export const Form = memo(({
   handleSubmit,
   formName,
   formTitle,
@@ -34,4 +35,4 @@ export const Form = ({
       <FormCaption captionsConfig={captionsConfig} />
     </FormContainer>
   );
-};
+});

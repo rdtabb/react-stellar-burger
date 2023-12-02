@@ -1,6 +1,8 @@
 .app {
+  --header-height: 88.5px;
+
   display: grid;
-  height: 100vh;
+  height: calc(100vh - var(--header-height));
   background-color: var(--bg-400);
   color: var(--clr-primary);
   font-family: var(--ff-primary);

@@ -1,9 +1,36 @@
 import React from "react";
-import { IngredientDetails } from "../../components/ingredient-details/ingredient-details";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-export const IngredientDetailsPage = () => {
+import styles from "./ingredient-details.module.css";
+import { IngredientDetails } from "../../components/ingredient-details/ingredient-details";
+import { ROUTES } from "../../utils/api";
+import { selectedItemSelector } from "../../services/ingredientsSlice";
+
+interface IngredientDetailsPageProps {
+  enableRedirect: boolean;
+}
+
+export const IngredientDetailsPage = ({
+  enableRedirect,
+}: IngredientDetailsPageProps) => {
+  const item = useSelector(selectedItemSelector);
+
+  if (enableRedirect) {
+    return (
+      <Link
+        className={styles.link}
+        to={`${ROUTES.INGREDIENT_DETAILS}/${item?._id}`}
+      >
+        <div className={styles["ingredient-details"]}>
+          <IngredientDetails />
+        </div>
+      </Link>
+    );
+  }
+
   return (
-    <div style={{ display: "grid", placeContent: "center", height: "100%" }}>
+    <div className={styles["ingredient-details"]}>
       <IngredientDetails />
     </div>
   );

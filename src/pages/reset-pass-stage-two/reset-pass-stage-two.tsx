@@ -1,6 +1,9 @@
-import React, { useState, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import {
+  PasswordInput,
+  Input,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { Form, ICaption, IFormInputConfig } from "../../components/form";
 
@@ -18,11 +21,20 @@ const resetPassStageTwoCaptionsConfig: ICaption[] = [
 
 export const ResetPassStageTwo = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [password, setPassword] = useState<string>("");
   const [token, setToken] = useState<string>("");
 
   const [mutate, { isLoading, isError }] = useResetPasswordTokenStageMutation();
+
+  useEffect(() => {
+    const previousUrl = location.state?.previousUrl;
+
+    if (previousUrl !== ROUTES.FORGOT_PASSWORD) {
+      navigate(ROUTES.LOGIN);
+    }
+  }, []);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,7 +49,7 @@ export const ResetPassStageTwo = () => {
         navigate(ROUTES.LOGIN);
       }
     },
-    [password, token]
+    [password, token],
   );
 
   const resetPassStageTwoInputsConfig: IFormInputConfig[] = useMemo(
@@ -51,11 +63,11 @@ export const ResetPassStageTwo = () => {
       {
         value: token,
         valueSetter: setToken,
-        as: PasswordInput,
+        as: Input,
         placeholder: "Введите код из письма",
       },
     ],
-    [password, token]
+    [password, token],
   );
 
   return (

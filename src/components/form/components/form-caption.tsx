@@ -1,5 +1,5 @@
-import React from "react";
-import styles from '../form.module.css'
+import React, { memo } from "react";
+import styles from "../form.module.css";
 import { Link } from "react-router-dom";
 
 export interface ICaption {
@@ -12,17 +12,17 @@ interface IFormCaption {
   captionsConfig: ICaption[];
 }
 
-export const FormCaption = ({ captionsConfig }: IFormCaption) => {
+export const FormCaption = memo(({ captionsConfig }: IFormCaption) => {
   return (
     <div className={styles.captionContainer}>
-      {captionsConfig.map((caption) => (
-        <p className={styles.caption}>
-            {caption.captionText}{" "}
-            <Link className={styles.captionLink} to={caption.linkRoute}>
-                {caption.linkText}
-            </Link>
+      {captionsConfig.map((caption, index) => (
+        <p className={styles.caption} key={index}>
+          {caption.captionText}{" "}
+          <Link className={styles.captionLink} to={caption.linkRoute}>
+            {caption.linkText}
+          </Link>
         </p>
       ))}
     </div>
   );
-};
+});

@@ -1,12 +1,12 @@
 import { memo } from "react";
 import { useSelector } from "react-redux";
 
-import orderDetailsStyles from "../order-details/modal.module.css"
+import orderDetailsStyles from "../order-details/modal.module.css";
 import styles from "./burgerConstructor.module.css";
 import { Modal } from "../modal/modal";
 import { OrderDetails } from "../order-details/order-details";
-import Ingredients from "./components/Ingredients";
-import PriceOrder from "./components/PriceOrder";
+import { Ingredients } from "./components/Ingredients";
+import { PriceOrder } from "./components/PriceOrder";
 
 import { ingredientsSelector } from "../../services/orderSlice";
 import { openPopupTypeSelector } from "../../services/modalSlice";

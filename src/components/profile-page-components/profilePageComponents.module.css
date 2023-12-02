@@ -43,6 +43,11 @@
   opacity: 0.4;
 }
 
+.inputContainer {
+  width: min-content;
+  position: relative;
+}
+
 .inputs {
   display: grid;
   gap: 24px;

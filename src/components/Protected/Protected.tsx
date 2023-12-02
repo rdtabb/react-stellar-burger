@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
 
-import { authInfoSelector, initAuthCheck } from "../../services/authSlice";
+import { authInfoSelector } from "../../services/authSlice";
 
 import { ROUTES } from "../../utils/api";
 
@@ -17,11 +16,6 @@ const Protected = ({
 }: IProtectedProps): JSX.Element => {
   const { isAuth } = useSelector(authInfoSelector);
   const location = useLocation();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(initAuthCheck());
-  }, []);
 
   if (onlyUnAuth && isAuth) {
     const { from } = location.state || { from: { pathName: "/" } };

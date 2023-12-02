@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   PasswordInput,
   Input,
+  EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { Form, IFormInputConfig, type ICaption } from "../../components/form";
@@ -41,7 +42,7 @@ export const RegisterForm = () => {
         navigate(ROUTES.LOGIN);
       }
     },
-    [name, email, password]
+    [name, email, password],
   );
 
   const registerInputsConfig: IFormInputConfig[] = useMemo(
@@ -55,7 +56,7 @@ export const RegisterForm = () => {
       {
         value: email,
         valueSetter: setEmail,
-        as: PasswordInput,
+        as: EmailInput,
       },
       {
         value: password,
@@ -63,7 +64,7 @@ export const RegisterForm = () => {
         as: PasswordInput,
       },
     ],
-    [password, name, email]
+    [password, name, email],
   );
 
   return (

@@ -8,11 +8,15 @@ import {
 import styles from "../burgerConstructor.module.css";
 import { setPopupState } from "../../../services/modalSlice";
 import { useCreateOrderMutation } from "../../../services/api/apiSlice";
-import { priceSelector, idsSelector } from "../../../services/orderSlice";
+import {
+  priceSelector,
+  idsSelector,
+  clearConstructorIngredients,
+} from "../../../services/orderSlice";
 
 import { CACHE_KEYS } from "../../../utils/api";
 
-const PriceOrder = () => {
+export const PriceOrder = memo(() => {
   const dispatch = useDispatch();
 
   const price = useSelector(priceSelector);
@@ -22,9 +26,13 @@ const PriceOrder = () => {
     fixedCacheKey: CACHE_KEYS.ORDER_INFO,
   });
 
-  const postOrder = useCallback(() => {
+  const postOrder = useCallback(async () => {
     dispatch(setPopupState("order"));
-    createOrder(ids);
+    const result = await createOrder(ids);
+    //@ts-ignore
+    if (result.data.success) {
+      dispatch(clearConstructorIngredients());
+    }
   }, [ids]);
 
   return (
@@ -43,6 +51,4 @@ const PriceOrder = () => {
       </Button>
     </div>
   );
-};
-
-export default memo(PriceOrder);
+});

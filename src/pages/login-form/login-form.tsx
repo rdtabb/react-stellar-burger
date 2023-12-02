@@ -27,8 +27,8 @@ const loginFormCaptionsConfig: ICaption[] = [
 ];
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -46,7 +46,7 @@ export const LoginForm = () => {
         navigate(ROUTES.CONSTRUCTOR);
       }
     },
-    [password, email]
+    [password, email],
   );
 
   const loginFormInputsConfig: IFormInputConfig[] = useMemo(
@@ -62,7 +62,7 @@ export const LoginForm = () => {
         as: PasswordInput,
       },
     ],
-    [password, email]
+    [password, email],
   );
 
   return (

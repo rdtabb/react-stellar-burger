@@ -29,6 +29,12 @@
   }
 }
 
+.card-link {
+  font-style: inherit;
+  text-decoration: none;
+  color: inherit;
+}
+
 .card {
   display: grid;
   place-items: center;

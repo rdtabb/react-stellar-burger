@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { FormInput } from "./form-input";
 
 interface ComponentProps
@@ -17,15 +17,15 @@ export interface IFormInputConfig {
 }
 
 interface IFormInputsProps {
-    inputsConfig: IFormInputConfig[]
+  inputsConfig: IFormInputConfig[];
 }
 
-export const FormInputs = ({ inputsConfig }: IFormInputsProps) => {
+export const FormInputs = memo(({ inputsConfig }: IFormInputsProps) => {
   return (
     <>
-        {inputsConfig.map((input) => (
-            <FormInput {...input} />
-        ))}
+      {inputsConfig.map((input, index) => (
+        <FormInput {...input} key={index} />
+      ))}
     </>
   );
-};
+});

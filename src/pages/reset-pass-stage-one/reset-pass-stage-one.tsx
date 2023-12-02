@@ -30,10 +30,14 @@ export const ResetPassStageOne = () => {
         data: ResetPasswordEmailStageResponse;
       };
       if (result.data.success) {
-        navigate(ROUTES.RESET_PASSWORD);
+        navigate(ROUTES.RESET_PASSWORD, {
+          state: {
+            previousUrl: ROUTES.FORGOT_PASSWORD,
+          },
+        });
       }
     },
-    [email]
+    [email],
   );
 
   const resetPassStageOneInputsConfig: IFormInputConfig[] = useMemo(
@@ -44,7 +48,7 @@ export const ResetPassStageOne = () => {
         as: EmailInput,
       },
     ],
-    [email]
+    [email],
   );
 
   return (

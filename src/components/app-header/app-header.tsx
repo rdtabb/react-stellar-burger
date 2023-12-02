@@ -20,6 +20,7 @@ export const AppHeader = () => {
               isActive ? styles.tab_active : styles.tab
             }
           >
+            {/* Стиль иконки меняется, т.к. она наследует opacity от стилей tab и tab_active */}
             <BurgerIcon type="primary" />
             Конструктор
           </NavLink>
@@ -32,7 +33,7 @@ export const AppHeader = () => {
             <ListIcon type="secondary" /> Лента заказов
           </NavLink>
         </div>
-        <div className={styles.logo}>
+        <div>
           <Logo />
         </div>
         <NavLink

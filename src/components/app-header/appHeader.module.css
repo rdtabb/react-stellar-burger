@@ -30,20 +30,19 @@
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  color: var(--clr-primary);
   opacity: 0.6;
+  color: var(--clr-primary);
   text-decoration: none;
   transition: opacity 200ms ease-in;
+}
+
+.tab:hover {
+  opacity: 1;
 }
 
 .tab_active {
   composes: tab;
   opacity: 1;
-}
-
-.tab:hover {
-  opacity: 1;
-  cursor: pointer;
 }
 
 @media (max-width: 890px) {

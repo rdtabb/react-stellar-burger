@@ -4,9 +4,8 @@ import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { Form, ICaption, IFormInputConfig } from "../../components/form";
 
-import { ROUTES } from "../../utils/api";
-import { ResetPasswordEmailStageResponse } from "../../utils/types";
-import { useResetPasswordEmailStageMutation } from "../../services/api/apiSlice";
+import { ROUTES, ResetPasswordEmailStageResponse } from "../../utils";
+import { useResetPasswordEmailStageMutation } from "../../services";
 
 const resetPassStageOneCaptionsConfig: ICaption[] = [
   {

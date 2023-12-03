@@ -5,6 +5,7 @@ export const BASE_AUTH_URL = `${BASE_URL}/auth`;
 
 export const CACHE_KEYS = {
   ORDER_INFO: "ORDER_INFO",
+  USER_INFO: "USER_INFO"
 } as const;
 
 export const URLS: Urls = {
@@ -26,7 +27,9 @@ export const ROUTES = {
   FORGOT_PASSWORD: "/forgot-password",
   PROFILE: "/profile",
   RESET_PASSWORD: "/reset-password",
-  INGREDIENT_DETAILS: "/ingredient-details",
+  INGREDIENT_DETAILS: "/ingredient",
+  ORDERS_HISTORY: "/orders-history",
+  EXIT: "/exit"
 } as const;
 
 export const headers = {

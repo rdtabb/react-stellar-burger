@@ -6,19 +6,21 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "../burgerConstructor.module.css";
-import { setPopupState } from "../../../services/modalSlice";
-import { useCreateOrderMutation } from "../../../services/api/apiSlice";
 import {
+  setPopupState,
+  useCreateOrderMutation,
   priceSelector,
   idsSelector,
   clearConstructorIngredients,
-} from "../../../services/orderSlice";
+  bunSelector,
+} from "../../../services";
 
 import { CACHE_KEYS } from "../../../utils/api";
 
 export const PriceOrder = memo(() => {
   const dispatch = useDispatch();
 
+  const bun = useSelector(bunSelector);
   const price = useSelector(priceSelector);
   const ids = useSelector(idsSelector);
 
@@ -46,6 +48,7 @@ export const PriceOrder = memo(() => {
         title="Оформить заказ"
         type="primary"
         htmlType="submit"
+        disabled={bun ? false : true}
       >
         Оформить заказ
       </Button>

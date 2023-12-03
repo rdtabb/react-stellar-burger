@@ -14,7 +14,7 @@ import {
 import {
   moveConstructorIngredient,
   removeConstructorIngredient,
-} from "../../../services/orderSlice";
+} from "../../../services";
 import styles from "../burgerConstructor.module.css";
 
 type DraggableContsructorElementProps = {

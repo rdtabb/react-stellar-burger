@@ -7,11 +7,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Form, ICaption, IFormInputConfig } from "../../components/form";
 
-import { useAuthenticateUserMutation } from "../../services/api/apiSlice";
-import { setAuthInfo } from "../../services/authSlice";
-import { setTokens } from "../../utils/sessionStorage";
-import { AuthRegResponse } from "../../utils/types";
-import { ROUTES } from "../../utils/api";
+import { useAuthenticateUserMutation, setAuthInfo } from "../../services";
+import { setTokens, AuthRegResponse, ROUTES } from "../../utils";
 
 const loginFormCaptionsConfig: ICaption[] = [
   {

@@ -1,11 +1,11 @@
 import { memo } from "react";
-import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 import styles from "./infomodal.module.css";
-import { selectedItemSelector } from "../../services/ingredientsSlice";
 
 export const IngredientDetails = memo(() => {
-  const selectedItem = useSelector(selectedItemSelector);
+  const location = useLocation();
+  const selectedItem = location.state?.item;
 
   return (
     <article className={styles.modalContent}>

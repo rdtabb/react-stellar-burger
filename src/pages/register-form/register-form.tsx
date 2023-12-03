@@ -8,9 +8,8 @@ import {
 
 import { Form, IFormInputConfig, type ICaption } from "../../components/form";
 
-import { useRegisterUserMutation } from "../../services/api/apiSlice";
-import { AuthRegResponse } from "../../utils/types";
-import { ROUTES } from "../../utils/api";
+import { useRegisterUserMutation } from "../../services";
+import { AuthRegResponse, ROUTES } from "../../utils";
 
 const registerFormCaptionConfig: ICaption[] = [
   {

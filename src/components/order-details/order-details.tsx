@@ -1,12 +1,12 @@
 import { memo } from "react";
 
 import styles from "./modal.module.css";
-import { useCreateOrderMutation } from "../../services/api/apiSlice";
-import { CACHE_KEYS } from "../../utils/api";
+import { useCreateOrderMutation } from "../../services";
+import { CACHE_KEYS } from "../../utils";
 
 export const OrderDetails = memo(() => {
   const [_, { isLoading, isError, data }] = useCreateOrderMutation({
-    fixedCacheKey: CACHE_KEYS.ORDER_INFO
+    fixedCacheKey: CACHE_KEYS.ORDER_INFO,
   });
 
   return (

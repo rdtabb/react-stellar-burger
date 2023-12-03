@@ -8,8 +8,7 @@ import { OrderDetails } from "../order-details/order-details";
 import { Ingredients } from "./components/Ingredients";
 import { PriceOrder } from "./components/PriceOrder";
 
-import { ingredientsSelector } from "../../services/orderSlice";
-import { openPopupTypeSelector } from "../../services/modalSlice";
+import { ingredientsSelector, openPopupTypeSelector } from "../../services";
 import { useConstructorDnd } from "./hooks/hooks";
 
 export const BurgerConstructor = memo(() => {

@@ -9,12 +9,9 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { ROUTES } from "../../../utils/api";
-import { saveSelectedItem } from "../../../services/ingredientsSlice";
-import { quantitySelector } from "../../../services/orderSlice";
+import { ROUTES, Ingredient, DRAGNDROP_TYPES } from "../../../utils";
+import { quantitySelector, setPopupState } from "../../../services";
 import { RootState } from "../../../store/store";
-import { Ingredient, DRAGNDROP_TYPES } from "../../../utils/types";
-import { setPopupState } from "../../../services/modalSlice";
 
 type IngredientCardProps = {
   item: Ingredient;
@@ -34,13 +31,12 @@ export const IngredientCard = memo(({ item }: IngredientCardProps) => {
 
   const openInfoPopup = useCallback(() => {
     dispatch(setPopupState("info"));
-    dispatch(saveSelectedItem(item));
   }, []);
 
   return (
     <Link
       to={`${ROUTES.INGREDIENT_DETAILS}/${item._id}`}
-      state={{ previousLocation: location }}
+      state={{ previousLocation: location, item }}
       className={styles["card-link"]}
     >
       <article
@@ -63,7 +59,7 @@ export const IngredientCard = memo(({ item }: IngredientCardProps) => {
 
 const CounterWithMemo = memo(({ item }: IngredientCardProps) => {
   const quantity = useSelector((state: RootState) =>
-    quantitySelector(state, item._id),
+    quantitySelector(state, item._id)
   );
 
   return <Counter count={quantity} />;

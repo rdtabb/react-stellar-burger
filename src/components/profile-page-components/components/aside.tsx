@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import styles from "../profilePageComponents.module.css";
-import { ROUTES } from "../../../utils/api";
-import { destroyAuthInfo } from "../../../services/authSlice";
+import { ROUTES } from "../../../utils";
+import { destroyAuthInfo } from "../../../services";
 
 export const Aside = memo(() => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ export const Aside = memo(() => {
           className={({ isActive }) =>
             isActive ? styles.route_active : styles.route
           }
-          to={""}
+          to={ROUTES.ORDERS_HISTORY}
         >
           История заказов
         </NavLink>

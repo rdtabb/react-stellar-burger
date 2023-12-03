@@ -21,9 +21,6 @@ export interface IInitialModalSliceState {
 }
 
 export interface IInitialIngredientSliceState {
-  ingredients?: Ingredient[];
-  selectedIngredient?: Ingredient;
-  ingredientsFetchState: FetchStatus;
   selectedTab: Tab;
 }
 

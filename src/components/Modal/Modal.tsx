@@ -5,9 +5,9 @@ import { useDispatch } from "react-redux";
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { Children } from "../../utils/types";
+import { Children } from "../../utils";
 import { ModalOverlay } from "./modal-overlay";
-import { setPopupClass, setPopupState } from "../../services/modalSlice";
+import { setPopupClass, setPopupState } from "../../services";
 
 type ModalProps = Children & {
   modalContentClass: string;
@@ -30,7 +30,7 @@ export const Modal = memo(
       (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
         if (e.target === e.currentTarget) closePopup();
       },
-      [],
+      []
     );
 
     useEffect(() => {
@@ -56,7 +56,7 @@ export const Modal = memo(
           </div>
         </div>
       </ModalOverlay>,
-      document.getElementById("modals")!,
+      document.getElementById("modals")!
     );
-  },
+  }
 );

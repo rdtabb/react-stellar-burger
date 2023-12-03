@@ -20,9 +20,8 @@ export const AppHeader = () => {
               isActive ? styles.tab_active : styles.tab
             }
           >
-            {/* Стиль иконки меняется, т.к. она наследует opacity от стилей tab и tab_active */}
             <BurgerIcon type="primary" />
-            Конструктор
+            <p>Конструктор</p>
           </NavLink>
           <NavLink
             to={ROUTES.LOGIN}
@@ -30,7 +29,8 @@ export const AppHeader = () => {
               isActive ? styles.tab_active : styles.tab
             }
           >
-            <ListIcon type="secondary" /> Лента заказов
+            <ListIcon type="primary" />
+            <p>Лента заказов</p>
           </NavLink>
         </div>
         <div>
@@ -42,8 +42,8 @@ export const AppHeader = () => {
             isActive ? styles.tab_active : styles.tab
           }
         >
-          <ProfileIcon type="secondary" />
-          Личный кабинет
+          <ProfileIcon type="primary" />
+          <p>Личный кабинет</p>
         </NavLink>
       </nav>
     </header>

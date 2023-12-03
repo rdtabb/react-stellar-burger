@@ -1,0 +1,118 @@
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  createApi,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/dist/query/react";
+
+import {
+  URLS,
+  BASE_URL,
+  headers,
+  getTokens,
+  setTokens,
+  type AuthRegResponse,
+  type FetchUserResponse,
+  type Order,
+  type UserPayload,
+  CACHE_KEYS,
+} from "../../utils";
+import { RootState } from "../../store/store";
+import { initAuthCheck } from "../authSlice";
+
+const baseQueryWithReauth: BaseQueryFn<
+  FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  let result = await fetchBaseQuery({ baseUrl: BASE_URL })(
+    args,
+    api,
+    extraOptions
+  );
+
+  if (result.error && result.error.status === 403) {
+    const state = api.getState() as RootState;
+
+    const refreshToken = state.auth.tokens?.refreshToken;
+
+    const refreshResult = (await fetchBaseQuery({ baseUrl: BASE_URL })(
+      {
+        method: "POST",
+        url: URLS.UPDATE_TOKEN_URL,
+        body: {
+          token: refreshToken,
+        },
+      },
+      api,
+      extraOptions
+    )) as unknown as { data: AuthRegResponse };
+
+    if (refreshResult.data.success) {
+      setTokens(refreshResult.data);
+      api.dispatch(initAuthCheck());
+
+      result = await fetchBaseQuery({ baseUrl: BASE_URL })(
+        // @ts-ignore
+        {
+          ...args,
+          headers: {
+            ...headers,
+            Authorization: refreshResult.data.accessToken,
+          },
+        },
+        api,
+        extraOptions
+      );
+    }
+  }
+  return result;
+};
+
+export const authApiSlice = createApi({
+  reducerPath: "authApi",
+  baseQuery: baseQueryWithReauth,
+  tagTypes: [CACHE_KEYS.USER_INFO],
+  endpoints: (builder) => ({
+    createOrder: builder.mutation<Order, (string | undefined)[]>({
+      query: (ids: (string | undefined)[]) => ({
+        url: URLS.POST_ORDER_URL,
+        method: "POST",
+        body: { ingredients: ids },
+      }),
+    }),
+    userInfo: builder.query<FetchUserResponse | undefined, string>({
+      query: () => ({
+        url: URLS.GET_USER_INFO_URL,
+        headers: {
+          ...headers,
+          Authorization: getTokens()?.accessToken,
+        },
+        method: "GET",
+      }),
+      providesTags: (_) => [CACHE_KEYS.USER_INFO]
+    }),
+    changeUserInfo: builder.mutation<
+      FetchUserResponse | undefined,
+      UserPayload
+    >({
+      query: (body) => ({
+        url: URLS.GET_USER_INFO_URL,
+        headers: {
+          ...headers,
+          Authorization: getTokens()?.accessToken,
+        },
+        body,
+        method: "PATCH",
+      }),
+      invalidatesTags: (_) => [CACHE_KEYS.USER_INFO],
+    }),
+  }),
+});
+
+export const {
+  useChangeUserInfoMutation,
+  useCreateOrderMutation,
+  useUserInfoQuery,
+} = authApiSlice;

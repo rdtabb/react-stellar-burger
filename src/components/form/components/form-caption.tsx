@@ -1,12 +1,7 @@
 import React, { memo } from "react";
 import styles from "../form.module.css";
 import { Link } from "react-router-dom";
-
-export interface ICaption {
-  captionText: string;
-  linkText: string;
-  linkRoute: string;
-}
+import { ICaption } from "../form.types";
 
 interface IFormCaption {
   captionsConfig: ICaption[];

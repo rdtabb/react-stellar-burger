@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
 
-import { authInfoSelector } from "../../services/authSlice";
+import { authInfoSelector } from "../../services";
 
-import { ROUTES } from "../../utils/api";
+import { ROUTES } from "../../utils";
 
 interface IProtectedProps {
   onlyUnAuth?: boolean;

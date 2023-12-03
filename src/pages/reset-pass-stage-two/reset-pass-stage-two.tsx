@@ -7,9 +7,8 @@ import {
 
 import { Form, ICaption, IFormInputConfig } from "../../components/form";
 
-import { ROUTES } from "../../utils/api";
-import { ResetPasswordEmailStageResponse } from "../../utils/types";
-import { useResetPasswordTokenStageMutation } from "../../services/api/apiSlice";
+import { ROUTES, ResetPasswordEmailStageResponse } from "../../utils";
+import { useResetPasswordTokenStageMutation } from "../../services";
 
 const resetPassStageTwoCaptionsConfig: ICaption[] = [
   {

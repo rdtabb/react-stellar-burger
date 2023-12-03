@@ -1,12 +1,12 @@
 import { useRef, memo, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burgerIngredients.module.css";
 
-import { setTab, tabSelector } from "../../services/ingredientsSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { setTab, tabSelector } from "../../services";
 import { useIngredients } from "../../hooks/useIngredients";
 
-import { Tab as TabType } from "../../utils/types";
+import { Tab as TabType } from "../../utils";
 import { CardsSection } from "./components/cards-section";
 
 interface RefElementsCollection {

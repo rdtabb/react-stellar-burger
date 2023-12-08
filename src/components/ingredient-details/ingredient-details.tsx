@@ -1,11 +1,10 @@
 import { memo } from "react";
-import { useLocation } from "react-router-dom";
+import { useSelectedItem } from "./use-selected-item";
 
 import styles from "./infomodal.module.css";
 
 export const IngredientDetails = memo(() => {
-  const location = useLocation();
-  const selectedItem = location.state?.item;
+  const selectedItem = useSelectedItem();
 
   return (
     <article className={styles.modalContent}>

@@ -7,7 +7,7 @@ export const SESSSION_STORAGE_KEYS = {
 
 export const setSessionItem = (
   key: keyof typeof SESSSION_STORAGE_KEYS,
-  value: string
+  value: string,
 ) => {
   sessionStorage.setItem(key, value);
 };
@@ -28,10 +28,10 @@ export const destroyTokens = () => {
 
 export const getTokens = (): Tokens | undefined => {
   const refreshToken = sessionStorage.getItem(
-    SESSSION_STORAGE_KEYS.REFRESH_TOKEN
+    SESSSION_STORAGE_KEYS.REFRESH_TOKEN,
   );
   const accessToken = sessionStorage.getItem(
-    SESSSION_STORAGE_KEYS.ACCESS_TOKEN
+    SESSSION_STORAGE_KEYS.ACCESS_TOKEN,
   );
 
   if (!refreshToken || !accessToken) {

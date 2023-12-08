@@ -29,7 +29,7 @@ const baseQueryWithReauth: BaseQueryFn<
   let result = await fetchBaseQuery({ baseUrl: BASE_URL })(
     args,
     api,
-    extraOptions
+    extraOptions,
   );
 
   if (result.error && result.error.status === 403) {
@@ -46,7 +46,7 @@ const baseQueryWithReauth: BaseQueryFn<
         },
       },
       api,
-      extraOptions
+      extraOptions,
     )) as unknown as { data: AuthRegResponse };
 
     if (refreshResult.data.success) {
@@ -63,7 +63,7 @@ const baseQueryWithReauth: BaseQueryFn<
           },
         },
         api,
-        extraOptions
+        extraOptions,
       );
     }
   }
@@ -78,6 +78,10 @@ export const authApiSlice = createApi({
     createOrder: builder.mutation<Order, (string | undefined)[]>({
       query: (ids: (string | undefined)[]) => ({
         url: URLS.POST_ORDER_URL,
+        headers: {
+          ...headers,
+          Authorization: getTokens()?.accessToken,
+        },
         method: "POST",
         body: { ingredients: ids },
       }),
@@ -91,7 +95,7 @@ export const authApiSlice = createApi({
         },
         method: "GET",
       }),
-      providesTags: (_) => [CACHE_KEYS.USER_INFO]
+      providesTags: (_) => [CACHE_KEYS.USER_INFO],
     }),
     changeUserInfo: builder.mutation<
       FetchUserResponse | undefined,

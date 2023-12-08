@@ -12,14 +12,10 @@ import { useUserInfoQuery, useChangeUserInfoMutation } from "../../../services";
 import { AuthRegResponse } from "../../../utils";
 
 export const Form = memo(() => {
-  const {
-    data: user,
-    isLoading: isUserInfoLoading,
-  } = useUserInfoQuery("userinfo");
-  const [
-    updateUser,
-    { isLoading: isUpdateUserLoading },
-  ] = useChangeUserInfoMutation();
+  const { data: user, isLoading: isUserInfoLoading } =
+    useUserInfoQuery("userinfo");
+  const [updateUser, { isLoading: isUpdateUserLoading }] =
+    useChangeUserInfoMutation();
 
   const [name, setName] = useState<string>(user?.user.name ?? "");
   const [email, setEmail] = useState<string>(user?.user.email ?? "");
@@ -78,6 +74,7 @@ export const Form = memo(() => {
   const onCancel = useCallback(() => {
     setName(user?.user.name ?? "");
     setEmail(user?.user.email ?? "");
+    setPassword("")
     setIsEmailLocked(true);
     setIsNameLocked(true);
   }, [user?.user]);
@@ -90,12 +87,12 @@ export const Form = memo(() => {
       return false;
     }
 
-    if (name !== fetchedName || email !== fetchedEmail) {
+    if (name !== fetchedName || email !== fetchedEmail || password !== "") {
       return true;
     }
 
     return false;
-  }, [name, email, user?.user]);
+  }, [name, email, user?.user, password]);
 
   return (
     <form
@@ -134,21 +131,25 @@ export const Form = memo(() => {
 
       <PasswordInput value={password} onChange={handlePasswordChange} />
 
-      {shouldShowButtons && (
-        <div className={styles.buttonsGroup}>
-          <Button type="secondary" htmlType="button" onClick={onCancel}>
-            Отмена
-          </Button>
-          <Button
-            type="primary"
-            htmlType="submit"
-            onClick={onUpdate}
-            disabled={isUserInfoLoading || isUpdateUserLoading}
-          >
-            {isUpdateUserLoading ? "Сохраняем..." : "Сохранить"}
-          </Button>
-        </div>
-      )}
+      <div
+        className={
+          shouldShowButtons
+            ? styles.buttonsGroup
+            : styles["buttonsGroup_disabled"]
+        }
+      >
+        <Button type="secondary" htmlType="button" onClick={onCancel}>
+          Отмена
+        </Button>
+        <Button
+          type="primary"
+          htmlType="submit"
+          onClick={onUpdate}
+          disabled={isUserInfoLoading || isUpdateUserLoading}
+        >
+          {isUpdateUserLoading ? "Сохраняем..." : "Сохранить"}
+        </Button>
+      </div>
     </form>
   );
 });

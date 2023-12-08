@@ -10,14 +10,14 @@ import {
   RegisterForm,
   LoginForm,
   ResetPassStageOne,
-} from "./pages";
-import { AppHeader } from "./components/app-header/app-header";
-import { OnlyAuth, OnlyUnAuth } from "./components/protected/protected";
+} from "../../pages";
+import { AppHeader } from "../app-header/app-header";
+import { OnlyAuth, OnlyUnAuth } from "../protected/protected";
 
-import styles from "./pages/ingredient-details/ingredient-details.module.css";
-import { initAuthCheck } from "./services";
-import { ROUTES } from "./utils";
-import { Modal } from "./components/modal/modal";
+import styles from "../../pages/ingredient-details/ingredient-details.module.css";
+import { initAuthCheck } from "../../services";
+import { ROUTES } from "../../utils";
+import { Modal } from "../modal/modal";
 
 export const App = () => {
   const navigate = useNavigate();

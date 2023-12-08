@@ -33,7 +33,7 @@ export const Aside = memo(() => {
             isActive ? styles.route_active : styles.route
           }
           onClick={() => dispatch(destroyAuthInfo())}
-          to={""}
+          to={ROUTES.LOGIN}
         >
           Выход
         </NavLink>

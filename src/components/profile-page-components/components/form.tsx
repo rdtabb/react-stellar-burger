@@ -35,7 +35,7 @@ export const Form = memo(() => {
       event.preventDefault();
       setName(event.target.value);
     },
-    []
+    [],
   );
 
   const handleEmailChange = useCallback(
@@ -43,7 +43,7 @@ export const Form = memo(() => {
       event.preventDefault();
       setEmail(event.target.value);
     },
-    []
+    [],
   );
 
   const handlePasswordChange = useCallback(
@@ -51,7 +51,7 @@ export const Form = memo(() => {
       event.preventDefault();
       setPassword(event.target.value);
     },
-    []
+    [],
   );
 
   const onUpdate = useCallback(async () => {
@@ -66,6 +66,7 @@ export const Form = memo(() => {
     if (result.data.success) {
       setEmail(result.data.user.email);
       setName(result.data.user.name);
+      setPassword("");
       setIsEmailLocked(true);
       setIsNameLocked(true);
     }
@@ -74,7 +75,7 @@ export const Form = memo(() => {
   const onCancel = useCallback(() => {
     setName(user?.user.name ?? "");
     setEmail(user?.user.email ?? "");
-    setPassword("")
+    setPassword("");
     setIsEmailLocked(true);
     setIsNameLocked(true);
   }, [user?.user]);

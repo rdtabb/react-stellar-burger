@@ -18,8 +18,7 @@ const Protected = ({
   const location = useLocation();
 
   if (onlyUnAuth && isAuth) {
-    const { from } = location.state || { from: { pathName: "/" } };
-    return <Navigate to={from} />;
+    return <Navigate to={{ pathname: ROUTES.CONSTRUCTOR }} />;
   }
 
   if (!onlyUnAuth && !isAuth) {

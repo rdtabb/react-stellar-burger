@@ -40,7 +40,6 @@ export const LoginForm = () => {
       if (result.data.success) {
         dispatch(setAuthInfo(result.data));
         setTokens(result.data);
-        navigate(ROUTES.CONSTRUCTOR);
       }
     },
     [password, email],

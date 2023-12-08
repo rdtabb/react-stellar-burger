@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
-import { Tab, IInitialIngredientSliceState } from "../utils/types";
+import { Tab, IInitialIngredientSliceState } from "../utils";
 
 const initialState: IInitialIngredientSliceState = {
   selectedTab: "buns",
@@ -20,7 +20,7 @@ export const { setTab } = ingredientsSlice.actions;
 
 export const tabSelector = createSelector(
   (state: RootState) => state.ingredients.selectedTab,
-  (tab) => tab
+  (tab) => tab,
 );
 
 export default ingredientsSlice.reducer;

@@ -7,9 +7,12 @@ import {
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { ROUTES } from "../../utils/api";
+import { ROUTES, CACHE_KEYS } from "../../utils/api";
+import { useIngredientsPrefetch } from "../../services";
 
 export const AppHeader = () => {
+  const prefetchIngredients = useIngredientsPrefetch("getIngredients");
+
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -19,6 +22,7 @@ export const AppHeader = () => {
             className={({ isActive }) =>
               isActive ? styles.tab_active : styles.tab
             }
+            onMouseOver={() => prefetchIngredients(CACHE_KEYS.INGREDIENTS)}
           >
             <BurgerIcon type="primary" />
             <p>Конструктор</p>

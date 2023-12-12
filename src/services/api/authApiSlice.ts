@@ -74,6 +74,8 @@ export const authApiSlice = createApi({
   reducerPath: "authApi",
   baseQuery: baseQueryWithReauth,
   tagTypes: [CACHE_KEYS.USER_INFO],
+  keepUnusedDataFor: 30,
+  refetchOnFocus: false,
   endpoints: (builder) => ({
     createOrder: builder.mutation<Order, (string | undefined)[]>({
       query: (ids: (string | undefined)[]) => ({

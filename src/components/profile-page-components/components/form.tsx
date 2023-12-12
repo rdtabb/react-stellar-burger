@@ -7,13 +7,16 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
+import { CACHE_KEYS } from "../../../utils";
+
 import styles from "../profilePageComponents.module.css";
 import { useUserInfoQuery, useChangeUserInfoMutation } from "../../../services";
 import { AuthRegResponse } from "../../../utils";
 
 export const Form = memo(() => {
-  const { data: user, isLoading: isUserInfoLoading } =
-    useUserInfoQuery("userinfo");
+  const { data: user, isLoading: isUserInfoLoading } = useUserInfoQuery(
+    CACHE_KEYS.USER_INFO,
+  );
   const [updateUser, { isLoading: isUpdateUserLoading }] =
     useChangeUserInfoMutation();
 

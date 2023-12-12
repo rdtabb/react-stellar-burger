@@ -7,6 +7,8 @@ import {
   ResetPasswordEmailStageResponse,
 } from "../../utils/types";
 import { BASE_URL, URLS, headers } from "../../utils/api";
+import { store } from "../../store/store";
+import { setIsAuthChecked } from "../authSlice";
 
 export const apiSlice = createApi({
   reducerPath: "apiSlice",
@@ -30,6 +32,9 @@ export const apiSlice = createApi({
         body,
         headers,
       }),
+      onQueryStarted: () => {
+        store.dispatch(setIsAuthChecked(true));
+      },
     }),
     resetPasswordEmailStage: builder.mutation<
       ResetPasswordEmailStageResponse,
@@ -62,4 +67,5 @@ export const {
   useAuthenticateUserMutation,
   useResetPasswordEmailStageMutation,
   useResetPasswordTokenStageMutation,
+  usePrefetch: useIngredientsPrefetch,
 } = apiSlice;

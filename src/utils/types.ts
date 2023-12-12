@@ -8,6 +8,7 @@ import modalStyles from "../components/Modal/modal.module.css";
 export interface IInitialAuthSliceState {
   user?: User;
   tokens?: Tokens;
+  isAuthChecked?: boolean;
 }
 
 export interface IInitialOrderSliceState {

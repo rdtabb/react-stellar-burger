@@ -10,6 +10,7 @@ import {
 const initialState: IInitialAuthSliceState = {
   tokens: undefined,
   user: undefined,
+  isAuthChecked: false,
 };
 
 export const authSlice = createSlice({
@@ -22,6 +23,9 @@ export const authSlice = createSlice({
         return state;
       }
       state.tokens = tokens;
+    },
+    setIsAuthChecked(state, { payload }: PayloadAction<boolean>) {
+      state.isAuthChecked = payload;
     },
     setAuthInfo(state, { payload }: PayloadAction<AuthRegResponse>) {
       state.user = payload.user;
@@ -38,14 +42,18 @@ export const authSlice = createSlice({
   },
 });
 
-const selectTokens = (state: RootState) => state.auth.tokens;
+const selectTokens = (state: RootState) => ({
+  tokens: state.auth.tokens,
+  isAuthChecked: state.auth.isAuthChecked,
+});
 
-export const authInfoSelector = createSelector(selectTokens, (tokens) => ({
-  tokens: tokens,
-  isAuth: !!tokens,
+export const authInfoSelector = createSelector(selectTokens, (info) => ({
+  tokens: info.tokens,
+  isAuth: !!info.tokens,
+  isAuthChecked: info.isAuthChecked,
 }));
 
-export const { initAuthCheck, setAuthInfo, destroyAuthInfo } =
+export const { initAuthCheck, setAuthInfo, destroyAuthInfo, setIsAuthChecked } =
   authSlice.actions;
 
 export default authSlice.reducer;

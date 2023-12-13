@@ -19,7 +19,8 @@ import {
   CACHE_KEYS,
 } from "../../utils";
 import { RootState } from "../../store/store";
-import { initAuthCheck } from "../authSlice";
+import { initAuthCheck, setIsAuthChecked } from "../authSlice";
+import { store } from "../../store/store";
 
 const baseQueryWithReauth: BaseQueryFn<
   FetchArgs,
@@ -33,6 +34,8 @@ const baseQueryWithReauth: BaseQueryFn<
   );
 
   if (result.error && result.error.status === 403) {
+    console.log(result);
+    console.log("reauth");
     const state = api.getState() as RootState;
 
     const refreshToken = state.auth.tokens?.refreshToken;
@@ -97,6 +100,9 @@ export const authApiSlice = createApi({
         },
         method: "GET",
       }),
+      onQueryStarted() {
+        store.dispatch(setIsAuthChecked(true));
+      },
       providesTags: (_) => [CACHE_KEYS.USER_INFO],
     }),
     changeUserInfo: builder.mutation<

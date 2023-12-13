@@ -17,6 +17,10 @@ const Protected = ({
   const { isAuth, isAuthChecked } = useSelector(authInfoSelector);
   const location = useLocation();
 
+  if (!isAuthChecked) {
+    return null;
+  }
+
   if (onlyUnAuth && isAuth) {
     const pathname = location.state?.from.pathname || ROUTES.CONSTRUCTOR;
 
@@ -25,10 +29,6 @@ const Protected = ({
 
   if (!onlyUnAuth && !isAuth) {
     return <Navigate to={ROUTES.LOGIN} state={{ from: location }} />;
-  }
-
-  if (!isAuthChecked && !onlyUnAuth) {
-    return null;
   }
 
   return component;

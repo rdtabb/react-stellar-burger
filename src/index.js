@@ -8,7 +8,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { Provider } from "react-redux";
 
 import { store } from "./store/store";
-import { App } from "./components/app/App";
+import { App } from "./components";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,5 +20,5 @@ ReactDOM.render(
       </DndProvider>
     </BrowserRouter>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );

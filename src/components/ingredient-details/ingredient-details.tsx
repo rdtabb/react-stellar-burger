@@ -1,10 +1,17 @@
 import { memo } from "react";
+import { Navigate } from "react-router-dom";
 import { useSelectedItem } from "./use-selected-item";
 
+import { NotFound } from "../not-found/not-found";
 import styles from "./infomodal.module.css";
+import { ROUTES } from "../../utils";
 
 export const IngredientDetails = memo(() => {
   const selectedItem = useSelectedItem();
+
+  if (!selectedItem) {
+    return <NotFound />;
+  }
 
   return (
     <article className={styles.modalContent}>

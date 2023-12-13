@@ -1,6 +1,5 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { useIngredients } from "../../hooks/useIngredients";
 
 import { Ingredient } from "../../utils";
 
@@ -10,9 +9,8 @@ interface Location {
   };
 }
 
-export const useSelectedItem = (): Ingredient | undefined => {
-  const { defaultIngredient } = useIngredients();
+export const useSelectedItem = (): Ingredient | null => {
   const { state }: Location = useLocation();
 
-  return state.item ?? defaultIngredient;
+  return state?.item;
 };

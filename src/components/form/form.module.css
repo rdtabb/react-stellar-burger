@@ -1,57 +1,57 @@
 .main {
-  --_spacing: 24px;
+    --_spacing: 24px;
 
-  display: grid;
-  place-items: center;
-  width: 100vw;
-  margin-top: 180px;
+    display: grid;
+    place-items: center;
+    width: 100vw;
+    margin-top: 180px;
 
-  font-family: var(--ff-primary);
-  font-size: var(--fs-400);
-  line-height: var(--line-height-400);
+    font-family: var(--ff-primary);
+    font-size: var(--fs-400);
+    line-height: var(--line-height-400);
 }
 
 .form {
-  display: grid;
-  place-items: center;
-  gap: var(--_spacing);
-  padding-bottom: 80px;
+    display: grid;
+    place-items: center;
+    gap: var(--_spacing);
+    padding-bottom: 80px;
 }
 
 .title {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 
-  font-size: var(--fs-450);
-  font-weight: var(--fw-700);
-  line-height: var(--line-height-450);
+    font-size: var(--fs-450);
+    font-weight: var(--fw-700);
+    line-height: var(--line-height-450);
 }
 
 .input {
-  padding-inline: var(--_spacing);
+    padding-inline: var(--_spacing);
 }
 
 .submit {
-  width: fit-content;
+    width: fit-content;
 }
 
 .captionContainer {
-  display: grid;
-  gap: 16px;
+    display: grid;
+    gap: 16px;
 }
 
 .caption {
-  color: var(--clr-secondary);
-  text-align: center;
+    color: var(--clr-secondary);
+    text-align: center;
 }
 
 .captionLink {
-  text-decoration: none;
-  color: var(--clr-accent);
-  transition: opacity 200ms ease-in;
+    text-decoration: none;
+    color: var(--clr-accent);
+    transition: opacity 200ms ease-in;
 }
 
 .captionLink:hover {
-  opacity: 0.8;
+    opacity: 0.8;
 }

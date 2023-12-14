@@ -1,79 +1,79 @@
 .main {
-  --_width: 1280px;
+    --_width: 1280px;
 
-  display: grid;
-  grid-template-columns: 0.5fr min-content;
-  gap: 60px;
-  width: min(var(--_width), 100% - 1rem);
-  margin: 120px auto 0;
-  font-family: var(--ff-primary);
+    display: grid;
+    grid-template-columns: 0.5fr min-content;
+    gap: 60px;
+    width: min(var(--_width), 100% - 1rem);
+    margin: 120px auto 0;
+    font-family: var(--ff-primary);
 }
 
 .route {
-  font-size: var(--fs-450);
-  font-weight: var(--fw-700);
-  line-height: var(--line-height-450);
-  padding-block: 8px;
-  color: var(--clr-secondary);
-  opacity: 0.8;
-  text-decoration: none;
-  transition: opacity 200ms ease-in;
+    font-size: var(--fs-450);
+    font-weight: var(--fw-700);
+    line-height: var(--line-height-450);
+    padding-block: 8px;
+    color: var(--clr-secondary);
+    opacity: 0.8;
+    text-decoration: none;
+    transition: opacity 200ms ease-in;
 }
 
 .route:hover {
-  opacity: 1;
+    opacity: 1;
 }
 
 .route_active {
-  composes: route;
-  opacity: 1;
-  color: var(--clr-primary);
+    composes: route;
+    opacity: 1;
+    color: var(--clr-primary);
 }
 
 .aside {
-  display: grid;
-  grid-auto-rows: min-content;
-  gap: 80px;
+    display: grid;
+    grid-auto-rows: min-content;
+    gap: 80px;
 }
 
 .nav {
-  display: grid;
+    display: grid;
 }
 
 .caption {
-  color: var(--clr-secondary);
-  opacity: 0.4;
+    color: var(--clr-secondary);
+    opacity: 0.4;
 }
 
 .inputContainer {
-  width: min-content;
-  position: relative;
+    width: min-content;
+    position: relative;
 }
 
 .inputs {
-  display: grid;
-  grid-auto-rows: min-content;
-  gap: 24px;
+    display: grid;
+    grid-auto-rows: min-content;
+    gap: 24px;
 }
 
 .editButton {
-  position: absolute;
-  top: 1.3rem;
-  right: 1.5rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
+    position: absolute;
+    top: 1.3rem;
+    right: 1.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 .buttonsGroup {
-  display: flex;
-  justify-content: flex-end;
-  transition: 200ms opacity ease-in;
+    display: flex;
+    justify-content: flex-end;
+    transition: 200ms opacity ease-in;
 }
 
 .buttonsGroup_disabled {
-  composes: buttonsGroup;
-  opacity: 0;
-  visibility: 0;
-  pointer-events: none;
+    composes: buttonsGroup;
+    opacity: 0;
+    visibility: 0;
+    pointer-events: none;
 }

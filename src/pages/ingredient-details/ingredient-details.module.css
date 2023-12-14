@@ -1,32 +1,32 @@
 .modalContent {
-  --_width: 720px;
-  --text-clr-accent: #8585ad;
+    --_width: 720px;
+    --text-clr-accent: #8585ad;
 
-  font-family: var(--ff-primary);
-  text-align: center;
+    font-family: var(--ff-primary);
+    text-align: center;
 
-  position: relative;
-  z-index: 100;
-  background-color: var(--modal-bg);
-  border: 1px solid var(--modal-border);
-  border-radius: 40px;
-  padding: 40px 40px 60px;
-  width: min(var(--_width), 100% - 10px);
-  box-sizing: border-box;
+    position: relative;
+    z-index: 100;
+    background-color: var(--modal-bg);
+    border: 1px solid var(--modal-border);
+    border-radius: 40px;
+    padding: 40px 40px 60px;
+    width: min(var(--_width), 100% - 10px);
+    box-sizing: border-box;
 
-  cursor: auto;
+    cursor: auto;
 }
 
 .ingredient-details {
-  display: grid;
-  place-content: center;
-  height: 100%;
+    display: grid;
+    place-content: center;
+    height: 100%;
 
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .link {
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 }

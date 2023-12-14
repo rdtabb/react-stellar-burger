@@ -1,46 +1,46 @@
 .modal {
-  --modal-border: rgba(76, 76, 255, 0.2);
-  --modal-bg: #1c1c21;
-  --text-clr-accent: #8585ad;
+    --modal-border: rgba(76, 76, 255, 0.2);
+    --modal-bg: #1c1c21;
+    --text-clr-accent: #8585ad;
 
-  display: grid;
-  place-items: center;
-  background-color: hsl(0, 0%, 0%, 0.6);
-  position: fixed;
-  inset: 0;
-  
-  text-align: center;
-  font-family: var(--ff-primary);
+    display: grid;
+    place-items: center;
+    background-color: hsl(0, 0%, 0%, 0.6);
+    position: fixed;
+    inset: 0;
 
-  visibility: hidden;
-  opacity: 0;
-  transition:
-    visibility 200ms ease-in,
-    opacity 200ms ease-in;
+    text-align: center;
+    font-family: var(--ff-primary);
 
-  cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition:
+        visibility 200ms ease-in,
+        opacity 200ms ease-in;
+
+    cursor: pointer;
 }
 
 .modalActive {
-  composes: modal;
-  display: grid;
-  opacity: 1;
-  visibility: visible;
+    composes: modal;
+    display: grid;
+    opacity: 1;
+    visibility: visible;
 
-  transition:
-    visibility 0ms,
-    opacity 200ms ease-in;
+    transition:
+        visibility 0ms,
+        opacity 200ms ease-in;
 }
 
 .closeWrapper {
-  position: absolute;
-  top: 60px;
-  right: 40px;
+    position: absolute;
+    top: 60px;
+    right: 40px;
 
-  transition: opacity 200ms ease-in;
+    transition: opacity 200ms ease-in;
 }
 
 .closeWrapper:hover {
-  cursor: pointer;
-  opacity: 0.6;
+    cursor: pointer;
+    opacity: 0.6;
 }

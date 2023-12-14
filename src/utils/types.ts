@@ -1,13 +1,19 @@
 import { ReactNode } from "react";
 import modalStyles from "../components/Modal/modal.module.css";
 
+//----------------------------------------
+// Initial states of slices
+//----------------------------------------
+
+export interface IInitialAuthSliceState {
+  user?: User;
+  tokens?: Tokens;
+  isAuthChecked?: boolean;
+}
+
 export interface IInitialOrderSliceState {
   constructorBun?: Ingredient;
   constructorIngredients: IngredientWithUniqueId[];
-  constructorIngredientsIds: string[];
-  orderData?: Order;
-  orderFetchStatus: FetchStatus;
-  error?: string;
 }
 
 export interface IInitialModalSliceState {
@@ -16,16 +22,17 @@ export interface IInitialModalSliceState {
 }
 
 export interface IInitialIngredientSliceState {
-  ingredients?: Ingredient[];
-  selectedIngredient?: Ingredient;
-  ingredientsFetchState: FetchStatus;
   selectedTab: Tab;
 }
 
-// @ts-ignore
-export type ModalClass = modalStyles.modal | modalStyles.modalActive;
+//----------------------------------------
+// Core types
+//----------------------------------------
 
-export type ModalType = "order" | "info" | "closed";
+export interface User {
+  email: string;
+  name: string;
+}
 
 export interface Ingredient {
   calories: number;
@@ -46,6 +53,95 @@ export interface IngredientWithUniqueId extends Ingredient {
   uniqueId: string;
 }
 
+export interface Order {
+  name: string;
+  order: {
+    number: number;
+  };
+  success: boolean;
+}
+
+export interface Children {
+  children: ReactNode | ReactNode[];
+}
+
+export type ModalType = "order" | "info" | "closed";
+
+export type FetchStatus = "idle" | "success" | "loading" | "failed";
+
+export type Tab = "buns" | "mains" | "sauces";
+// @ts-ignore
+export type ModalClass = modalStyles.modal | modalStyles.modalActive;
+
+//----------------------------------------
+// Api types
+//----------------------------------------
+
+export interface Urls {
+  POST_ORDER_URL: string;
+  FETCH_INGREDIENTS: string;
+  AUTH_URL: string;
+  GET_USER_INFO_URL: string;
+  REGISTER_URL: string;
+  SIGNOUT_URL: string;
+  UPDATE_TOKEN_URL: string;
+  RESET_PASSWORD_EMAIL_STAGE: string;
+  RESET_PASSWORD_TOKEN_STAGE: string;
+}
+
+export interface Tokens {
+  refreshToken: string;
+  accessToken: string;
+}
+
+export interface FetchIngredientsResponse {
+  success: boolean;
+  data: Ingredient[];
+}
+
+export interface AuthRegResponse {
+  success: boolean;
+  user: User;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RefreshResponse {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface FetchUserResponse {
+  success: boolean;
+  user: User;
+}
+
+export interface UserPayload extends User {
+  password: string;
+}
+
+export interface ResetPasswordEmailStageResponse {
+  success: boolean;
+  message: string;
+}
+
+export type AuthPayload = Pick<UserPayload, "password" | "email">;
+
+export interface UpdateTokenPayload {
+  token: string;
+}
+
+export interface UpdateTokenResponse {
+  success: boolean;
+  refreshToken: string;
+  accessToken: string;
+}
+
+//----------------------------------------
+// Drag and drop types
+//----------------------------------------
+
 export interface MoveIngredientsPayload {
   hoverIndex: number;
   dragIndex: number;
@@ -56,32 +152,9 @@ export interface DragItem {
   index: number;
 }
 
-export interface FetchIngredientsResponse<T> {
-  success: boolean;
-  data: T[];
-}
-
-export interface CreateOrderResponse {
-  name: string;
-  order: {
-    number: number;
-  };
-  success: boolean;
-}
-
-export interface Order extends CreateOrderResponse {}
-
 export const DRAGNDROP_TYPES = {
   ingredients: "INGREDIENTS",
   constructorElements: "CONSTRUCTOR_ELEMENTS",
-} as const;
-
-export interface Children {
-  children: ReactNode | ReactNode[];
-}
-
-export type FetchStatus = "idle" | "success" | "loading" | "failed";
-
-export type Tab = "buns" | "mains" | "sauces";
+};
 
 export {};

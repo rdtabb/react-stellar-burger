@@ -1,0 +1,97 @@
+.draggableElements {
+  display: grid;
+  justify-content: flex-end;
+  gap: 16px;
+  grid-auto-rows: min-content;
+  width: 100%;
+
+  flex-grow: 1;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
+.draggableElementsEmpty {
+  composes: draggableElements;
+  grid-auto-rows: auto;
+  justify-content: center;
+  place-items: center;
+  width: 100%;
+  height: auto;
+}
+
+.draggableElements::-webkit-scrollbar {
+  width: 5px;
+}
+
+.draggableElements::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.draggableElements::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: var(--clr-accent);
+}
+
+.elementsGrid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  margin: 100px 16px 20px;
+  height: 656px;
+  border-radius: 64px;
+  transition: 300ms box-shadow ease-in;
+}
+
+.totalPrice {
+  font-size: var(--fs-700);
+  line-height: var(--line-height-600);
+  font-family: var(--ff-secondary);
+}
+
+.order {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.priceContainer {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.draggable {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: min-content;
+}
+
+.constructorElementHover {
+  transition: opacity 200ms ease-in;
+}
+
+.constructorElementHover:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.emptyBun {
+  display: grid;
+  place-items: center;
+  background: var(--bg-500);
+  width: 100%;
+  padding-block: 32px;
+}
+
+.emptyBunTop {
+  composes: emptyBun;
+  border-radius: 88px 88px 40px 40px;
+}
+
+.emptyBunBottom {
+  composes: emptyBun;
+  border-radius: 40px 40px 88px 88px;
+}

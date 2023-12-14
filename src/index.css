@@ -22,6 +22,7 @@
   --ff-secondary: "Iceland", monospace;
 
   --line-height-400: 24px;
+  --line-height-450: 30px;
   --line-height-500: 36px;
   --line-height-600: 40px;
 }
@@ -29,6 +30,11 @@
 body,
 p {
   margin: 0;
+}
+
+#root {
+  height: 100vh;
+  overflow: hidden;
 }
 
 .tabs-global div {
@@ -48,6 +54,7 @@ p {
 
 * {
   padding: 0;
+  box-sizing: border-box;
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */

@@ -1,5 +1,4 @@
-import { BurgerConstructor } from '@components/burger-constructor/burger-constructor'
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients'
+import { BurgerConstructor, BurgerIngredients } from '@components/index'
 
 import styles from './constructor.module.css'
 

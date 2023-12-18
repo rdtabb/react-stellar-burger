@@ -1,11 +1,9 @@
 import { memo } from 'react'
 
-import { Aside } from '@components/profile-page-components/components/aside'
-import { Form } from '@components/profile-page-components/components/form'
-import styles from '@components/profile-page-components/profilePageComponents.module.css'
+import { Form, Aside, profilePageStyles } from '@components/index'
 
 export const Profile = memo(() => (
-    <main className={styles.main}>
+    <main className={profilePageStyles.main}>
         <Aside />
         <Form />
     </main>

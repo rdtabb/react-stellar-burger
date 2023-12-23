@@ -6,7 +6,8 @@ export const BASE_AUTH_URL = `${BASE_URL}/auth`
 export const CACHE_KEYS = {
     INGREDIENTS: 'INGREDIENTS',
     ORDER_INFO: 'ORDER_INFO',
-    USER_INFO: 'USER_INFO'
+    USER_INFO: 'USER_INFO',
+    ORDERS: 'ORDERS'
 } as const
 
 export const URLS: Urls = {
@@ -18,7 +19,8 @@ export const URLS: Urls = {
     SIGNOUT_URL: `${BASE_AUTH_URL}/logout`,
     UPDATE_TOKEN_URL: `${BASE_AUTH_URL}/token`,
     RESET_PASSWORD_EMAIL_STAGE: `${BASE_URL}/password-reset`,
-    RESET_PASSWORD_TOKEN_STAGE: `${BASE_URL}/password-reset/reset`
+    RESET_PASSWORD_TOKEN_STAGE: `${BASE_URL}/password-reset/reset`,
+    ORDERS: `wss://norma.nomoreparties.space/orders/all`
 } as const
 
 export const ROUTES = {
@@ -30,7 +32,9 @@ export const ROUTES = {
     RESET_PASSWORD: '/reset-password',
     INGREDIENT_DETAILS: '/ingredient',
     ORDERS_HISTORY: '/orders-history',
-    EXIT: '/exit'
+    EXIT: '/exit',
+    FEED: '/feed',
+    ORDERS: '/profile/orders'
 } as const
 
 export const headers = {

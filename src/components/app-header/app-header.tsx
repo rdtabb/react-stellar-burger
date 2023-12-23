@@ -27,7 +27,7 @@ export const AppHeader = () => {
                         <p>Конструктор</p>
                     </NavLink>
                     <NavLink
-                        to={ROUTES.LOGIN}
+                        to={ROUTES.FEED}
                         className={({ isActive }) => (isActive ? styles.tab_active : styles.tab)}
                     >
                         <ListIcon type="primary" />

@@ -2,7 +2,6 @@ import { useState, useCallback, useMemo } from 'react'
 
 import { PasswordInput, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 
 import { Form, ICaption, IFormInputConfig } from '@components/form'
 import { useAuthenticateUserMutation, setAuthInfo } from '@services/index'
@@ -23,7 +22,6 @@ const loginFormCaptionsConfig: ICaption[] = [
 
 export const LoginForm = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const [password, setPassword] = useState<string>('')
     const [email, setEmail] = useState<string>('')

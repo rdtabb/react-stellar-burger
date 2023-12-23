@@ -22,7 +22,7 @@ export const PriceOrder = memo(() => {
     const price = useSelector(priceSelector)
     const ids = useSelector(idsSelector)
 
-    const [createOrder, _] = useCreateOrderMutation({
+    const [createOrder,] = useCreateOrderMutation({
         fixedCacheKey: CACHE_KEYS.ORDER_INFO
     })
 

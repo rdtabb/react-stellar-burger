@@ -4,9 +4,9 @@ import {
     FetchBaseQueryError,
     createApi,
     fetchBaseQuery
-} from '@reduxjs/toolkit/dist/query/react'
+} from '@reduxjs/toolkit/query/react'
 
-import { RootState, store } from '@store/store'
+import { RootState } from '@store/store'
 import {
     URLS,
     BASE_URL,
@@ -20,7 +20,7 @@ import {
     CACHE_KEYS
 } from '@utils/index'
 
-import { initAuthCheck, setIsAuthChecked } from '../authSlice'
+import { initAuthCheck } from '../authSlice'
 
 const baseQueryWithReauth: BaseQueryFn<FetchArgs, unknown, FetchBaseQueryError> = async (
     args,
@@ -100,7 +100,7 @@ export const authApiSlice = createApi({
                 // so what the fuck?
                 // store.dispatch(setIsAuthChecked(true))
             },
-            providesTags: (_) => [CACHE_KEYS.USER_INFO]
+            providesTags: () => [CACHE_KEYS.USER_INFO]
         }),
         changeUserInfo: builder.mutation<FetchUserResponse | undefined, UserPayload>({
             query: (body) => ({
@@ -112,9 +112,9 @@ export const authApiSlice = createApi({
                 body,
                 method: 'PATCH'
             }),
-            invalidatesTags: (_) => [CACHE_KEYS.USER_INFO]
+            invalidatesTags: () => [CACHE_KEYS.USER_INFO]
         })
     })
 })
 
-export const { useChangeUserInfoMutation, useCreateOrderMutation, useUserInfoQuery } = authApiSlice
+export const { useUserInfoQuery, useCreateOrderMutation, useChangeUserInfoMutation } = authApiSlice

@@ -6,7 +6,7 @@ import { CACHE_KEYS } from '@utils/index'
 import styles from './modal.module.css'
 
 export const OrderDetails = memo(() => {
-    const [_, { isLoading, isError, data }] = useCreateOrderMutation({
+    const [, { isLoading, isError, data }] = useCreateOrderMutation({
         fixedCacheKey: CACHE_KEYS.ORDER_INFO
     })
 

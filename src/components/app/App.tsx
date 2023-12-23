@@ -3,13 +3,14 @@ import React, { useCallback } from 'react'
 import { useLocation, useNavigate, Routes, Route } from 'react-router-dom'
 
 import {
+    Profile,
     Constructor,
     IngredientDetailsPage,
-    Profile,
+    ResetPassStageOne,
     ResetPassStageTwo,
     RegisterForm,
     LoginForm,
-    ResetPassStageOne
+    Feed
 } from '@pages/index'
 import styles from '@pages/ingredient-details/ingredient-details.module.css'
 import { useUserInfoQuery } from '@services/index'
@@ -54,6 +55,7 @@ export const App = () => {
                     path={`${ROUTES.INGREDIENT_DETAILS}/:id`}
                     element={<IngredientDetailsPage enableRedirect={false} />}
                 />
+                <Route path={ROUTES.FEED} element={<Feed />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
             {previousLocation && (

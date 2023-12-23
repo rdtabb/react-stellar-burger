@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useLocation } from 'react-router-dom'
 
 import { Ingredient } from '../../utils'
@@ -15,3 +13,4 @@ export const useSelectedItem = (): Ingredient | null => {
 
     return state?.item
 }
+ 

@@ -89,6 +89,7 @@ export interface Urls {
     UPDATE_TOKEN_URL: string
     RESET_PASSWORD_EMAIL_STAGE: string
     RESET_PASSWORD_TOKEN_STAGE: string
+    ORDERS: string
 }
 
 export interface Tokens {

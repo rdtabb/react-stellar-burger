@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import { apiSlice, authApiSlice, ordersWsApi } from '@services/index'
 import feedReducer from '@services/api/feedSlice'
 import authReducer from '@services/authSlice'
+import { apiSlice, authApiSlice, ordersWsApi } from '@services/index'
 import ingredientsReducer from '@services/ingredientsSlice'
 import modalReducer from '@services/modalSlice'
 import orderReducer from '@services/orderSlice'

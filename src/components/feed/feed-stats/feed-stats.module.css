@@ -1,0 +1,48 @@
+.stats-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 60px;
+    place-content: start;
+}
+
+.ready-progress-container {
+    display: grid;
+    gap: 36px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.ready-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.ready-progress-list {
+    display: grid;
+    gap: 8px;
+    list-style: none;
+}
+
+.ready-progress-list__item {
+    font-family: var(--ff-secondary);
+    font-size: var(--fs-500);
+    line-height: var(--line-height-400);
+}
+
+.item-colored {
+    color: #0CC;
+}
+
+.title {
+    font-size: var(--fs-425);
+    font-weight: var(--fw-700);
+    line-height: var(--line-height-450);
+}
+
+.stat-large {
+    font-family: var(--ff-secondary);
+    font-size: 144px;
+    font-weight: var(--fw-400);
+    line-height: 120px;
+    text-shadow: 0px 4px 32px rgba(51, 51, 255, 0.50), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 0px 16px rgba(51, 51, 255, 0.25);
+}

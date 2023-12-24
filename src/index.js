@@ -1,6 +1,5 @@
 import React from 'react'
-
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import './index.css'
 
 import { DndProvider } from 'react-dnd'
@@ -11,8 +10,9 @@ import { BrowserRouter } from 'react-router-dom'
 import { App } from './components'
 import { store } from './store/store'
 
-// eslint-disable-next-line react/no-deprecated
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'))
+
+root.render(
     <React.StrictMode>
         <BrowserRouter>
             <DndProvider backend={HTML5Backend}>
@@ -21,6 +21,5 @@ ReactDOM.render(
                 </Provider>
             </DndProvider>
         </BrowserRouter>
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
 )

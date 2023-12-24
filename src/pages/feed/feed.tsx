@@ -1,8 +1,15 @@
-import { FeedContainer, FeedStats, OrderList } from '@components/index'
+import { useSelector } from 'react-redux'
 
-export const Feed = () => (
-    <FeedContainer>
-        <OrderList />
-        <FeedStats />
-    </FeedContainer>
-)
+import { FeedContainer, FeedStats, OrderList } from '@components/index'
+import { feedOrdersSelector } from '@services/api/feedSlice'
+
+export const Feed = () => {
+    const orders = useSelector(feedOrdersSelector)
+
+    return (
+        <FeedContainer>
+            <OrderList orders={orders} />
+            <FeedStats />
+        </FeedContainer>
+    )
+}

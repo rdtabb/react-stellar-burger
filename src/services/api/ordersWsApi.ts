@@ -18,12 +18,6 @@ export const ordersWsApi = createApi({
                         const data = JSON.parse(event.data)
 
                         api.dispatch(updateFeed(data))
-                        console.log(data)
-                        // ordersWsApi.util.updateQueryData('getOrders', undefined, (draft) => {
-                        //     console.log('OH MY FUCKING GOD')
-                        //     console.log(draft, data)
-                        //     draft = data
-                        // })
                     })
                 } catch (error) {
                     console.log(error)

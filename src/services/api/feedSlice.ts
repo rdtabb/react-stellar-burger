@@ -3,7 +3,7 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 import { RootState } from '@store/store'
 import { filterOrders } from '@utils/ordersUtils'
 
-export interface SocketOrder {
+export interface Order {
     createdAt: string
     ingredients: string[]
     number: number
@@ -16,7 +16,7 @@ export interface SocketOrder {
 export interface SocketResponse {
     total?: number
     totalToday?: number
-    orders?: SocketOrder[]
+    orders?: Order[]
 }
 
 const initialState: SocketResponse = {}

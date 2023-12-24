@@ -30,3 +30,9 @@
     gap: 60px;
     height: 100%;
 }
+
+@media (max-width: 1000px) {
+    .content-wrapper {
+        grid-template-columns: 1fr;
+    }
+}

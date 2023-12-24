@@ -22,7 +22,7 @@ export const Aside = memo(() => {
                 </NavLink>
                 <NavLink
                     className={({ isActive }) => (isActive ? styles.route_active : styles.route)}
-                    to={ROUTES.ORDERS_HISTORY}
+                    to={`/profile/orders`}
                 >
                     История заказов
                 </NavLink>

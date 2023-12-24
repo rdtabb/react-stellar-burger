@@ -29,12 +29,11 @@ export const ROUTES = {
     REGISTER: '/register',
     FORGOT_PASSWORD: '/forgot-password',
     PROFILE: '/profile',
+    PROFILE_ORDERS: '/orders',
     RESET_PASSWORD: '/reset-password',
     INGREDIENT_DETAILS: '/ingredient',
-    ORDERS_HISTORY: '/orders-history',
     EXIT: '/exit',
-    FEED: '/feed',
-    ORDERS: '/profile/orders'
+    FEED: '/feed'
 } as const
 
 export const headers = {

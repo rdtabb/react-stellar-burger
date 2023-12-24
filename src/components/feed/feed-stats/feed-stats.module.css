@@ -5,6 +5,12 @@
     place-content: start;
 }
 
+@media (max-width: 1000px) {
+    .stats-container {
+        display: none;
+    }
+}
+
 .ready-progress-container {
     display: grid;
     gap: 36px;

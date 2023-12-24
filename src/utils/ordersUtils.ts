@@ -1,6 +1,12 @@
 import { SocketResponse } from '@services/index'
 
-const getMonthDay = (date: Date) => {
+interface DateDeserialized {
+    day: number
+    month: number
+    time: string
+}
+
+const deserializeDate = (date: Date): DateDeserialized => {
     const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
     const hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
 
@@ -35,8 +41,8 @@ export const calculateDateDiff = (dateISO?: string): string | undefined => {
     const currentDate = new Date(Date.now())
     const orderDate = new Date(Date.parse(dateISO))
 
-    const { day: currentDay, month: currentMonth } = getMonthDay(currentDate)
-    const { day: orderDay, month: orderMonth, time: orderTime } = getMonthDay(orderDate)
+    const { day: currentDay, month: currentMonth } = deserializeDate(currentDate)
+    const { day: orderDay, month: orderMonth, time: orderTime } = deserializeDate(orderDate)
 
     const differenceInMonths = currentMonth - orderMonth
 

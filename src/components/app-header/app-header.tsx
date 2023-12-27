@@ -38,7 +38,7 @@ export const AppHeader = () => {
                     <Logo />
                 </div>
                 <NavLink
-                    to={ROUTES.PROFILE}
+                    to={'/profile'}
                     className={({ isActive }) => (isActive ? styles.tab_active : styles.tab)}
                 >
                     <ProfileIcon type="primary" />

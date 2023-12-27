@@ -10,7 +10,7 @@ import {
     ResetPasswordEmailStageResponse
 } from '@utils/index'
 
-export const apiSlice = createApi({
+export const unauthApiSlice = createApi({
     reducerPath: 'apiSlice',
     baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
     endpoints: (builder) => ({
@@ -68,4 +68,4 @@ export const {
     useResetPasswordEmailStageMutation,
     useResetPasswordTokenStageMutation,
     usePrefetch: useIngredientsPrefetch
-} = apiSlice
+} = unauthApiSlice

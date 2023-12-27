@@ -20,7 +20,7 @@ import {
     CACHE_KEYS
 } from '@utils/index'
 
-import { initAuthCheck } from '../authSlice'
+import { initAuthCheck } from '../../auth-slice/authSlice'
 
 const baseQueryWithReauth: BaseQueryFn<FetchArgs, unknown, FetchBaseQueryError> = async (
     args,

@@ -3,21 +3,7 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 import { RootState } from '@store/store'
 import { filterOrders } from '@utils/ordersUtils'
 
-export interface Order {
-    createdAt: string
-    ingredients: string[]
-    number: number
-    status: string
-    name: string
-    updatedAt: string
-    _id: string
-}
-
-export interface SocketResponse {
-    total?: number
-    totalToday?: number
-    orders?: Order[]
-}
+import { SocketResponse } from '../types'
 
 const initialState: SocketResponse = {}
 

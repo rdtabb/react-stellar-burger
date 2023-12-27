@@ -4,7 +4,7 @@ import { URLS } from '@utils/index'
 
 import { updateFeed } from './feedSlice'
 
-export const ordersWsApi = createApi({
+export const feedWsApi = createApi({
     reducerPath: 'ordersWsApi',
     baseQuery: fetchBaseQuery({ baseUrl: '/' }),
     endpoints: (builder) => ({
@@ -29,4 +29,4 @@ export const ordersWsApi = createApi({
     })
 })
 
-export const { useGetOrdersQuery } = ordersWsApi
+export const { useGetOrdersQuery } = feedWsApi

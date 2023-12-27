@@ -22,7 +22,7 @@ export interface FormValues {
     password: string
 }
 
-export const Form = memo(() => {
+export const Form = memo((): JSX.Element => {
     const { data: user, isLoading: isUserInfoLoading } = useUserInfoQuery(CACHE_KEYS.USER_INFO)
     const [updateUser, { isLoading: isUpdateUserLoading }] = useChangeUserInfoMutation()
 
@@ -74,7 +74,7 @@ export const Form = memo(() => {
                     control={control}
                     as={Input}
                     disabled={isNameLocked}
-                    placeholder="Имя"
+                    placeholder={isUpdateUserLoading || isUserInfoLoading ? 'Загружаем...' : 'Имя'}
                 />
                 <button
                     className={styles.editButton}
@@ -91,7 +91,9 @@ export const Form = memo(() => {
                     control={control}
                     as={EmailInput}
                     disabled={isEmailLocked}
-                    placeholder="Имя"
+                    placeholder={
+                        isUpdateUserLoading || isUserInfoLoading ? 'Загружаем...' : 'Адрес почты'
+                    }
                 />
                 <button
                     className={styles.editButton}

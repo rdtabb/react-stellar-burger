@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import feedReducer from '@services/api/feedSlice'
-import authReducer from '@services/authSlice'
-import { apiSlice, authApiSlice, ordersWsApi } from '@services/index'
-import ingredientsReducer from '@services/ingredientsSlice'
-import modalReducer from '@services/modalSlice'
-import orderReducer from '@services/orderSlice'
+import authReducer from '@services/auth-slice/authSlice'
+import ingredientsReducer from '@services/constructor-ingredients/ingredientsSlice'
+import orderReducer from '@services/create-order-slice/orderSlice'
+import { unauthApiSlice, authApiSlice, feedWsApi, profileOrdersWsApi } from '@services/index'
+import modalReducer from '@services/modal-slice/modalSlice'
+import feedReducer from '@services/sockets/feed/feedSlice'
+import profileOrdersReducer from '@services/sockets/profile-orders/profileOrdersSlice'
 
 export const store = configureStore({
     reducer: {
@@ -14,15 +15,18 @@ export const store = configureStore({
         order: orderReducer,
         auth: authReducer,
         feed: feedReducer,
-        [apiSlice.reducerPath]: apiSlice.reducer,
+        profileOrders: profileOrdersReducer,
+        [unauthApiSlice.reducerPath]: unauthApiSlice.reducer,
         [authApiSlice.reducerPath]: authApiSlice.reducer,
-        [ordersWsApi.reducerPath]: ordersWsApi.reducer
+        [feedWsApi.reducerPath]: feedWsApi.reducer,
+        [profileOrdersWsApi.reducerPath]: profileOrdersWsApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(
-            apiSlice.middleware,
+            unauthApiSlice.middleware,
             authApiSlice.middleware,
-            ordersWsApi.middleware
+            feedWsApi.middleware,
+            profileOrdersWsApi.middleware
         )
 })
 

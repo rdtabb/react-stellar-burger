@@ -2,7 +2,7 @@ import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit'
 
 import { AuthRegResponse, IInitialAuthSliceState, getTokens, destroyTokens } from '@utils/index'
 
-import { RootState } from '../store/store'
+import { RootState } from '../../store/store'
 
 const initialState: IInitialAuthSliceState = {
     tokens: undefined,

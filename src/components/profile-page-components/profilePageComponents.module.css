@@ -2,11 +2,16 @@
     --_width: 1280px;
 
     display: grid;
-    grid-template-columns: 0.5fr min-content;
+    grid-template-columns: 0.5fr 1fr;
     gap: 60px;
     width: min(var(--_width), 100% - 1rem);
+    height: calc(100% - 50px);
     margin: 120px auto 0;
     font-family: var(--ff-primary);
+}
+
+.main * {
+    box-sizing: border-box;
 }
 
 .route {

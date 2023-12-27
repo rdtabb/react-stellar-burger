@@ -10,7 +10,7 @@ interface FieldProps extends UseControllerProps<FormValues> {
     placeholder?: string
 }
 
-export const Field = ({ control, name, as: Component, ...rest }: FieldProps) => {
+export const Field = ({ control, name, as: Component, ...rest }: FieldProps): JSX.Element => {
     const { field } = useController({
         control,
         name

@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { useOrderIngredients, useBaddie } from './hooks/use-order-ingredients'
+import { useOrderIngredients } from './hooks/use-order-ingredients'
 import styles from './order-list.module.css'
 
 interface ItemIngredientsProps {
@@ -10,7 +10,7 @@ interface ItemIngredientsProps {
 }
 
 export const ItemIngredients = memo(({ ids }: ItemIngredientsProps) => {
-    const { images, price } = useBaddie(ids)
+    const { images, price } = useOrderIngredients(ids)
 
     return (
         <div className={styles['item-ingredients']}>

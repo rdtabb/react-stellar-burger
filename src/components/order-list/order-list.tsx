@@ -7,10 +7,13 @@ import styles from './order-list.module.css'
 
 interface OrderListProps {
     orders?: Order[]
+    shouldDisplayStatus?: boolean
 }
 
-export const OrderList = ({ orders }: OrderListProps) => (
+export const OrderList = ({ orders, shouldDisplayStatus }: OrderListProps) => (
     <section className={styles['order-list']}>
-        {orders?.map((order) => <OrderItem order={order} key={order._id} />)}
+        {orders?.map((order) => (
+            <OrderItem order={order} key={order._id} shouldDisplayStatus={shouldDisplayStatus} />
+        ))}
     </section>
 )

@@ -69,6 +69,17 @@
     margin: 0;
 }
 
+.order-item__status {
+    font-size: var(--fs-400);
+    line-height: var(--line-height-400);
+}
+
+.order-item__status--done {
+    composes: order-item__status;
+    color: var(--clr-status);
+    padding-block: 8px 24px;
+}
+
 .item-ingredients {
     display: flex;
     justify-content: space-between;

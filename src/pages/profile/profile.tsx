@@ -15,10 +15,10 @@ export const Profile = memo(() => {
         <main className={profilePageStyles.main}>
             <Aside />
             <Routes>
-                <Route path={'/'} element={<Form />} />
+                <Route path={'/details'} element={<Form />} />
                 <Route
                     path={ROUTES.PROFILE_ORDERS}
-                    element={<OrderList orders={orders?.toReversed()} />}
+                    element={<OrderList orders={orders?.toReversed()} shouldDisplayStatus />}
                 />
             </Routes>
         </main>

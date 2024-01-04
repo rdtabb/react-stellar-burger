@@ -1,4 +1,4 @@
-import { SocketResponse } from '@services/index'
+import { SocketResponse, OrderStatus } from '@services/index'
 
 type Day = 'день' | 'дня' | 'дней'
 
@@ -43,6 +43,22 @@ export const filterOrders = (response: SocketResponse, done: boolean): number[] 
         ?.filter((order) => order.status === 'pending')
         .map((order) => order.number)
         .slice(0, 5)
+}
+
+export const getOrderStatus = (status?: OrderStatus) => {
+    if (status === 'done') {
+        return 'Выполнен'
+    }
+
+    if (status === 'pending') {
+        return 'Обрабатывается'
+    }
+
+    if (status === 'created') {
+        return 'Создан'
+    }
+
+    return 'Ошибка при обработке статуса заказа...'
 }
 
 export const calculateDateDiff = (dateISO?: string): string | undefined => {

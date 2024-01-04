@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 
 import { useLocation, useNavigate, Routes, Route } from 'react-router-dom'
 
+import { OrderItemInfo } from '@components/order-list/order-item-info'
 import {
     Profile,
     Constructor,
@@ -46,7 +47,6 @@ export const App = () => {
                     path={ROUTES.FORGOT_PASSWORD}
                     element={<OnlyUnAuth component={<ResetPassStageOne />} />}
                 />
-                <Route path={ROUTES.PROFILE} element={<OnlyAuth component={<Profile />} />} />
                 <Route
                     path={ROUTES.RESET_PASSWORD}
                     element={<OnlyUnAuth component={<ResetPassStageTwo />} />}
@@ -55,7 +55,10 @@ export const App = () => {
                     path={`${ROUTES.INGREDIENT_DETAILS}/:id`}
                     element={<IngredientDetailsPage enableRedirect={false} />}
                 />
+                <Route path={ROUTES.PROFILE} element={<OnlyAuth component={<Profile />} />} />
+                <Route path={`${ROUTES.PROFILE_ORDERS}/:id`} element={<OrderItemInfo />} />
                 <Route path={ROUTES.FEED} element={<Feed />} />
+                <Route path={`${ROUTES.FEED}/:id`} element={<OrderItemInfo />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
             {previousLocation && (

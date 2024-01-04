@@ -19,6 +19,7 @@ export const setTokens = (payload: AuthRegResponse): void => {
 }
 
 export const destroyTokens = (): void => {
+    console.log('destroying tokens')
     destroySessionItem('REFRESH_TOKEN')
     destroySessionItem('ACCESS_TOKEN')
 }

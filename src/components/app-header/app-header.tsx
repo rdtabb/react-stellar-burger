@@ -6,45 +6,36 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { NavLink } from 'react-router-dom'
 
-import { useIngredientsPrefetch } from '@services/index'
-import { ROUTES, CACHE_KEYS } from '@utils/api'
+import { ROUTES } from '@utils/api'
 
 import styles from './appHeader.module.css'
 
-export const AppHeader = () => {
-    const prefetchIngredients = useIngredientsPrefetch('getIngredients')
-
-    return (
-        <header className={styles.header}>
-            <nav className={styles.nav}>
-                <div className={styles.tabs}>
-                    <NavLink
-                        to={ROUTES.CONSTRUCTOR}
-                        className={({ isActive }) => (isActive ? styles.tab_active : styles.tab)}
-                        onMouseOver={() => prefetchIngredients(CACHE_KEYS.INGREDIENTS)}
-                    >
-                        <BurgerIcon type="primary" />
-                        <p>Конструктор</p>
-                    </NavLink>
-                    <NavLink
-                        to={ROUTES.FEED}
-                        className={({ isActive }) => (isActive ? styles.tab_active : styles.tab)}
-                    >
-                        <ListIcon type="primary" />
-                        <p>Лента заказов</p>
-                    </NavLink>
-                </div>
-                <div>
-                    <Logo />
-                </div>
+export const AppHeader = () => (
+    <header className={styles.header}>
+        <nav className={styles.nav}>
+            <div className={styles.tabs}>
                 <NavLink
-                    to={'/profile'}
+                    to={ROUTES.CONSTRUCTOR}
                     className={({ isActive }) => (isActive ? styles.tab_active : styles.tab)}
                 >
-                    <ProfileIcon type="primary" />
-                    <p>Личный кабинет</p>
+                    <BurgerIcon type="primary" />
+                    <p>Конструктор</p>
                 </NavLink>
-            </nav>
-        </header>
-    )
-}
+                <NavLink
+                    to={ROUTES.FEED}
+                    className={({ isActive }) => (isActive ? styles.tab_active : styles.tab)}
+                >
+                    <ListIcon type="primary" />
+                    <p>Лента заказов</p>
+                </NavLink>
+            </div>
+            <div>
+                <Logo />
+            </div>
+            <NavLink to={'/profile/details'} className={styles.tab}>
+                <ProfileIcon type="primary" />
+                <p>Личный кабинет</p>
+            </NavLink>
+        </nav>
+    </header>
+)

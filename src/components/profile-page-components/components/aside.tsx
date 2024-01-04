@@ -16,7 +16,7 @@ export const Aside = memo(() => {
             <nav className={styles.nav}>
                 <NavLink
                     className={({ isActive }) => (isActive ? styles.route_active : styles.route)}
-                    to={'/profile'}
+                    to={'/profile/details'}
                 >
                     Профиль
                 </NavLink>

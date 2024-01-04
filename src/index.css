@@ -7,6 +7,7 @@
     --clr-primary: #f2f2f3;
     --clr-secondary: #8585ad;
     --clr-accent: #4c4cff;
+    --clr-status: #0cc;
 
     --fs-400: 16px;
     --fs-425: 24px;
@@ -26,6 +27,7 @@
     --line-height-450: 30px;
     --line-height-500: 36px;
     --line-height-600: 40px;
+    --line-height-900: 120px;
 }
 
 body,
@@ -40,6 +42,12 @@ p {
 
 .tabs-global div {
     padding: clamp(4px, 3vw, 16px) clamp(10px, 5vw, 40px);
+}
+
+@media (max-width: 700px) {
+    .tabs-global {
+        display: none;
+    }
 }
 
 .constructor-element {

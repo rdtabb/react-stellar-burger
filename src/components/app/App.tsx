@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 
 import { useLocation, useNavigate, Routes, Route } from 'react-router-dom'
 
-import { OrderItemInfo } from '@components/order-list/order-item-info'
+import { OrderItemInfo } from '@components/order-list/order-item-info/order-item-info'
 import {
     Profile,
     Constructor,
@@ -11,7 +11,8 @@ import {
     ResetPassStageTwo,
     RegisterForm,
     LoginForm,
-    Feed
+    Feed,
+    NotFound
 } from '@pages/index'
 import styles from '@pages/ingredient-details/ingredient-details.module.css'
 import { useUserInfoQuery } from '@services/index'
@@ -19,7 +20,6 @@ import { ROUTES, CACHE_KEYS } from '@utils/index'
 
 import { AppHeader } from '../app-header/app-header'
 import { Modal } from '../modal/modal'
-import { NotFound } from '../not-found/not-found'
 import { OnlyAuth, OnlyUnAuth } from '../protected/protected'
 
 export const App = () => {

@@ -1,4 +1,4 @@
-import { useState, memo, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 
 import {
     EmailInput,
@@ -22,15 +22,20 @@ export interface FormValues {
     password: string
 }
 
-export const Form = memo((): JSX.Element => {
+export const Form = (): JSX.Element => {
     const { data: user, isLoading: isUserInfoLoading } = useUserInfoQuery(CACHE_KEYS.USER_INFO)
     const [updateUser, { isLoading: isUpdateUserLoading }] = useChangeUserInfoMutation()
+
+    const [isNameLocked, setIsNameLocked] = useState<boolean>(true)
+    const [isEmailLocked, setIsEmailLocked] = useState<boolean>(true)
 
     const {
         control,
         reset,
         handleSubmit,
-        formState: { isDirty }
+        setValue,
+        formState: { isDirty },
+        watch
     } = useForm<FormValues>({
         mode: 'onChange',
         defaultValues: {
@@ -40,19 +45,34 @@ export const Form = memo((): JSX.Element => {
         }
     })
 
-    const [isNameLocked, setIsNameLocked] = useState<boolean>(true)
-    const [isEmailLocked, setIsEmailLocked] = useState<boolean>(true)
+    const name = watch('name')
+    const email = watch('email')
+    const password = watch('password')
+
+    const setFormValues = useCallback(
+        (name: string, email: string): void => {
+            setValue('email', email)
+            setValue('name', name)
+        },
+        [setValue]
+    )
+
+    useEffect(() => {
+        if (!isDirty && user?.user.name && user.user.email) {
+            setFormValues(user.user.name, user.user.email)
+        }
+    }, [user?.user.email, user?.user.name])
 
     const onUpdate = useCallback(
-        async (values: FormValues) => {
-            const result = (await updateUser({
+        async (values: FormValues): Promise<void> => {
+            const { data } = (await updateUser({
                 ...values
             })) as {
                 data: AuthRegResponse
             }
 
-            if (result.data.success) {
-                // reset()
+            if (data.success) {
+                setFormValues(data.user.name, data.user.email)
                 setIsEmailLocked(true)
                 setIsNameLocked(true)
             }
@@ -60,11 +80,26 @@ export const Form = memo((): JSX.Element => {
         [updateUser]
     )
 
-    const onCancel = useCallback(() => {
+    const onCancel = useCallback((): void => {
         reset()
         setIsEmailLocked(true)
         setIsNameLocked(true)
     }, [reset])
+
+    const shouldDisplayButtons = (): boolean => {
+        const serverName = user?.user.name
+        const serverEmail = user?.user.email
+
+        if (name === serverName && email === serverEmail) {
+            return false
+        }
+
+        if (password !== '') {
+            return false
+        }
+
+        return true
+    }
 
     return (
         <form name="editProfileForm" onSubmit={handleSubmit(onUpdate)} className={styles.inputs}>
@@ -106,7 +141,11 @@ export const Form = memo((): JSX.Element => {
 
             <Field name="password" control={control} as={PasswordInput} />
 
-            <div className={isDirty ? styles.buttonsGroup : styles['buttonsGroup_disabled']}>
+            <div
+                className={
+                    shouldDisplayButtons() ? styles.buttonsGroup : styles['buttonsGroup_disabled']
+                }
+            >
                 <Button type="secondary" htmlType="button" onClick={onCancel}>
                     Отмена
                 </Button>
@@ -120,4 +159,4 @@ export const Form = memo((): JSX.Element => {
             </div>
         </form>
     )
-})
+}

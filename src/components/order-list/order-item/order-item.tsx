@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom'
 import { Order } from '@services/index'
 import { calculateDateDiff, getOrderStatus, ROUTES } from '@utils/index'
 
-import { useOrderIngredients } from './hooks/use-order-ingredients'
 import { ItemIngredients } from './item-ingredients'
-import styles from './order-list.module.css'
+
+import { useOrderIngredients } from '../hooks/use-order-ingredients'
+import styles from '../order-list.module.css'
 
 interface OrderItemProps {
     order?: Order
@@ -18,7 +19,7 @@ interface OrderItemProps {
 export const OrderItem = memo(({ order, shouldDisplayStatus }: OrderItemProps) => {
     const navigate = useNavigate()
 
-    const { ingredients, price } = useOrderIngredients(order?.ingredients)
+    const { ingredients, countedIngredients, price } = useOrderIngredients(order?.ingredients)
 
     const openOrderCard = () => {
         navigate(`${ROUTES.PROFILE_ORDERS}/${order?._id}}`, {
@@ -26,6 +27,7 @@ export const OrderItem = memo(({ order, shouldDisplayStatus }: OrderItemProps) =
                 selected_order: {
                     order,
                     ingredients,
+                    countedIngredients,
                     price
                 }
             }

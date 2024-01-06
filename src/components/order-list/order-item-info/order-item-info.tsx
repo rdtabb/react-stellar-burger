@@ -8,12 +8,15 @@ import { Ingredient, calculateDateDiff, getOrderStatus } from '@utils/index'
 
 import css from './order-item-info.module.css'
 
+import { type IngredientsCounted } from '../hooks/use-order-ingredients'
+
 interface Location {
     state: {
         selected_order?: {
             order: Order
             price: number
             ingredients: Ingredient[]
+            countedIngredients: IngredientsCounted
         }
     }
 }
@@ -30,10 +33,7 @@ export const OrderItemInfo = () => {
                 <h2 className={css.title}>{selected_order?.order.name}</h2>
                 <p
                     style={{
-                        color:
-                            getOrderStatus(selected_order?.order.status) === 'Выполнен'
-                                ? '#0CC'
-                                : 'white'
+                        color: selected_order?.order.status === 'done' ? '#0CC' : 'white'
                     }}
                 >
                     {getOrderStatus(selected_order?.order.status)}
@@ -41,22 +41,24 @@ export const OrderItemInfo = () => {
                 <div className={css.ingredients}>
                     <h3 className={css.ingredients__subtitle}>Состав: </h3>
                     <ul className={css.ingredients__list}>
-                        {selected_order?.ingredients?.map((ingredient, index) => (
-                            <li className={css.item} key={index}>
-                                <img
-                                    className={css.item__image}
-                                    src={ingredient.image_mobile}
-                                    alt="ingredient"
-                                    width="64px"
-                                    height="64px"
-                                />
-                                <h4 className={css.item__title}>{ingredient.name}</h4>
-                                <div className={css['item__price-container']}>
-                                    <p>{ingredient.price}</p>
-                                    <CurrencyIcon type="primary" />
-                                </div>
-                            </li>
-                        ))}
+                        {Object.entries(selected_order?.countedIngredients ?? {})?.map(
+                            ([id, ingredient]) => (
+                                <li className={css.item} key={id}>
+                                    <img
+                                        className={css.item__image}
+                                        src={ingredient.image_mobile}
+                                        alt="ingredient"
+                                        width="64px"
+                                        height="64px"
+                                    />
+                                    <h4 className={css.item__title}>{ingredient.name}</h4>
+                                    <div className={css['item__price-container']}>
+                                        <p>{ingredient.count + ' x ' + ingredient.price}</p>
+                                        <CurrencyIcon type="primary" />
+                                    </div>
+                                </li>
+                            )
+                        )}
                     </ul>
                 </div>
                 <div className={css['item__info-container']}>

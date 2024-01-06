@@ -2,7 +2,7 @@ import React from 'react'
 
 import type { Order } from '@services/index'
 
-import { OrderItem } from './order-item'
+import { OrderItem } from './order-item/order-item'
 import styles from './order-list.module.css'
 
 interface OrderListProps {

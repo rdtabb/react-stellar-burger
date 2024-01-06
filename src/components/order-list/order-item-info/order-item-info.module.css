@@ -21,16 +21,16 @@
 }
 
 .date {
-    composes: order-item__date from './order-list.module.css';
+    composes: order-item__date from '../order-list.module.css';
 }
 
 .number {
-    composes: order-item__number from './order-list.module.css';
+    composes: order-item__number from '../order-list.module.css';
     text-align: center;
 }
 
 .title {
-    composes: order-item__title from './order-list.module.css';
+    composes: order-item__title from '../order-list.module.css';
     padding: 40px 0px 12px !important;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .ingredients__subtitle {
-    composes: order-item__title from './order-list.module.css';
+    composes: order-item__title from '../order-list.module.css';
     padding-top: 0px !important;
     padding-bottom: 24px;
 }
@@ -71,13 +71,13 @@
 
 .item {
     display: grid;
-    grid-template-columns: auto 1fr min-content;
+    grid-template-columns: auto 1fr max-content;
     align-items: center;
     gap: 16px;
 }
 
 .item__image {
-    composes: image-list__item from './order-list.module.css';
+    composes: image-list__item from '../order-list.module.css';
     object-fit: cover;
     margin: 0 !important;
     width: min-content;

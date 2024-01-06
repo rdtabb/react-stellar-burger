@@ -1,9 +1,10 @@
 import { memo } from 'react'
 
+import { NotFound } from '@pages/index'
+
 import styles from './infomodal.module.css'
 import { useSelectedItem } from './use-selected-item'
 
-import { NotFound } from '../not-found/not-found'
 
 export const IngredientDetails = memo(() => {
     const selectedItem = useSelectedItem()

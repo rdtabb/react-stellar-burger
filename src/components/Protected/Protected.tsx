@@ -10,14 +10,12 @@ interface IProtectedProps {
 }
 
 const Protected = ({ onlyUnAuth = false, component }: IProtectedProps): JSX.Element | null => {
-    const { isAuth, tokens } = useSelector(authInfoSelector)
+    const { isAuth } = useSelector(authInfoSelector)
     const location = useLocation()
 
     // if (!isAuthChecked) {
     //     return null
     // }
-
-    console.log(isAuth, tokens)
 
     if (onlyUnAuth && isAuth) {
         const pathname = location.state?.from.pathname || ROUTES.CONSTRUCTOR

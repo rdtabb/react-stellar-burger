@@ -1,17 +1,10 @@
 import { PropsWithChildren } from 'react'
 
-import { useGetOrdersQuery } from '@services/index'
-import { CACHE_KEYS } from '@utils/api'
+import css from '../feed.module.css'
 
-import styles from '../feed.module.css'
-
-export const FeedContainer = ({ children }: PropsWithChildren) => {
-    useGetOrdersQuery(CACHE_KEYS.ORDERS)
-
-    return (
-        <section className={styles.container}>
-            <h2 className={styles.title}>Лента заказов</h2>
-            <div className={styles['content-wrapper']}>{children}</div>
-        </section>
-    )
-}
+export const FeedContainer = ({ children }: PropsWithChildren) => (
+    <section className={css.container}>
+        <h2 className={css.title}>Лента заказов</h2>
+        <div className={css['content-wrapper']}>{children}</div>
+    </section>
+)

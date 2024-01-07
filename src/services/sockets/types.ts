@@ -1,3 +1,10 @@
+export const enum HTTPStatus {
+    'STALE' = 'STALE',
+    'PENDING' = 'PENDING',
+    'ERROR' = 'ERROR',
+    'SUCCESS' = 'SUCCESS'
+}
+
 export type OrderStatus = 'done' | 'pending' | 'created'
 
 export interface Order {
@@ -11,7 +18,7 @@ export interface Order {
 }
 
 export interface SocketResponse {
-    total?: number
-    totalToday?: number
-    orders?: Order[]
+    total?: number | null
+    totalToday?: number | null
+    orders?: Order[] | null
 }

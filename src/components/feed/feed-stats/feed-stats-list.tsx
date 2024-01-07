@@ -4,12 +4,13 @@ import styles from './feed-stats.module.css'
 
 interface FeedStatsListProps {
     orders?: number[]
+    isLoading: boolean
 }
 
-export const FeedStatsList = ({ orders }: FeedStatsListProps) => (
+export const FeedStatsList = ({ orders, isLoading }: FeedStatsListProps) => (
     <ul className={styles['ready-progress-list']}>
-        {typeof orders !== 'undefined' ? (
-            orders.map((item, index) => (
+        {!isLoading ? (
+            orders?.map((item, index) => (
                 <li
                     className={`${styles['ready-progress-list__item']} ${styles['item-colored']}`}
                     key={index}

@@ -5,7 +5,6 @@ import { NotFound } from '@pages/index'
 import styles from './infomodal.module.css'
 import { useSelectedItem } from './use-selected-item'
 
-
 export const IngredientDetails = memo(() => {
     const selectedItem = useSelectedItem()
 

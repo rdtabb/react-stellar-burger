@@ -3,25 +3,55 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 import { RootState } from '@store/store'
 import { filterOrders } from '@utils/ordersUtils'
 
-import { SocketResponse } from '../types'
+import { SocketResponse, HTTPStatus } from '../types'
 
-const initialState: SocketResponse = {}
+interface InitialState extends SocketResponse {
+    socketConnectionStatus: HTTPStatus
+}
+
+const initialState: InitialState = {
+    socketConnectionStatus: HTTPStatus.STALE
+}
 
 const feedSlice = createSlice({
     name: 'services/feedSlice',
     initialState,
     reducers: {
-        updateFeed(state, { payload }: PayloadAction<SocketResponse>) {
-            state.orders = payload.orders
+        feedWsConnectionInit(state) {
+            state.socketConnectionStatus = HTTPStatus.PENDING
+        },
+        feedWsConnectionSuccess(state, { payload }: PayloadAction<SocketResponse>) {
             state.total = payload.total
+            state.orders = payload.orders
             state.totalToday = payload.totalToday
+            state.socketConnectionStatus = HTTPStatus.SUCCESS
+        },
+        feedWsConnectionFail(state) {
+            state.socketConnectionStatus = HTTPStatus.ERROR
+        },
+        feedWsConnectionClose(state) {
+            state.total = null
+            state.totalToday = null
+            state.orders = null
+            state.socketConnectionStatus = HTTPStatus.STALE
         }
     }
 })
 
 export const feedOrdersSelector = createSelector(
-    (state: RootState) => state.feed,
-    (feed) => feed.orders
+    [
+        (state: RootState) => state.feed.orders,
+        (state: RootState) => state.feed.socketConnectionStatus
+    ],
+    (orders, status) => ({
+        orders: orders,
+        status: status
+    })
+)
+
+export const feedStatusSelector = createSelector(
+    (state: RootState) => state.feed.socketConnectionStatus,
+    (status) => status
 )
 
 export const feedInfoSelector = createSelector(
@@ -30,10 +60,16 @@ export const feedInfoSelector = createSelector(
         total: feed.total,
         totalToday: feed.totalToday,
         done: filterOrders(feed, true),
-        inProgress: filterOrders(feed, false)
+        inProgress: filterOrders(feed, false),
+        isLoading: feed.socketConnectionStatus === HTTPStatus.PENDING
     })
 )
 
-export const { updateFeed } = feedSlice.actions
+export const {
+    feedWsConnectionFail,
+    feedWsConnectionInit,
+    feedWsConnectionClose,
+    feedWsConnectionSuccess
+} = feedSlice.actions
 
 export default feedSlice.reducer

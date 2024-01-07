@@ -40,6 +40,12 @@
     cursor: pointer;
 }
 
+.order-item--empty {
+    composes: order-item;
+    border-color: var(--clr-accent);
+    height: 218px;
+    width: 616px;
+}
 .order-item:hover {
     border-color: var(--clr-accent);
 }

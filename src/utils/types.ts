@@ -89,11 +89,15 @@ export interface Urls {
     UPDATE_TOKEN_URL: string
     RESET_PASSWORD_EMAIL_STAGE: string
     RESET_PASSWORD_TOKEN_STAGE: string
+    ORDERS: string
+    PROFILE_ORDERS: string
+    SPECIFIC_ORDER: string
 }
 
 export interface Tokens {
     refreshToken: string
     accessToken: string
+    accessTokenWithoutBearer?: string
 }
 
 export interface FetchIngredientsResponse {

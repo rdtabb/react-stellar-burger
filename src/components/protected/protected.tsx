@@ -18,15 +18,18 @@ const Protected = ({ onlyUnAuth = false, component }: IProtectedProps): JSX.Elem
     // }
 
     if (onlyUnAuth && isAuth) {
+        console.log('isAuth 1st case: ', isAuth)
         const pathname = location.state?.from.pathname || ROUTES.CONSTRUCTOR
 
         return <Navigate to={{ pathname }} />
     }
 
     if (!onlyUnAuth && !isAuth) {
+        console.log('isAuth 2nd case: ', isAuth)
         return <Navigate to={ROUTES.LOGIN} state={{ from: location }} />
     }
 
+    console.log('returning component', isAuth)
     return component
 }
 

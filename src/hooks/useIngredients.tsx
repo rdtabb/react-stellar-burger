@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useGetIngredientsQuery } from '@services/api/apiSlice'
+import { useGetIngredientsQuery } from '@services/api/unauth-api/unauthApiSlice'
 import { CACHE_KEYS } from '@utils/index'
 
 export const useIngredients = () => {

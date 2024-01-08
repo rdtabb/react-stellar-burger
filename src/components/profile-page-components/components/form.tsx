@@ -1,4 +1,4 @@
-import { useState, memo, useCallback, useEffect, useMemo } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 
 import {
     EmailInput,
@@ -7,125 +7,143 @@ import {
     EditIcon,
     Button
 } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useForm } from 'react-hook-form'
 
 import { useUserInfoQuery, useChangeUserInfoMutation } from '@services/index'
 import { CACHE_KEYS, AuthRegResponse } from '@utils/index'
 
+import { Field } from './form-field'
+
 import styles from '../profilePageComponents.module.css'
 
-export const Form = memo(() => {
+export interface FormValues {
+    name: string
+    email: string
+    password: string
+}
+
+export const Form = (): JSX.Element => {
     const { data: user, isLoading: isUserInfoLoading } = useUserInfoQuery(CACHE_KEYS.USER_INFO)
     const [updateUser, { isLoading: isUpdateUserLoading }] = useChangeUserInfoMutation()
 
-    const [name, setName] = useState<string>(user?.user.name ?? '')
-    const [email, setEmail] = useState<string>(user?.user.email ?? '')
-    const [password, setPassword] = useState<string>('')
     const [isNameLocked, setIsNameLocked] = useState<boolean>(true)
     const [isEmailLocked, setIsEmailLocked] = useState<boolean>(true)
 
+    const {
+        control,
+        reset,
+        handleSubmit,
+        setValue,
+        formState: { isDirty },
+        watch
+    } = useForm<FormValues>({
+        mode: 'onChange',
+        defaultValues: {
+            name: user?.user.name ?? '',
+            email: user?.user.email ?? '',
+            password: ''
+        }
+    })
+
+    const name = watch('name')
+    const email = watch('email')
+    const password = watch('password')
+
+    const setFormValues = useCallback(
+        (name: string, email: string): void => {
+            setValue('email', email)
+            setValue('name', name)
+        },
+        [setValue]
+    )
+
     useEffect(() => {
-        if (user) {
-            setName(user.user.name)
-            setEmail(user.user.email)
+        if (!isDirty && user?.user.name && user.user.email) {
+            setFormValues(user.user.name, user.user.email)
         }
-    }, [user?.user])
+    }, [user?.user.email, user?.user.name])
 
-    const handleNameChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault()
-        setName(event.target.value)
-    }, [])
+    const onUpdate = useCallback(
+        async (values: FormValues): Promise<void> => {
+            const { data } = (await updateUser({
+                ...values
+            })) as {
+                data: AuthRegResponse
+            }
 
-    const handleEmailChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault()
-        setEmail(event.target.value)
-    }, [])
+            if (data.success) {
+                setFormValues(data.user.name, data.user.email)
+                setIsEmailLocked(true)
+                setIsNameLocked(true)
+            }
+        },
+        [updateUser]
+    )
 
-    const handlePasswordChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault()
-        setPassword(event.target.value)
-    }, [])
-
-    const onUpdate = useCallback(async () => {
-        const result = (await updateUser({
-            email,
-            name,
-            password
-        })) as {
-            data: AuthRegResponse
-        }
-
-        if (result.data.success) {
-            setEmail(result.data.user.email)
-            setName(result.data.user.name)
-            setPassword('')
-            setIsEmailLocked(true)
-            setIsNameLocked(true)
-        }
-    }, [name, email, password])
-
-    const onCancel = useCallback(() => {
-        setName(user?.user.name ?? '')
-        setEmail(user?.user.email ?? '')
-        setPassword('')
+    const onCancel = useCallback((): void => {
+        reset()
         setIsEmailLocked(true)
         setIsNameLocked(true)
-    }, [user?.user])
+    }, [reset])
 
-    const shouldShowButtons: boolean = useMemo(() => {
-        const fetchedName = user?.user.name
-        const fetchedEmail = user?.user.email
+    const shouldDisplayButtons = (): boolean => {
+        const serverName = user?.user.name
+        const serverEmail = user?.user.email
 
-        if (!fetchedName || !fetchedEmail) {
+        if (name === serverName && email === serverEmail) {
             return false
         }
 
-        if (name !== fetchedName || email !== fetchedEmail || password !== '') {
-            return true
+        if (password !== '') {
+            return false
         }
 
-        return false
-    }, [name, email, user?.user, password])
+        return true
+    }
 
     return (
-        <form
-            name="editProfileForm"
-            onSubmit={(event) => event.preventDefault()}
-            className={styles.inputs}
-        >
+        <form name="editProfileForm" onSubmit={handleSubmit(onUpdate)} className={styles.inputs}>
             <div className={styles.inputContainer}>
-                <Input
-                    placeholder="Имя"
-                    value={isUserInfoLoading ? 'Загружаем...' : name}
-                    onChange={handleNameChange}
+                <Field
+                    name="name"
+                    control={control}
+                    as={Input}
                     disabled={isNameLocked}
+                    placeholder={isUpdateUserLoading || isUserInfoLoading ? 'Загружаем...' : 'Имя'}
                 />
                 <button
                     className={styles.editButton}
                     onClick={() => setIsNameLocked((prev) => !prev)}
+                    type="button"
                 >
                     <EditIcon type="primary" />
                 </button>
             </div>
 
             <div className={styles.inputContainer}>
-                <EmailInput
+                <Field
+                    name="email"
+                    control={control}
+                    as={EmailInput}
                     disabled={isEmailLocked}
-                    value={isUserInfoLoading ? 'Загружаем...' : email}
-                    onChange={handleEmailChange}
+                    placeholder={
+                        isUpdateUserLoading || isUserInfoLoading ? 'Загружаем...' : 'Адрес почты'
+                    }
                 />
                 <button
                     className={styles.editButton}
                     onClick={() => setIsEmailLocked((prev) => !prev)}
+                    type="button"
                 >
                     <EditIcon type="primary" />
                 </button>
             </div>
 
-            <PasswordInput value={password} onChange={handlePasswordChange} />
+            <Field name="password" control={control} as={PasswordInput} />
 
             <div
                 className={
-                    shouldShowButtons ? styles.buttonsGroup : styles['buttonsGroup_disabled']
+                    shouldDisplayButtons() ? styles.buttonsGroup : styles['buttonsGroup_disabled']
                 }
             >
                 <Button type="secondary" htmlType="button" onClick={onCancel}>
@@ -134,7 +152,6 @@ export const Form = memo(() => {
                 <Button
                     type="primary"
                     htmlType="submit"
-                    onClick={onUpdate}
                     disabled={isUserInfoLoading || isUpdateUserLoading}
                 >
                     {isUpdateUserLoading ? 'Сохраняем...' : 'Сохранить'}
@@ -142,4 +159,4 @@ export const Form = memo(() => {
             </div>
         </form>
     )
-})
+}

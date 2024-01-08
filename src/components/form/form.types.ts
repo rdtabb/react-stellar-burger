@@ -5,6 +5,7 @@ export interface ICaption {
 }
 
 export interface IFormProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handleSubmit: (args: any) => any
     formName: string
     formTitle: string

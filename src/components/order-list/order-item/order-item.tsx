@@ -19,19 +19,14 @@ interface OrderItemProps {
 export const OrderItem = memo(({ order, shouldDisplayStatus }: OrderItemProps) => {
     const navigate = useNavigate()
 
-    const { ingredients, countedIngredients, price } = useOrderIngredients(order?.ingredients)
+    const { ingredients, price } = useOrderIngredients(order?.ingredients)
 
-    const openOrderCard = () => {
-        navigate(`${ROUTES.PROFILE_ORDERS}/${order?._id}}`, {
-            state: {
-                selected_order: {
-                    order,
-                    ingredients,
-                    countedIngredients,
-                    price
-                }
-            }
-        })
+    const openOrderCard = (): void => {
+        if (shouldDisplayStatus) {
+            return navigate(`${ROUTES.PROFILE_ORDERS}/${order?.number}`)
+        } else {
+            return navigate(`${ROUTES.FEED}/${order?.number}`)
+        }
     }
 
     return (

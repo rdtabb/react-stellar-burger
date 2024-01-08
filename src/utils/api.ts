@@ -9,7 +9,8 @@ export const CACHE_KEYS = {
     ORDER_INFO: 'ORDER_INFO',
     USER_INFO: 'USER_INFO',
     ORDERS: 'ORDERS',
-    PROFILE_ORDERS: 'PROFILE_ORDERS'
+    PROFILE_ORDERS: 'PROFILE_ORDERS',
+    SPECIFIC_ORDER: 'SPECIFIC_ORDER'
 } as const
 
 export const URLS: Urls = {
@@ -23,7 +24,8 @@ export const URLS: Urls = {
     RESET_PASSWORD_EMAIL_STAGE: `${BASE_URL}/password-reset`,
     RESET_PASSWORD_TOKEN_STAGE: `${BASE_URL}/password-reset/reset`,
     ORDERS: `${BASE_SOCKET_URL}/orders/all`,
-    PROFILE_ORDERS: `${BASE_SOCKET_URL}/orders`
+    PROFILE_ORDERS: `${BASE_SOCKET_URL}/orders`,
+    SPECIFIC_ORDER: `${BASE_URL}/orders`
 } as const
 
 export const ROUTES = {

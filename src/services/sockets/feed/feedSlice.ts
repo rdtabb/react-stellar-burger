@@ -30,9 +30,6 @@ const feedSlice = createSlice({
             state.socketConnectionStatus = HTTPStatus.ERROR
         },
         feedWsConnectionClose(state) {
-            state.total = null
-            state.totalToday = null
-            state.orders = null
             state.socketConnectionStatus = HTTPStatus.STALE
         }
     }

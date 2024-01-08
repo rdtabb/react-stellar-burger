@@ -91,6 +91,7 @@ export interface Urls {
     RESET_PASSWORD_TOKEN_STAGE: string
     ORDERS: string
     PROFILE_ORDERS: string
+    SPECIFIC_ORDER: string
 }
 
 export interface Tokens {

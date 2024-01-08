@@ -19,6 +19,7 @@ import {
     type UserPayload,
     CACHE_KEYS
 } from '@utils/index'
+import { Order as IOrder } from '@services/sockets/types'
 
 import { initAuthCheck } from '../../auth-slice/authSlice'
 
@@ -114,8 +115,27 @@ export const authApiSlice = createApi({
                 method: 'PATCH'
             }),
             invalidatesTags: () => [CACHE_KEYS.USER_INFO]
+        }),
+        getOrderInfo: builder.query<IOrder, { number?: number }>({
+            query: (body) => ({
+                url: `${URLS.SPECIFIC_ORDER}/${body?.number}`,
+                headers: {
+                    ...headers,
+                    Authorization: getTokens()?.accessToken
+                },
+                method: 'GET'
+            }),
+            transformResponse(response, meta, arg) {
+                console.log('transforing', response)
+                return (response as { success: boolean; orders: IOrder[] }).orders[0]
+            }
         })
     })
 })
 
-export const { useUserInfoQuery, useCreateOrderMutation, useChangeUserInfoMutation } = authApiSlice
+export const {
+    useUserInfoQuery,
+    useCreateOrderMutation,
+    useChangeUserInfoMutation,
+    useGetOrderInfoQuery
+} = authApiSlice

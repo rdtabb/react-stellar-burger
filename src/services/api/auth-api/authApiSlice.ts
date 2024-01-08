@@ -27,6 +27,7 @@ const baseQueryWithReauth: BaseQueryFn<FetchArgs, unknown, FetchBaseQueryError> 
     api,
     extraOptions
 ) => {
+    api.dispatch(initAuthCheck())
     let result = await fetchBaseQuery({ baseUrl: BASE_URL })(args, api, extraOptions)
 
     if (result.error && result.error.status === 403) {

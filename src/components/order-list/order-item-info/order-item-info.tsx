@@ -17,14 +17,13 @@ interface Location {
             price: number
             ingredients: Ingredient[]
             countedIngredients: IngredientsCounted
-        }
+        } | null
     }
 }
 
 export const OrderItemInfo = () => {
-    const {
-        state: { selected_order }
-    } = useLocation() as Location
+    const { state } = useLocation() as Location
+    const selected_order = state?.selected_order
 
     return (
         <section className={css.page}>
@@ -47,7 +46,7 @@ export const OrderItemInfo = () => {
                                     <img
                                         className={css.item__image}
                                         src={ingredient.image_mobile}
-                                        alt="ingredient"
+                                        alt={ingredient.name}
                                         width="64px"
                                         height="64px"
                                     />

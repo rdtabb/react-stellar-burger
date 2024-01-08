@@ -56,7 +56,10 @@ export const App = () => {
                     element={<IngredientDetailsPage enableRedirect={false} />}
                 />
                 <Route path={ROUTES.PROFILE} element={<OnlyAuth component={<Profile />} />} />
-                <Route path={`${ROUTES.PROFILE_ORDERS}/:id`} element={<OrderItemInfo />} />
+                <Route
+                    path={`${ROUTES.PROFILE_ORDERS}/:id`}
+                    element={<OnlyAuth component={<OrderItemInfo />} />}
+                />
                 <Route path={ROUTES.FEED} element={<Feed />} />
                 <Route path={`${ROUTES.FEED}/:id`} element={<OrderItemInfo />} />
                 <Route path="*" element={<NotFound />} />

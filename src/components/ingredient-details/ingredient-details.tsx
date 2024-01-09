@@ -20,6 +20,8 @@ export const IngredientDetails = memo(() => {
                     className={styles.image}
                     src={selectedItem?.image_large}
                     alt={selectedItem?.name}
+                    height="240px"
+                    width="480px"
                 />
                 <p className={styles.caption}>{selectedItem?.name}</p>
                 <div className={styles.stats}>

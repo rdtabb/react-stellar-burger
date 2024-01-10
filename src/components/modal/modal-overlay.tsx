@@ -1,13 +1,12 @@
-import { memo, useEffect } from 'react'
+import { memo, useEffect, PropsWithChildren } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 
 import { popupClassSelector, setPopupClass } from '@services/modal-slice/modalSlice'
-import { Children } from '@utils/types'
 
 import styles from './modal.module.css'
 
-type ModalOverlayProps = Children & {
+interface ModalOverlayProps extends PropsWithChildren {
     closePopupOnOverlay: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
 

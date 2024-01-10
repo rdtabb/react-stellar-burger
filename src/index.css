@@ -43,19 +43,15 @@ p {
     margin: 0;
 }
 
-#root {
-    height: 100vh;
-    overflow: hidden;
+@media (min-width: 700px) {
+    #root {
+        height: 100vh;
+        overflow: hidden;
+    }
 }
 
 .tabs-global div {
     padding: clamp(4px, 3vw, 16px) clamp(10px, 5vw, 40px);
-}
-
-@media (max-width: 700px) {
-    .tabs-global {
-        display: none;
-    }
 }
 
 .constructor-element {

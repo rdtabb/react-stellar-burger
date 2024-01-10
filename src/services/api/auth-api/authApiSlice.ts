@@ -97,11 +97,6 @@ export const authApiSlice = createApi({
                 },
                 method: 'GET'
             }),
-            onQueryStarted() {
-                // до установки плагинов eslint это работало как надо, теперь крашится сборка
-                // so what the fuck?
-                // store.dispatch(setIsAuthChecked(true))
-            },
             providesTags: () => [CACHE_KEYS.USER_INFO]
         }),
         changeUserInfo: builder.mutation<FetchUserResponse | undefined, UserPayload>({
@@ -126,7 +121,6 @@ export const authApiSlice = createApi({
                 method: 'GET'
             }),
             transformResponse(response, meta, arg) {
-                console.log('transforing', response)
                 return (response as { success: boolean; orders: IOrder[] }).orders[0]
             }
         })

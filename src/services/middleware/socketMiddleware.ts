@@ -1,11 +1,13 @@
-import { PayloadAction, ActionCreatorWithoutPayload } from '@reduxjs/toolkit'
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import {
+    PayloadAction,
+    ActionCreatorWithoutPayload,
+    ActionCreatorWithPayload
+} from '@reduxjs/toolkit'
 import { Middleware } from 'redux'
 
-import { SocketResponse } from '@services/index'
 import { getTokens } from '@utils/sessionStorage'
 
-interface SocketMiddlewareConfig {
+interface SocketMiddlewareConfig<TResponse> {
     url: {
         wsUrl: string
         provideAuthParams?: boolean
@@ -13,16 +15,16 @@ interface SocketMiddlewareConfig {
     actions: {
         connectionInitType: string
         connectionCloseType: string
-        connectionSuccess: ActionCreatorWithPayload<SocketResponse, string>
+        connectionSuccess: ActionCreatorWithPayload<TResponse, string>
         connectionFail: ActionCreatorWithoutPayload<string>
     }
 }
 
 export const socketMiddleware =
-    ({
+    <TResponse>({
         url: { wsUrl, provideAuthParams },
         actions: { connectionInitType, connectionCloseType, connectionSuccess, connectionFail }
-    }: SocketMiddlewareConfig): Middleware =>
+    }: SocketMiddlewareConfig<TResponse>): Middleware =>
     (store) => {
         let socket: WebSocket | null = null
         let url: string

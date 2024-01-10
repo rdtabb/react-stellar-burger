@@ -23,7 +23,7 @@ export const useSelectedItem = (): Ingredient | undefined => {
 
     const searchedItem = useMemo(
         (): Ingredient | undefined => data?.data.find((ingredient) => ingredient._id === id),
-        [data?.data]
+        [data?.data, id]
     )
 
     return state?.item ?? searchedItem

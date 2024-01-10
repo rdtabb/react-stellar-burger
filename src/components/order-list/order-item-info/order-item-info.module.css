@@ -76,6 +76,25 @@
     gap: 16px;
 }
 
+.item--empty {
+    height: 64px;
+    border-radius: 8px;
+    background-color: hsl(0, 0%, 100%, 0.2);
+    animation: pulse linear infinite 3000ms;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+
 .item__image {
     composes: image-list__item from '../order-list.module.css';
     object-fit: cover;

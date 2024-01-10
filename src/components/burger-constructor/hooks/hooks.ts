@@ -6,8 +6,8 @@ import { useDispatch } from 'react-redux'
 import {
     addConstructorBun,
     addConstructorIngredient
-} from '../../../services/create-order-slice/orderSlice'
-import { DRAGNDROP_TYPES, Ingredient } from '../../../utils/types'
+} from '@services/create-order-slice/orderSlice'
+import { DRAGNDROP_TYPES, Ingredient } from '@utils/types'
 
 export const useConstructorDnd = () => {
     const dispatch = useDispatch()

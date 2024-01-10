@@ -16,16 +16,24 @@ interface OrderItemProps {
     shouldDisplayStatus?: boolean
 }
 
-export const OrderItem = memo(({ order, shouldDisplayStatus }: OrderItemProps) => {
+export const OrderItem = memo(({ order, shouldDisplayStatus }: OrderItemProps): JSX.Element => {
     const navigate = useNavigate()
 
-    const { ingredients, price } = useOrderIngredients(order?.ingredients)
+    const { ingredients, price, countedIngredients } = useOrderIngredients(order?.ingredients)
 
     const openOrderCard = (): void => {
         if (shouldDisplayStatus) {
-            return navigate(`${ROUTES.PROFILE_ORDERS}/${order?.number}`)
+            return navigate(`${ROUTES.PROFILE_ORDERS}/${order?.number}`, {
+                state: {
+                    ingredientsLength: Object.keys(countedIngredients).length
+                }
+            })
         } else {
-            return navigate(`${ROUTES.FEED}/${order?.number}`)
+            return navigate(`${ROUTES.FEED}/${order?.number}`, {
+                state: {
+                    ingredientsLength: Object.keys(countedIngredients).length
+                }
+            })
         }
     }
 

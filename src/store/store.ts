@@ -14,7 +14,8 @@ import {
     profileWsConnectionInit,
     unauthApiSlice,
     authApiSlice,
-    socketMiddleware
+    socketMiddleware,
+    SocketResponse
 } from '@services/index'
 import modalReducer from '@services/modal-slice/modalSlice'
 import feedReducer from '@services/sockets/feed/feedSlice'
@@ -36,7 +37,7 @@ export const store = configureStore({
         getDefaultMiddleware().concat(
             unauthApiSlice.middleware,
             authApiSlice.middleware,
-            socketMiddleware({
+            socketMiddleware<SocketResponse>({
                 url: {
                     wsUrl: URLS.PROFILE_ORDERS,
                     provideAuthParams: true
@@ -48,7 +49,7 @@ export const store = configureStore({
                     connectionSuccess: profileWsConnectionSuccess
                 }
             }),
-            socketMiddleware({
+            socketMiddleware<SocketResponse>({
                 url: {
                     wsUrl: URLS.ORDERS
                 },

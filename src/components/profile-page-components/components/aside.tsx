@@ -8,7 +8,7 @@ import { ROUTES } from '@utils/index'
 
 import styles from '../profilePageComponents.module.css'
 
-export const Aside = memo(() => {
+export const Aside = memo((): JSX.Element => {
     const dispatch = useDispatch()
 
     return (

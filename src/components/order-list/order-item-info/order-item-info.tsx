@@ -1,17 +1,25 @@
 import React, { memo } from 'react'
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 
 import { useGetOrderInfoQuery } from '@services/index'
 import { calculateDateDiff, getOrderStatus } from '@utils/index'
 
+import { IngredientsListLoading } from './order-item-info-loading'
 import css from './order-item-info.module.css'
 
 import { useOrderIngredients } from '../hooks/use-order-ingredients'
 
+interface Location {
+    state: {
+        ingredientsLength?: number | null
+    }
+}
+
 export const OrderItemInfo = memo(() => {
     const { id: number } = useParams() as { id: string }
+    const { state } = useLocation() as Location
 
     const { data: order, isLoading } = useGetOrderInfoQuery({
         number: parseInt(number)
@@ -34,22 +42,28 @@ export const OrderItemInfo = memo(() => {
                 <div className={css.ingredients}>
                     <h3 className={css.ingredients__subtitle}>Состав: </h3>
                     <ul className={css.ingredients__list}>
-                        {Object.entries(countedIngredients ?? {})?.map(([id, ingredient]) => (
-                            <li className={css.item} key={id}>
-                                <img
-                                    className={css.item__image}
-                                    src={ingredient.image_mobile}
-                                    alt={ingredient.name}
-                                    width="64px"
-                                    height="64px"
-                                />
-                                <h4 className={css.item__title}>{ingredient.name}</h4>
-                                <div className={css['item__price-container']}>
-                                    <p>{ingredient.count + ' x ' + ingredient.price}</p>
-                                    <CurrencyIcon type="primary" />
-                                </div>
-                            </li>
-                        ))}
+                        {isLoading ? (
+                            <IngredientsListLoading
+                                howManyShouldRender={state?.ingredientsLength}
+                            />
+                        ) : (
+                            Object.entries(countedIngredients ?? {})?.map(([id, ingredient]) => (
+                                <li className={css.item} key={id}>
+                                    <img
+                                        className={css.item__image}
+                                        src={ingredient.image_mobile}
+                                        alt={ingredient.name}
+                                        width="64px"
+                                        height="64px"
+                                    />
+                                    <h4 className={css.item__title}>{ingredient.name}</h4>
+                                    <div className={css['item__price-container']}>
+                                        <p>{ingredient.count + ' x ' + ingredient.price}</p>
+                                        <CurrencyIcon type="primary" />
+                                    </div>
+                                </li>
+                            ))
+                        )}
                     </ul>
                 </div>
                 <div className={css['item__info-container']}>

@@ -12,7 +12,11 @@ interface OrderListProps {
     isLoading?: boolean
 }
 
-export const OrderList = ({ orders, shouldDisplayStatus, isLoading }: OrderListProps) => (
+export const OrderList = ({
+    orders,
+    shouldDisplayStatus,
+    isLoading
+}: OrderListProps): JSX.Element => (
     <section className={styles['order-list']}>
         {isLoading ? (
             <OrderListLoading />

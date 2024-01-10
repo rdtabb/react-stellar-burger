@@ -11,7 +11,7 @@ const loginFormCaptionsConfig: ICaption[] = [
     {
         linkRoute: ROUTES.REGISTER,
         linkText: 'Зарегистрироваться',
-        captionText: 'Вы — новый пользователь?'
+        captionText: 'Вы — новый пользователь?'
     },
     {
         linkRoute: ROUTES.FORGOT_PASSWORD,
@@ -29,7 +29,7 @@ export const LoginForm = () => {
     const [login, { isLoading, isError }] = useAuthenticateUserMutation()
 
     const handleSubmit = useCallback(
-        async (event: React.FormEvent<HTMLFormElement>) => {
+        async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
             event.preventDefault()
             const params = { email, password }
             const result = (await login(params)) as { data: AuthRegResponse }

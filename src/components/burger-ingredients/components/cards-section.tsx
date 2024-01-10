@@ -15,6 +15,7 @@ interface CardsSectionProps {
 }
 
 export const CardsSection = memo(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     forwardRef((props: CardsSectionProps, ref: any) => (
         <div ref={ref}>
             <h2 className={styles.card__header}>{props.title}</h2>

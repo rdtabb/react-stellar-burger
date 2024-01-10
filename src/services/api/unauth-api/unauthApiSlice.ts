@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-import { store } from '@store/store'
 import {
     BASE_URL,
     URLS,
@@ -11,9 +10,7 @@ import {
     ResetPasswordEmailStageResponse
 } from '@utils/index'
 
-import { setIsAuthChecked } from '../authSlice'
-
-export const apiSlice = createApi({
+export const unauthApiSlice = createApi({
     reducerPath: 'apiSlice',
     baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
     endpoints: (builder) => ({
@@ -71,4 +68,4 @@ export const {
     useResetPasswordEmailStageMutation,
     useResetPasswordTokenStageMutation,
     usePrefetch: useIngredientsPrefetch
-} = apiSlice
+} = unauthApiSlice

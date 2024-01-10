@@ -2,12 +2,11 @@ import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit'
 
 import { AuthRegResponse, IInitialAuthSliceState, getTokens, destroyTokens } from '@utils/index'
 
-import { RootState } from '../store/store'
+import { RootState } from '../../store/store'
 
 const initialState: IInitialAuthSliceState = {
     tokens: undefined,
-    user: undefined,
-    isAuthChecked: false
+    user: undefined
 }
 
 export const authSlice = createSlice({
@@ -20,9 +19,6 @@ export const authSlice = createSlice({
                 return state
             }
             state.tokens = tokens
-        },
-        setIsAuthChecked(state, { payload }: PayloadAction<boolean>) {
-            state.isAuthChecked = payload
         },
         setAuthInfo(state, { payload }: PayloadAction<AuthRegResponse>) {
             state.user = payload.user
@@ -39,17 +35,14 @@ export const authSlice = createSlice({
     }
 })
 
-const selectTokens = (state: RootState) => ({
-    tokens: state.auth.tokens,
-    isAuthChecked: state.auth.isAuthChecked
-})
+export const authInfoSelector = createSelector(
+    [(state: RootState) => state.auth.tokens],
+    (tokens) => ({
+        tokens,
+        isAuth: !!tokens
+    })
+)
 
-export const authInfoSelector = createSelector(selectTokens, (info) => ({
-    tokens: info.tokens,
-    isAuth: !!info.tokens,
-    isAuthChecked: info.isAuthChecked
-}))
-
-export const { initAuthCheck, setAuthInfo, destroyAuthInfo, setIsAuthChecked } = authSlice.actions
+export const { initAuthCheck, setAuthInfo, destroyAuthInfo } = authSlice.actions
 
 export default authSlice.reducer

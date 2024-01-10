@@ -13,10 +13,6 @@ const Protected = ({ onlyUnAuth = false, component }: IProtectedProps): JSX.Elem
     const { isAuth } = useSelector(authInfoSelector)
     const location = useLocation()
 
-    // if (!isAuthChecked) {
-    //     return null
-    // }
-
     if (onlyUnAuth && isAuth) {
         const pathname = location.state?.from.pathname || ROUTES.CONSTRUCTOR
 

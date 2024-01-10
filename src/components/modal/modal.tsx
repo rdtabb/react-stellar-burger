@@ -1,16 +1,15 @@
-import React, { useCallback, useEffect, memo } from 'react'
+import React, { useCallback, useEffect, memo, PropsWithChildren } from 'react'
 
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { createPortal } from 'react-dom'
 import { useDispatch } from 'react-redux'
 
 import { setPopupClass, setPopupState } from '@services/index'
-import { Children } from '@utils/index'
 
 import { ModalOverlay } from './modal-overlay'
 import styles from './modal.module.css'
 
-type ModalProps = Children & {
+interface ModalProps extends PropsWithChildren {
     modalContentClass: string
     close?: () => void
 }

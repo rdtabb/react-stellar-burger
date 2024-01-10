@@ -2,7 +2,6 @@ import { useState, useCallback, useMemo } from 'react'
 
 import { PasswordInput, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 
 import { Form, ICaption, IFormInputConfig } from '@components/form'
 import { useAuthenticateUserMutation, setAuthInfo } from '@services/index'
@@ -12,7 +11,7 @@ const loginFormCaptionsConfig: ICaption[] = [
     {
         linkRoute: ROUTES.REGISTER,
         linkText: 'Зарегистрироваться',
-        captionText: 'Вы — новый пользователь?'
+        captionText: 'Вы — новый пользователь?'
     },
     {
         linkRoute: ROUTES.FORGOT_PASSWORD,
@@ -23,7 +22,6 @@ const loginFormCaptionsConfig: ICaption[] = [
 
 export const LoginForm = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const [password, setPassword] = useState<string>('')
     const [email, setEmail] = useState<string>('')
@@ -31,7 +29,7 @@ export const LoginForm = () => {
     const [login, { isLoading, isError }] = useAuthenticateUserMutation()
 
     const handleSubmit = useCallback(
-        async (event: React.FormEvent<HTMLFormElement>) => {
+        async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
             event.preventDefault()
             const params = { email, password }
             const result = (await login(params)) as { data: AuthRegResponse }

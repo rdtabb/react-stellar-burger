@@ -1,0 +1,124 @@
+.page {
+    --width: 640px;
+
+    display: grid;
+    place-content: center;
+    height: calc(100% - 88.5px);
+}
+
+.container {
+    --width: 640px;
+    --padding: 16px;
+
+    font-family: var(--ff-primary);
+    width: min(var(--width), calc(100vw - var(--padding)));
+    margin: 0 auto;
+}
+
+.container * {
+    margin: 0;
+    padding: 0;
+}
+
+.date {
+    composes: order-item__date from '../order-list.module.css';
+}
+
+.number {
+    composes: order-item__number from '../order-list.module.css';
+    text-align: center;
+}
+
+.title {
+    composes: order-item__title from '../order-list.module.css';
+    padding: 40px 0px 12px !important;
+}
+
+.ingredients {
+    padding: 60px 0px 40px;
+}
+
+.ingredients__subtitle {
+    composes: order-item__title from '../order-list.module.css';
+    padding-top: 0px !important;
+    padding-bottom: 24px;
+}
+
+.ingredients__list {
+    display: grid;
+    gap: 16px;
+    max-height: 376px;
+    overflow-y: scroll;
+    padding-right: 24px;
+}
+
+.ingredients__list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ingredients__list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.ingredients__list::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: var(--clr-secondary);
+}
+
+.ingredients__list::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: auto 1fr max-content;
+    align-items: center;
+    gap: 16px;
+}
+
+.item--empty {
+    height: 64px;
+    border-radius: 8px;
+    background-color: hsl(0, 0%, 100%, 0.2);
+    animation: pulse linear infinite 3000ms;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+
+.item__image {
+    composes: image-list__item from '../order-list.module.css';
+    object-fit: cover;
+    margin: 0 !important;
+    width: min-content;
+}
+
+.item__title {
+    font-size: var(--fs-400);
+    line-height: var(--line-height-400);
+}
+
+.item__info-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.item__price-container {
+    display: flex;
+    gap: 8px;
+}
+
+.item__price {
+    font-family: var(--ff-secondary);
+    font-size: var(--fs-500);
+    line-height: var(--line-height-400);
+}

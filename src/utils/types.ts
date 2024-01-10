@@ -9,7 +9,6 @@ import modalStyles from '../components/Modal/modal.module.css'
 export interface IInitialAuthSliceState {
     user?: User
     tokens?: Tokens
-    isAuthChecked?: boolean
 }
 
 export interface IInitialOrderSliceState {
@@ -62,13 +61,7 @@ export interface Order {
     success: boolean
 }
 
-export interface Children {
-    children: ReactNode | ReactNode[]
-}
-
 export type ModalType = 'order' | 'info' | 'closed'
-
-export type FetchStatus = 'idle' | 'success' | 'loading' | 'failed'
 
 export type Tab = 'buns' | 'mains' | 'sauces'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -89,11 +82,15 @@ export interface Urls {
     UPDATE_TOKEN_URL: string
     RESET_PASSWORD_EMAIL_STAGE: string
     RESET_PASSWORD_TOKEN_STAGE: string
+    ORDERS: string
+    PROFILE_ORDERS: string
+    SPECIFIC_ORDER: string
 }
 
 export interface Tokens {
     refreshToken: string
     accessToken: string
+    accessTokenWithoutBearer?: string
 }
 
 export interface FetchIngredientsResponse {

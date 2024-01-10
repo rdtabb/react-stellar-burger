@@ -1,9 +1,9 @@
 import { memo } from 'react'
 
+import { NotFound } from '@pages/index'
+
 import styles from './infomodal.module.css'
 import { useSelectedItem } from './use-selected-item'
-
-import { NotFound } from '../not-found/not-found'
 
 export const IngredientDetails = memo(() => {
     const selectedItem = useSelectedItem()
@@ -20,6 +20,8 @@ export const IngredientDetails = memo(() => {
                     className={styles.image}
                     src={selectedItem?.image_large}
                     alt={selectedItem?.name}
+                    height="240px"
+                    width="480px"
                 />
                 <p className={styles.caption}>{selectedItem?.name}</p>
                 <div className={styles.stats}>

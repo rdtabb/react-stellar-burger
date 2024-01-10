@@ -2,21 +2,30 @@
     --_width: 1280px;
 
     display: grid;
-    grid-template-columns: 0.5fr min-content;
+    grid-template-columns: 0.5fr 1fr;
     gap: 60px;
     width: min(var(--_width), 100% - 1rem);
+    height: calc(100% - 50px);
     margin: 120px auto 0;
     font-family: var(--ff-primary);
+}
+
+.main:has(form) {
+    grid-template-columns: 0.5fr min-content;
+}
+
+.main * {
+    box-sizing: border-box;
 }
 
 .route {
     font-size: var(--fs-450);
     font-weight: var(--fw-700);
     line-height: var(--line-height-450);
-    padding-block: 8px;
     color: var(--clr-secondary);
-    opacity: 0.8;
     text-decoration: none;
+    opacity: 0.8;
+    padding-block: 8px;
     transition: opacity 200ms ease-in;
 }
 

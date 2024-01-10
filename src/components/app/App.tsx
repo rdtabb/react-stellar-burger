@@ -2,14 +2,17 @@ import React, { useCallback } from 'react'
 
 import { useLocation, useNavigate, Routes, Route } from 'react-router-dom'
 
+import { OrderItemInfo } from '@components/order-list/order-item-info/order-item-info'
 import {
+    Profile,
     Constructor,
     IngredientDetailsPage,
-    Profile,
+    ResetPassStageOne,
     ResetPassStageTwo,
     RegisterForm,
     LoginForm,
-    ResetPassStageOne
+    Feed,
+    NotFound
 } from '@pages/index'
 import styles from '@pages/ingredient-details/ingredient-details.module.css'
 import { useUserInfoQuery } from '@services/index'
@@ -17,7 +20,6 @@ import { ROUTES, CACHE_KEYS } from '@utils/index'
 
 import { AppHeader } from '../app-header/app-header'
 import { Modal } from '../modal/modal'
-import { NotFound } from '../not-found/not-found'
 import { OnlyAuth, OnlyUnAuth } from '../protected/protected'
 
 export const App = () => {
@@ -45,7 +47,6 @@ export const App = () => {
                     path={ROUTES.FORGOT_PASSWORD}
                     element={<OnlyUnAuth component={<ResetPassStageOne />} />}
                 />
-                <Route path={ROUTES.PROFILE} element={<OnlyAuth component={<Profile />} />} />
                 <Route
                     path={ROUTES.RESET_PASSWORD}
                     element={<OnlyUnAuth component={<ResetPassStageTwo />} />}
@@ -54,6 +55,13 @@ export const App = () => {
                     path={`${ROUTES.INGREDIENT_DETAILS}/:id`}
                     element={<IngredientDetailsPage enableRedirect={false} />}
                 />
+                <Route path={ROUTES.PROFILE} element={<OnlyAuth component={<Profile />} />} />
+                <Route
+                    path={`${ROUTES.PROFILE_ORDERS}/:id`}
+                    element={<OnlyAuth component={<OrderItemInfo />} />}
+                />
+                <Route path={ROUTES.FEED} element={<Feed />} />
+                <Route path={`${ROUTES.FEED}/:id`} element={<OrderItemInfo />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
             {previousLocation && (

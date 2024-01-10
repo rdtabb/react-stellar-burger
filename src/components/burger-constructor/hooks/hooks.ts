@@ -1,10 +1,13 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
 
-import { addConstructorBun, addConstructorIngredient } from '../../../services/orderSlice'
-import { DRAGNDROP_TYPES, Ingredient } from '../../../utils/types'
+import {
+    addConstructorBun,
+    addConstructorIngredient
+} from '@services/create-order-slice/orderSlice'
+import { DRAGNDROP_TYPES, Ingredient } from '@utils/types'
 
 export const useConstructorDnd = () => {
     const dispatch = useDispatch()

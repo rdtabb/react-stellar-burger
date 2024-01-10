@@ -4,9 +4,9 @@ import {
     FetchBaseQueryError,
     createApi,
     fetchBaseQuery
-} from '@reduxjs/toolkit/dist/query/react'
+} from '@reduxjs/toolkit/query/react'
 
-import { RootState, store } from '@store/store'
+import { RootState } from '@store/store'
 import {
     URLS,
     BASE_URL,
@@ -19,14 +19,16 @@ import {
     type UserPayload,
     CACHE_KEYS
 } from '@utils/index'
+import { Order as IOrder } from '@services/sockets/types'
 
-import { initAuthCheck, setIsAuthChecked } from '../authSlice'
+import { initAuthCheck } from '../../auth-slice/authSlice'
 
 const baseQueryWithReauth: BaseQueryFn<FetchArgs, unknown, FetchBaseQueryError> = async (
     args,
     api,
     extraOptions
 ) => {
+    api.dispatch(initAuthCheck())
     let result = await fetchBaseQuery({ baseUrl: BASE_URL })(args, api, extraOptions)
 
     if (result.error && result.error.status === 403) {
@@ -95,12 +97,7 @@ export const authApiSlice = createApi({
                 },
                 method: 'GET'
             }),
-            onQueryStarted() {
-                // до установки плагинов eslint это работало как надо, теперь крашится сборка
-                // so what the fuck?
-                // store.dispatch(setIsAuthChecked(true))
-            },
-            providesTags: (_) => [CACHE_KEYS.USER_INFO]
+            providesTags: () => [CACHE_KEYS.USER_INFO]
         }),
         changeUserInfo: builder.mutation<FetchUserResponse | undefined, UserPayload>({
             query: (body) => ({
@@ -112,9 +109,27 @@ export const authApiSlice = createApi({
                 body,
                 method: 'PATCH'
             }),
-            invalidatesTags: (_) => [CACHE_KEYS.USER_INFO]
+            invalidatesTags: () => [CACHE_KEYS.USER_INFO]
+        }),
+        getOrderInfo: builder.query<IOrder, { number?: number }>({
+            query: (body) => ({
+                url: `${URLS.SPECIFIC_ORDER}/${body?.number}`,
+                headers: {
+                    ...headers,
+                    Authorization: getTokens()?.accessToken
+                },
+                method: 'GET'
+            }),
+            transformResponse(response, meta, arg) {
+                return (response as { success: boolean; orders: IOrder[] }).orders[0]
+            }
         })
     })
 })
 
-export const { useChangeUserInfoMutation, useCreateOrderMutation, useUserInfoQuery } = authApiSlice
+export const {
+    useUserInfoQuery,
+    useCreateOrderMutation,
+    useChangeUserInfoMutation,
+    useGetOrderInfoQuery
+} = authApiSlice

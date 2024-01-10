@@ -8,7 +8,7 @@ import { ROUTES } from '@utils/index'
 
 import styles from '../profilePageComponents.module.css'
 
-export const Aside = memo(() => {
+export const Aside = memo((): JSX.Element => {
     const dispatch = useDispatch()
 
     return (
@@ -16,13 +16,13 @@ export const Aside = memo(() => {
             <nav className={styles.nav}>
                 <NavLink
                     className={({ isActive }) => (isActive ? styles.route_active : styles.route)}
-                    to={ROUTES.PROFILE}
+                    to={'/profile/details'}
                 >
                     Профиль
                 </NavLink>
                 <NavLink
                     className={({ isActive }) => (isActive ? styles.route_active : styles.route)}
-                    to={ROUTES.ORDERS_HISTORY}
+                    to={`/profile/orders`}
                 >
                     История заказов
                 </NavLink>

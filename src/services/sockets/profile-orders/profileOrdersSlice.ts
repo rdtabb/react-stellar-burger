@@ -39,7 +39,7 @@ export const profileOrdersSelector = createSelector(
         (state: RootState) => state.profileOrders.orders,
         (state: RootState) => state.profileOrders.socketConnectionStatus
     ],
-    (orders, status) => ({ orders, status })
+    (orders, status) => ({ orders: orders?.toReversed(), status })
 )
 
 export const {

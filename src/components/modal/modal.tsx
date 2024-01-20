@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, memo, PropsWithChildren } from 'react'
 
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { createPortal } from 'react-dom'
-import { useDispatch } from 'react-redux'
 
+import { useAppDispatch } from '@hooks/use-typed-redux'
 import { setPopupClass, setPopupState } from '@services/index'
 
 import { ModalOverlay } from './modal-overlay'
@@ -15,7 +15,7 @@ interface ModalProps extends PropsWithChildren {
 }
 
 export const Modal = memo(({ children, modalContentClass, close }: ModalProps) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const closePopup = useCallback((): void => {
         dispatch(setPopupClass(styles.modal))

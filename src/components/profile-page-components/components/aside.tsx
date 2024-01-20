@@ -1,15 +1,15 @@
 import { memo } from 'react'
 
-import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
+import { useAppDispatch } from '@hooks/use-typed-redux'
 import { destroyAuthInfo } from '@services/index'
 import { ROUTES } from '@utils/index'
 
 import styles from '../profilePageComponents.module.css'
 
 export const Aside = memo((): JSX.Element => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     return (
         <aside className={styles.aside}>

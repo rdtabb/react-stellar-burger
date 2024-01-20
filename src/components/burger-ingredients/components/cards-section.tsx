@@ -1,4 +1,4 @@
-import { forwardRef, memo } from 'react'
+import { ForwardedRef, forwardRef, memo } from 'react'
 
 import { Ingredient } from '@utils/types'
 
@@ -15,23 +15,24 @@ interface CardsSectionProps {
 }
 
 export const CardsSection = memo(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    forwardRef((props: CardsSectionProps, ref: any) => (
-        <div ref={ref}>
-            <h2 className={styles.card__header}>{props.title}</h2>
-            <div className={styles.container}>
-                {props.isLoading ? (
-                    <LoadingIngredients />
-                ) : props.isError ? (
-                    <ErrorIngredients />
-                ) : (
-                    <>
-                        {props.ingredients?.map((item) => (
-                            <IngredientCard key={item._id} item={item} />
-                        ))}
-                    </>
-                )}
+    forwardRef(
+        (props: CardsSectionProps, ref: ForwardedRef<HTMLDivElement | null>): JSX.Element => (
+            <div ref={ref}>
+                <h2 className={styles.card__header}>{props.title}</h2>
+                <div className={styles.container}>
+                    {props.isLoading ? (
+                        <LoadingIngredients />
+                    ) : props.isError ? (
+                        <ErrorIngredients />
+                    ) : (
+                        <>
+                            {props.ingredients?.map((item) => (
+                                <IngredientCard key={item._id} item={item} />
+                            ))}
+                        </>
+                    )}
+                </div>
             </div>
-        </div>
-    ))
+        )
+    )
 )

@@ -1,7 +1,6 @@
 import { memo, useEffect, PropsWithChildren } from 'react'
 
-import { useSelector, useDispatch } from 'react-redux'
-
+import { useAppDispatch, useAppSelector } from '@hooks/use-typed-redux'
 import { popupClassSelector, setPopupClass } from '@services/modal-slice/modalSlice'
 
 import styles from './modal.module.css'
@@ -11,8 +10,8 @@ interface ModalOverlayProps extends PropsWithChildren {
 }
 
 export const ModalOverlay = memo(({ children, closePopupOnOverlay }: ModalOverlayProps) => {
-    const popupClass = useSelector(popupClassSelector)
-    const dispatch = useDispatch()
+    const popupClass = useAppSelector(popupClassSelector)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         const timeout = setTimeout(() => {

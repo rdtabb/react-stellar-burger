@@ -11,7 +11,7 @@ type BunConstructorElementProps = {
     type: string
 }
 
-export const BunConstructorElement = memo(({ type }: BunConstructorElementProps) => {
+export const BunConstructorElement = memo(({ type }: BunConstructorElementProps): JSX.Element => {
     const bun = useSelector(bunSelector)
 
     return (

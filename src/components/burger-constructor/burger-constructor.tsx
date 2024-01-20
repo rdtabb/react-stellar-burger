@@ -13,7 +13,7 @@ import { Modal } from '../modal/modal'
 import orderDetailsStyles from '../order-details/modal.module.css'
 import { OrderDetails } from '../order-details/order-details'
 
-export const BurgerConstructor = memo(() => {
+export const BurgerConstructor = memo((): JSX.Element => {
     const constructorIngredients = useSelector(ingredientsSelector)
     const openPopupType = useSelector(openPopupTypeSelector)
 

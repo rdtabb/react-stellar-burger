@@ -22,7 +22,7 @@ import { AppHeader } from '../app-header/app-header'
 import { Modal } from '../modal/modal'
 import { OnlyAuth, OnlyUnAuth } from '../protected/protected'
 
-export const App = () => {
+export const App = (): JSX.Element => {
     const navigate = useNavigate()
     const location = useLocation()
     const previousLocation = location.state?.previousLocation

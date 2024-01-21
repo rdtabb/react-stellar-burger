@@ -9,17 +9,15 @@ interface IFormCaption {
     captionsConfig: ICaption[]
 }
 
-export const FormCaption = memo(({ captionsConfig }: IFormCaption) => {
-    return (
-        <div className={styles.captionContainer}>
-            {captionsConfig.map((caption, index) => (
-                <p className={styles.caption} key={index}>
-                    {caption.captionText}{' '}
-                    <Link className={styles.captionLink} to={caption.linkRoute}>
-                        {caption.linkText}
-                    </Link>
-                </p>
-            ))}
-        </div>
-    )
-})
+export const FormCaption = memo(({ captionsConfig }: IFormCaption) => (
+    <div className={styles.captionContainer}>
+        {captionsConfig.map((caption, index) => (
+            <p className={styles.caption} key={index}>
+                {caption.captionText}{' '}
+                <Link className={styles.captionLink} to={caption.linkRoute}>
+                    {caption.linkText}
+                </Link>
+            </p>
+        ))}
+    </div>
+))

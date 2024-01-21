@@ -7,7 +7,7 @@ interface FeedStatsListProps {
     isLoading: boolean
 }
 
-export const FeedStatsList = ({ orders, isLoading }: FeedStatsListProps) => (
+export const FeedStatsList = ({ orders, isLoading }: FeedStatsListProps): JSX.Element => (
     <ul className={styles['ready-progress-list']}>
         {!isLoading ? (
             orders?.map((item, index) => (

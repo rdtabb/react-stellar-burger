@@ -2,8 +2,8 @@ import { memo, useRef, useCallback } from 'react'
 
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag, useDrop } from 'react-dnd'
-import { useDispatch } from 'react-redux'
 
+import { useAppDispatch } from '@hooks/use-typed-redux'
 import { moveConstructorIngredient, removeConstructorIngredient } from '@services/index'
 import { DragItem, DRAGNDROP_TYPES, IngredientWithUniqueId } from '@utils/types'
 
@@ -14,8 +14,11 @@ type DraggableContsructorElementProps = {
     index: number
 }
 
-const DraggableContsructorElement = ({ item, index }: DraggableContsructorElementProps) => {
-    const dispatch = useDispatch()
+const DraggableContsructorElement = ({
+    item,
+    index
+}: DraggableContsructorElementProps): JSX.Element => {
+    const dispatch = useAppDispatch()
 
     const id = item?.uniqueId
     const ref = useRef<HTMLElement>(null)
@@ -37,12 +40,12 @@ const DraggableContsructorElement = ({ item, index }: DraggableContsructorElemen
                 handlerId: monitor.getHandlerId()
             }
         },
-        hover(item: DragItem, monitor) {
+        hover(item, monitor) {
             if (!ref.current) {
                 return
             }
 
-            const dragIndex: number = item.index
+            const dragIndex: number = (item as DragItem).index
             const hoverIndex: number = index
             if (dragIndex === hoverIndex) {
                 return
@@ -61,7 +64,7 @@ const DraggableContsructorElement = ({ item, index }: DraggableContsructorElemen
             if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
                 return
             }
-            item.index = hoverIndex
+            ;(item as DragItem).index = hoverIndex
 
             dispatch(moveConstructorIngredient({ dragIndex, hoverIndex }))
         }

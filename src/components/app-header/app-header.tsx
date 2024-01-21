@@ -10,7 +10,7 @@ import { ROUTES } from '@utils/api'
 
 import styles from './appHeader.module.css'
 
-export const AppHeader = () => (
+export const AppHeader = (): JSX.Element => (
     <header className={styles.header}>
         <nav className={styles.nav}>
             <div className={styles.tabs}>
@@ -29,9 +29,9 @@ export const AppHeader = () => (
                     <p>Лента заказов</p>
                 </NavLink>
             </div>
-            <div>
+            <NavLink to={ROUTES.CONSTRUCTOR}>
                 <Logo />
-            </div>
+            </NavLink>
             <NavLink to={'/profile/details'} className={styles.tab}>
                 <ProfileIcon type="primary" />
                 <p>Личный кабинет</p>

@@ -1,13 +1,12 @@
 import { useEffect } from 'react'
 
-import { useSelector, useDispatch } from 'react-redux'
-
 import { FeedContainer, FeedStats, OrderList } from '@components/index'
+import { useAppDispatch, useAppSelector } from '@hooks/use-typed-redux'
 import { feedOrdersSelector, feedWsConnectionInit, HTTPStatus } from '@services/index'
 
 export const Feed = () => {
-    const dispatch = useDispatch()
-    const { orders, status } = useSelector(feedOrdersSelector)
+    const dispatch = useAppDispatch()
+    const { orders, status } = useAppSelector(feedOrdersSelector)
 
     useEffect(() => {
         if (status === HTTPStatus.STALE) {

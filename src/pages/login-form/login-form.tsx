@@ -1,11 +1,11 @@
 import { useState, useCallback, useMemo } from 'react'
 
 import { PasswordInput, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useDispatch } from 'react-redux'
 
 import { Form, ICaption, IFormInputConfig } from '@components/form'
+import { useAppDispatch } from '@hooks/use-typed-redux'
 import { useAuthenticateUserMutation, setAuthInfo } from '@services/index'
-import { setTokens, AuthRegResponse, ROUTES } from '@utils/index'
+import { setTokens, ROUTES } from '@utils/index'
 
 const loginFormCaptionsConfig: ICaption[] = [
     {
@@ -21,7 +21,7 @@ const loginFormCaptionsConfig: ICaption[] = [
 ]
 
 export const LoginForm = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [password, setPassword] = useState<string>('')
     const [email, setEmail] = useState<string>('')
@@ -32,8 +32,8 @@ export const LoginForm = () => {
         async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
             event.preventDefault()
             const params = { email, password }
-            const result = (await login(params)) as { data: AuthRegResponse }
-            if (result.data.success) {
+            const result = await login(params)
+            if ('data' in result && result.data.success) {
                 dispatch(setAuthInfo(result.data))
                 setTokens(result.data)
             }

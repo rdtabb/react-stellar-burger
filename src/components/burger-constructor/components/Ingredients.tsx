@@ -11,13 +11,13 @@ interface IngredientsProps {
     ingredients?: IngredientWithUniqueId[]
 }
 
-export const Ingredients = memo(({ ingredients }: IngredientsProps) => {
-    return (
+export const Ingredients = memo(
+    ({ ingredients }: IngredientsProps): JSX.Element => (
         <>
             <BunConstructorElement type="top" />
             {ingredients?.length ? (
                 <div className={styles.draggableElements}>
-                    {ingredients.map((item: IngredientWithUniqueId, index: number) => (
+                    {ingredients.map((item, index) => (
                         <DraggableConstructorElement
                             key={item.uniqueId}
                             item={item}
@@ -33,4 +33,4 @@ export const Ingredients = memo(({ ingredients }: IngredientsProps) => {
             <BunConstructorElement type="bottom" />
         </>
     )
-})
+)

@@ -1,9 +1,9 @@
 import { memo, useCallback } from 'react'
 
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
+import { useAppDispatch, useAppSelector } from '@hooks/use-typed-redux'
 import {
     setPopupState,
     useCreateOrderMutation,
@@ -17,14 +17,14 @@ import { CACHE_KEYS, ROUTES } from '@utils/api'
 
 import styles from '../burgerConstructor.module.css'
 
-export const PriceOrder = memo(() => {
-    const dispatch = useDispatch()
+export const PriceOrder = memo((): JSX.Element => {
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
-    const { isAuth } = useSelector(authInfoSelector)
-    const bun = useSelector(bunSelector)
-    const price = useSelector(priceSelector)
-    const ids = useSelector(idsSelector)
+    const { isAuth } = useAppSelector(authInfoSelector)
+    const bun = useAppSelector(bunSelector)
+    const price = useAppSelector(priceSelector)
+    const ids = useAppSelector(idsSelector)
 
     const [createOrder] = useCreateOrderMutation({
         fixedCacheKey: CACHE_KEYS.ORDER_INFO

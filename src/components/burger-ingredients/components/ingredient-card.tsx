@@ -2,11 +2,10 @@ import { useCallback, memo } from 'react'
 
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag } from 'react-dnd'
-import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, Link } from 'react-router-dom'
 
+import { useAppDispatch, useAppSelector } from '@hooks/use-typed-redux'
 import { quantitySelector, setPopupState } from '@services/index'
-import { RootState } from '@store/store'
 import { ROUTES, Ingredient, DRAGNDROP_TYPES } from '@utils/index'
 
 import styles from '../burgerIngredients.module.css'
@@ -15,8 +14,8 @@ type IngredientCardProps = {
     item: Ingredient
 }
 
-export const IngredientCard = memo(({ item }: IngredientCardProps) => {
-    const dispatch = useDispatch()
+export const IngredientCard = memo(({ item }: IngredientCardProps): JSX.Element => {
+    const dispatch = useAppDispatch()
     const location = useLocation()
 
     const [{ isDragging }, dragRef] = useDrag(() => ({
@@ -56,7 +55,7 @@ export const IngredientCard = memo(({ item }: IngredientCardProps) => {
 })
 
 const CounterWithMemo = memo(({ item }: IngredientCardProps) => {
-    const quantity = useSelector((state: RootState) => quantitySelector(state, item._id))
+    const quantity = useAppSelector((state) => quantitySelector(state, item._id))
 
     return <Counter count={quantity} />
 })

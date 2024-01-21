@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { useGetIngredientsQuery } from '@services/index'
 import { CACHE_KEYS, type Ingredient } from '@utils/index'
 
@@ -12,8 +14,8 @@ interface UseOrderIngredients {
 export const useOrderIngredients = (ids?: string[]): UseOrderIngredients => {
     const { data } = useGetIngredientsQuery(CACHE_KEYS.INGREDIENTS)
 
-    const countedIngredients = {} as IngredientsCounted
-    const ingredients: Ingredient[] = []
+    const countedIngredients = useMemo(() => ({}) as IngredientsCounted, [])
+    const ingredients: Ingredient[] = useMemo(() => [], [])
     let price = 0
 
     ids?.forEach((id) => {
@@ -33,9 +35,12 @@ export const useOrderIngredients = (ids?: string[]): UseOrderIngredients => {
         })
     })
 
-    return {
-        ingredients,
-        countedIngredients,
-        price
-    }
+    return useMemo(
+        () => ({
+            ingredients,
+            countedIngredients,
+            price
+        }),
+        [ingredients, countedIngredients, price]
+    )
 }

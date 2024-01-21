@@ -1,8 +1,8 @@
 import { useRef, memo, useEffect } from 'react'
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useSelector, useDispatch } from 'react-redux'
 
+import { useAppDispatch, useAppSelector } from '@hooks/use-typed-redux'
 import { useIngredients } from '@hooks/useIngredients'
 import { setTab, tabSelector } from '@services/index'
 import { Tab as TabType } from '@utils/index'
@@ -15,11 +15,11 @@ interface RefElementsCollection {
     type: TabType
 }
 
-export const BurgerIngredients = memo(() => {
+export const BurgerIngredients = memo((): JSX.Element => {
     const { buns, mains, sauces, isLoading, isError } = useIngredients()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const selectedTab = useSelector(tabSelector)
+    const selectedTab = useAppSelector(tabSelector)
 
     const scrollSectionRef = useRef<HTMLElement>(null)
     const bunRef = useRef<HTMLDivElement>(null)

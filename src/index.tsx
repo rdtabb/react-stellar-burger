@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
 import './index.css'
 
 import { DndProvider } from 'react-dnd'
@@ -10,10 +10,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { App } from './components'
 import { store } from './store/store'
 
-const root = ReactDOM.createRoot(document.getElementById('root'))
+const root = createRoot(document.getElementById('root')!)
 
 root.render(
-    <React.StrictMode>
+    <StrictMode>
         <BrowserRouter>
             <DndProvider backend={HTML5Backend}>
                 <Provider store={store}>
@@ -21,5 +21,5 @@ root.render(
                 </Provider>
             </DndProvider>
         </BrowserRouter>
-    </React.StrictMode>
+    </StrictMode>
 )

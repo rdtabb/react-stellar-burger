@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react'
 
 import { useDrop } from 'react-dnd'
-import { useDispatch } from 'react-redux'
 
+import { useAppDispatch } from '@hooks/use-typed-redux'
 import {
     addConstructorBun,
     addConstructorIngredient
@@ -10,7 +10,7 @@ import {
 import { DRAGNDROP_TYPES, Ingredient } from '@utils/types'
 
 export const useConstructorDnd = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [{ isOver }, ingridientDropRef] = useDrop(() => ({
         accept: DRAGNDROP_TYPES.ingredients,
